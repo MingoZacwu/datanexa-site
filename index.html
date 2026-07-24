@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DataNexa — 面向 AI Agent 的本地只读数据库 MCP 网关</title>
+  <meta name="description" content="DataNexa 是运行在本机的数据库 MCP 服务，为 AI Agent 提供统一、受控且可审计的只读数据访问入口，支持 SQLite、MySQL 与 PostgreSQL。">
+  <link rel="icon" type="image/png" href="assets/icon.png">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div class="bg-orbit" aria-hidden="true">
+    <div class="bg-grid"></div>
+    <div class="bg-glow glow-a"></div>
+    <div class="bg-glow glow-b"></div>
+    <div class="bg-glow glow-c"></div>
+  </div>
+
+  <header class="nav" id="nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="#top">
+        <img src="assets/logo.png" alt="DataNexa Logo">
+        <span>DataNexa</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#features" data-i18n="nav.features">功能特性</a>
+        <a href="#preview" data-i18n="nav.preview">界面预览</a>
+        <a href="#quickstart" data-i18n="nav.quickstart">快速开始</a>
+        <a href="#security" data-i18n="nav.security">安全说明</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn" id="langToggle" type="button" aria-label="Switch language" title="EN / 中">中</button>
+        <button class="icon-btn" id="themeToggle" type="button" aria-label="Toggle theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5 5l1.6 1.6M17.4 17.4L19 19M19 5l-1.6 1.6M6.6 17.4L5 19"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.4 14.5A8.5 8.5 0 0 1 9.5 3.6a8.5 8.5 0 1 0 10.9 10.9z"/></svg>
+        </button>
+        <a class="btn btn-ghost nav-github" href="https://github.com/MingoZacwu/DataNexa" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <div class="hero-rings" aria-hidden="true">
+        <span class="ring ring-1"></span>
+        <span class="ring ring-2"></span>
+        <span class="ring ring-3"></span>
+      </div>
+      <div class="hero-content">
+        <div class="hero-badge reveal">
+          <span class="pulse-dot"></span>
+          <span data-i18n="hero.badge">本地运行的只读 MCP 网关</span>
+        </div>
+        <h1 class="hero-title reveal d1">
+          <span data-i18n="hero.title1">让 AI Agent 安全地</span><br>
+          <span class="grad-text" data-i18n="hero.title2">连接你的数据库</span>
+        </h1>
+        <p class="hero-sub reveal d2" data-i18n="hero.sub">
+          DataNexa 是运行在本机的数据库 MCP 服务。它为 AI Agent 提供统一、受控且可审计的数据访问入口——查询前强制只读策略，并限制返回行数、执行时间与连接数量。
+        </p>
+        <div class="hero-cta reveal d3">
+          <a class="btn btn-primary" href="https://github.com/MingoZacwu/DataNexa/releases" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5M4 19.5h16"/></svg>
+            <span data-i18n="hero.download">下载安装</span>
+          </a>
+          <a class="btn btn-ghost" href="https://github.com/MingoZacwu/DataNexa" target="_blank" rel="noopener">
+            <span data-i18n="hero.source">查看源码</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </a>
+        </div>
+        <div class="hero-db reveal d4">
+          <span class="hero-db-label" data-i18n="hero.support">支持数据库</span>
+          <div class="db-chips">
+            <span class="db-chip"><i class="db-dot sqlite"></i>SQLite</span>
+            <span class="db-chip"><i class="db-dot mysql"></i>MySQL</span>
+            <span class="db-chip"><i class="db-dot pg"></i>PostgreSQL</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FLOW ============ -->
+    <section class="flow section-pad">
+      <div class="container">
+        <div class="flow-track reveal">
+          <div class="flow-node">
+            <div class="flow-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 8V4.5"/><circle cx="12" cy="3.5" r="1"/><circle cx="9.5" cy="13" r="1.1"/><circle cx="14.5" cy="13" r="1.1"/><path d="M9.5 16.5h5"/></svg>
+            </div>
+            <span data-i18n="flow.agent">AI Agent</span>
+          </div>
+          <div class="flow-line"><i></i></div>
+          <div class="flow-node flow-hub">
+            <img src="assets/icon.png" alt="DataNexa">
+            <span>DataNexa</span>
+          </div>
+          <div class="flow-line flow-line-delay"><i></i></div>
+          <div class="flow-node">
+            <div class="flow-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><ellipse cx="12" cy="5.5" rx="7.5" ry="2.8"/><path d="M4.5 5.5v6c0 1.55 3.36 2.8 7.5 2.8s7.5-1.25 7.5-2.8v-6"/><path d="M4.5 11.5v6c0 1.55 3.36 2.8 7.5 2.8s7.5-1.25 7.5-2.8v-6"/></svg>
+            </div>
+            <span data-i18n="flow.db">你的数据库</span>
+          </div>
+        </div>
+        <p class="flow-caption reveal" data-i18n="flow.caption">所有查询经由 SQL 语法树校验，仅放行只读语句 —— Agent 永远无法写入你的数据</p>
+      </div>
+    </section>
+
+    <!-- ============ FEATURES ============ -->
+    <section class="features section-pad" id="features">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-tag" data-i18n="features.tag">功能特性</span>
+          <h2 data-i18n="features.title">为「受控访问」而生的每一处设计</h2>
+          <p data-i18n="features.sub">从连接管理到审计追踪，DataNexa 把数据库安全边界前移到 Agent 与数据之间。</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card reveal">
+            <div class="feature-icon f-blue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5.5" rx="7.5" ry="2.8"/><path d="M4.5 5.5v13c0 1.55 3.36 2.8 7.5 2.8s7.5-1.25 7.5-2.8v-13"/><path d="M4.5 12c0 1.55 3.36 2.8 7.5 2.8s7.5-1.25 7.5-2.8"/></svg>
+            </div>
+            <h3 data-i18n="f1.title">统一连接管理</h3>
+            <p data-i18n="f1.desc">集中管理 SQLite、MySQL 与 PostgreSQL 只读连接，支持连接诊断与导入导出。</p>
+          </article>
+          <article class="feature-card reveal d1">
+            <div class="feature-icon f-violet">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 4v5c0 4.4-3 8-7 9-4-1-7-4.6-7-9V7l7-4z"/><path d="M9.5 12l2 2 3.5-4"/></svg>
+            </div>
+            <h3 data-i18n="f2.title">语法树级只读校验</h3>
+            <p data-i18n="f2.desc">基于 SQL 语法树逐条校验查询语句，从结构上拒绝任何写入与 DDL 操作。</p>
+          </article>
+          <article class="feature-card reveal d2">
+            <div class="feature-icon f-cyan">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15" r="1.4"/></svg>
+            </div>
+            <h3 data-i18n="f3.title">凭证安全存储</h3>
+            <p data-i18n="f3.desc">数据库密码保存在操作系统凭证库，不落入常规配置文件，Token 支持手动轮换。</p>
+          </article>
+          <article class="feature-card reveal">
+            <div class="feature-icon f-green">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17l5-5 3.5 3.5L20 8"/><path d="M15 8h5v5"/></svg>
+            </div>
+            <h3 data-i18n="f4.title">资源限额护栏</h3>
+            <p data-i18n="f4.desc">最大返回行数、查询超时与连接池上限三重限制，防止失控查询拖垮数据库。</p>
+          </article>
+          <article class="feature-card reveal d1">
+            <div class="feature-icon f-amber">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14v16l-3-2-2 2-2-2-2 2-2-2-3 2V4z"/><path d="M9 9h6M9 13h6"/></svg>
+            </div>
+            <h3 data-i18n="f5.title">本地审计日志</h3>
+            <p data-i18n="f5.desc">保留完整本地审计记录，SQL 字面量自动脱敏，每次访问都可回溯。</p>
+          </article>
+          <article class="feature-card reveal d2">
+            <div class="feature-icon f-red">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5M12 16.2v.3"/></svg>
+            </div>
+            <h3 data-i18n="f6.title">精细管控开关</h3>
+            <p data-i18n="f6.desc">工具级开关、紧急禁用一键熔断，只暴露当前任务必需的 MCP 工具。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PREVIEW ============ -->
+    <section class="preview section-pad" id="preview">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-tag" data-i18n="preview.tag">界面预览</span>
+          <h2 data-i18n="preview.title">桌面端，一目了然</h2>
+          <p data-i18n="preview.sub">基于 Tauri、React 与 Rust 构建，支持浅色 / 深色主题与简体中文、英文界面。</p>
+        </div>
+        <div class="preview-frame reveal">
+          <img src="assets/overview.png" alt="DataNexa Overview UI" loading="lazy">
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ QUICKSTART ============ -->
+    <section class="quickstart section-pad" id="quickstart">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-tag" data-i18n="qs.tag">快速开始</span>
+          <h2 data-i18n="qs.title">四步接入你的 Agent</h2>
+        </div>
+        <div class="steps">
+          <div class="step reveal">
+            <span class="step-num">1</span>
+            <h3 data-i18n="s1.title">新建连接</h3>
+            <p data-i18n="s1.desc">添加数据库连接，建议使用数据库侧的只读账号。</p>
+          </div>
+          <div class="step reveal d1">
+            <span class="step-num">2</span>
+            <h3 data-i18n="s2.title">测试连接</h3>
+            <p data-i18n="s2.desc">确认网络、凭证与权限配置全部正确。</p>
+          </div>
+          <div class="step reveal d2">
+            <span class="step-num">3</span>
+            <h3 data-i18n="s3.title">启动服务</h3>
+            <p data-i18n="s3.desc">在「MCP 服务」页面启动本地服务。</p>
+          </div>
+          <div class="step reveal d3">
+            <span class="step-num">4</span>
+            <h3 data-i18n="s4.title">接入 Agent</h3>
+            <p data-i18n="s4.desc">复制接入配置，添加到支持 MCP 的客户端。</p>
+          </div>
+        </div>
+        <div class="code-block reveal">
+          <div class="code-head">
+            <span data-i18n="qs.build">从源码构建</span>
+            <button class="copy-btn" type="button" data-copy-target="buildCode" data-i18n="qs.copy">复制</button>
+          </div>
+          <pre><code id="buildCode">git clone https://github.com/MingoZacwu/DataNexa.git
+cd DataNexa
+corepack enable
+corepack prepare pnpm@9 --activate
+pnpm install --frozen-lockfile
+pnpm run build:portable</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SECURITY ============ -->
+    <section class="security section-pad" id="security">
+      <div class="container">
+        <div class="security-panel reveal">
+          <div class="security-text">
+            <span class="section-tag" data-i18n="sec.tag">安全说明</span>
+            <h2 data-i18n="sec.title">「只读」是护栏，不是全部</h2>
+            <p data-i18n="sec.desc">只读策略是降低风险的防护措施，不等同于绝对安全。接入真实数据前，建议同时落实以下措施：</p>
+            <ul class="security-list">
+              <li data-i18n="sec.i1">为 DataNexa 单独创建最小权限数据库账号</li>
+              <li data-i18n="sec.i2">对敏感表、字段与生产网络设置额外访问控制</li>
+              <li data-i18n="sec.i3">保持 Bearer Token 鉴权开启，不泄露 Token</li>
+              <li data-i18n="sec.i4">定期检查审计记录，只启用必需的 MCP 工具</li>
+              <li data-i18n="sec.i5">做好数据库备份，不将其作为唯一安全边界</li>
+            </ul>
+          </div>
+          <div class="security-visual" aria-hidden="true">
+            <div class="shield-wrap">
+              <div class="shield-ring"></div>
+              <div class="shield-ring r2"></div>
+              <svg class="shield-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 4v5c0 4.4-3 8-7 9-4-1-7-4.6-7-9V7l7-4z"/><path d="M9.5 12l2 2 3.5-4"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CTA ============ -->
+    <section class="cta section-pad">
+      <div class="container">
+        <div class="cta-panel reveal">
+          <h2 data-i18n="cta.title">数据无价，谨慎使用</h2>
+          <p data-i18n="cta.sub">DataNexa 基于 MIT License 开源，由个人独立开发和维护。欢迎提交 Issue 与 Pull Request。</p>
+          <div class="cta-actions">
+            <a class="btn btn-primary" href="https://github.com/MingoZacwu/DataNexa/releases" target="_blank" rel="noopener" data-i18n="cta.download">立即下载</a>
+            <a class="btn btn-ghost" href="https://github.com/MingoZacwu/DataNexa/issues" target="_blank" rel="noopener" data-i18n="cta.issue">反馈问题</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <div class="footer-brand">
+          <img src="assets/logo.png" alt="DataNexa">
+          <div>
+            <strong>DataNexa</strong>
+            <span data-i18n="footer.tag">MCP Database Gateway</span>
+          </div>
+        </div>
+        <div class="footer-links">
+          <a href="https://github.com/MingoZacwu/DataNexa" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://github.com/MingoZacwu/DataNexa/releases" target="_blank" rel="noopener">Releases</a>
+          <a href="https://github.com/MingoZacwu/DataNexa/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>
+        </div>
+      </div>
+      <div class="footer-copy">
+        <span data-i18n="footer.copy1">Copyright © 2026 Zachary Wu All Rights Reserved.</span>
+        <span data-i18n="footer.copy2">MySQL、PostgreSQL、SQLite 及其他名称和商标归其各自权利人所有</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/main.js"></script>
+</body>
+</html>
