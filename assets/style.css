@@ -48,7 +48,7 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 
 body {
   font-family: "Segoe UI Variable", "Aptos", "Microsoft YaHei UI", "PingFang SC", "Noto Sans CJK SC", sans-serif;
@@ -172,6 +172,7 @@ ul { list-style: none; }
   text-align: center;
   padding: 140px 24px 80px;
   position: relative;
+  overflow: hidden;
 }
 
 .hero-content { max-width: 860px; position: relative; z-index: 1; }
@@ -515,4 +516,8 @@ ul { list-style: none; }
   @keyframes flow-dash-v { to { top: 100%; } }
   .ring-2, .ring-3 { display: none; }
   .hero { min-height: auto; }
+  .bg-glow { filter: blur(60px); }
+  .glow-a { width: 300px; height: 300px; top: -100px; left: -40px; }
+  .glow-b { width: 260px; height: 260px; top: 8%; right: -60px; }
+  .glow-c { width: 240px; height: 240px; top: 50%; left: -60px; }
 }
