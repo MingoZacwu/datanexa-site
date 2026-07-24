@@ -29,6 +29,7 @@
   var i18n = {
     en: {
       "nav.features": "Features",
+      "nav.tools": "MCP Tools",
       "nav.preview": "Preview",
       "nav.quickstart": "Quick Start",
       "nav.security": "Security",
@@ -57,6 +58,22 @@
       "f5.desc": "Complete local audit records with automatic SQL literal masking — every access is traceable.",
       "f6.title": "Fine-Grained Controls",
       "f6.desc": "Per-tool toggles and an emergency kill switch expose only the MCP tools your task requires.",
+      "tools.tag": "MCP Tools",
+      "tools.title": "Seven handy read-only tools",
+      "tools.sub": "Built on Streamable HTTP and JSON-RPC 2.0, grouped into Discovery / Access / Analysis, each independently toggleable.",
+      "tools.g1.title": "Discovery",
+      "tools.g1.count": "3 tools",
+      "tools.g2.title": "Access",
+      "tools.g2.count": "2 tools",
+      "tools.g3.title": "Analysis",
+      "tools.g3.count": "2 tools",
+      "t1.desc": "List enabled local read-only database connections.",
+      "t2.desc": "List all tables and views under a connection.",
+      "t3.desc": "Describe the columns of a given table.",
+      "t4.desc": "Read a small bounded sample from a table.",
+      "t5.desc": "Execute one read-only query; returns a truncated flag when results exceed the limit.",
+      "t6.desc": "Run EXPLAIN for a read-only SQL statement.",
+      "t7.desc": "Validate SQL against the read-only policy without executing it.",
       "preview.tag": "Preview",
       "preview.title": "Desktop app, at a glance",
       "preview.sub": "Built with Tauri, React and Rust. Supports light / dark themes and Simplified Chinese / English UI.",
@@ -70,8 +87,21 @@
       "s3.desc": "Launch the local service from the MCP Service page.",
       "s4.title": "Connect your Agent",
       "s4.desc": "Copy the connection config into any MCP-capable client.",
-      "qs.build": "Build from source",
-      "qs.copy": "Copy",
+      "def.tag": "Defense in Depth",
+      "def.title": "Multiple constraints, reducing risk layer by layer",
+      "def.sub": "From network to audit, guarded across the full chain.",
+      "def.l1.name": "Network",
+      "def.l1.body": "Listens only on <code>127.0.0.1</code> / <code>localhost</code>, with a strict CSP and Host / Origin header checks, keeping traffic on the local machine.",
+      "def.l2.name": "Authentication",
+      "def.l2.body": "Bearer token (UUIDv4) on by default, with manual rotation that needs no server restart.",
+      "def.l3.name": "Syntax",
+      "def.l3.body": "Validated via the <code>sqlparser</code> AST — rejects DDL / DML / SELECT INTO / row locks / EXPLAIN ANALYZE, and blocks side-effect functions like pg_sleep, dblink and lo_*.",
+      "def.l4.name": "Database",
+      "def.l4.body": "SQLite opened read-only; MySQL runs <code>SET SESSION TRANSACTION READ ONLY</code>; PostgreSQL sets <code>default_transaction_read_only=on</code>.",
+      "def.l5.name": "Resource",
+      "def.l5.body": "Rows 1–5000, timeout 500–60000ms, pool 1–3, result 64KB–8MB, global concurrency 8, rate limit 2/s — constraining the blast radius of runaway queries.",
+      "def.l6.name": "Audit",
+      "def.l6.body": "Local SQLite (WAL) records 5 statuses, SQL literals can be redacted, auto-trimmed to a 5000-event cap, and error messages are redacted too.",
       "sec.tag": "Security",
       "sec.title": "Read-only is a guardrail, not everything",
       "sec.desc": "Read-only policies reduce risk but are not absolute safety. Before connecting real data, consider these measures:",
@@ -98,8 +128,8 @@
     if (lang === "en") {
       nodes.forEach(function (node) {
         var key = node.getAttribute("data-i18n");
-        if (!(key in zhCache)) zhCache[key] = node.textContent;
-        if (i18n.en[key]) node.textContent = i18n.en[key];
+        if (!(key in zhCache)) zhCache[key] = node.innerHTML;
+        if (i18n.en[key]) node.innerHTML = i18n.en[key];
       });
       root.setAttribute("lang", "en");
       langBtn.textContent = "EN";
@@ -107,7 +137,7 @@
     } else {
       nodes.forEach(function (node) {
         var key = node.getAttribute("data-i18n");
-        if (key in zhCache) node.textContent = zhCache[key];
+        if (key in zhCache) node.innerHTML = zhCache[key];
       });
       root.setAttribute("lang", "zh-CN");
       langBtn.textContent = "中";
@@ -148,35 +178,5 @@
     revealNodes.forEach(function (node) { observer.observe(node); });
   } else {
     revealNodes.forEach(function (node) { node.classList.add("visible"); });
-  }
-
-  /* ---------- Copy button ---------- */
-  document.querySelectorAll(".copy-btn").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      var target = document.getElementById(btn.getAttribute("data-copy-target"));
-      if (!target) return;
-      var text = target.textContent;
-      function done() {
-        var original = btn.textContent;
-        btn.textContent = root.getAttribute("lang") === "en" ? "Copied" : "已复制";
-        setTimeout(function () { btn.textContent = original; }, 1600);
-      }
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(done).catch(function () { fallbackCopy(text, done); });
-      } else {
-        fallbackCopy(text, done);
-      }
-    });
-  });
-
-  function fallbackCopy(text, done) {
-    var ta = document.createElement("textarea");
-    ta.value = text;
-    ta.style.position = "fixed";
-    ta.style.opacity = "0";
-    document.body.appendChild(ta);
-    ta.select();
-    try { document.execCommand("copy"); done(); } catch (e) { /* ignore */ }
-    document.body.removeChild(ta);
   }
 })();

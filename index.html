@@ -24,9 +24,10 @@
       </a>
       <nav class="nav-links">
         <a href="#features" data-i18n="nav.features">功能特性</a>
+        <a href="#tools" data-i18n="nav.tools">MCP 工具</a>
         <a href="#preview" data-i18n="nav.preview">界面预览</a>
         <a href="#quickstart" data-i18n="nav.quickstart">快速开始</a>
-        <a href="#security" data-i18n="nav.security">安全说明</a>
+        <a href="#defense" data-i18n="nav.security">安全说明</a>
       </nav>
       <div class="nav-actions">
         <button class="icon-btn" id="langToggle" type="button" aria-label="Switch language" title="EN / 中">中</button>
@@ -165,6 +166,80 @@
       </div>
     </section>
 
+    <!-- ============ MCP TOOLS ============ -->
+    <section class="tools section-pad" id="tools">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-tag" data-i18n="tools.tag">MCP 工具</span>
+          <h2 data-i18n="tools.title">七件趁手的只读工具</h2>
+          <p data-i18n="tools.sub">基于 Streamable HTTP 与 JSON-RPC 2.0，按「发现 / 访问 / 分析」三类组织，每件工具均可独立开关。</p>
+        </div>
+        <div class="tool-groups">
+          <div class="tool-group reveal">
+            <div class="tool-group-head">
+              <div class="tool-group-icon f-blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M16 16l4.5 4.5"/></svg>
+              </div>
+              <h3 data-i18n="tools.g1.title">发现</h3>
+              <span data-i18n="tools.g1.count">3 件</span>
+            </div>
+            <div class="tool-list">
+              <div class="tool-item">
+                <span class="tool-name">datanexa_list_connections</span>
+                <span class="tool-desc" data-i18n="t1.desc">列出已启用的本地只读数据库连接。</span>
+              </div>
+              <div class="tool-item">
+                <span class="tool-name">datanexa_get_schema</span>
+                <span class="tool-desc" data-i18n="t2.desc">列出某连接下的所有表与视图。</span>
+              </div>
+              <div class="tool-item">
+                <span class="tool-name">datanexa_describe_table</span>
+                <span class="tool-desc" data-i18n="t3.desc">描述指定表的字段信息。</span>
+              </div>
+            </div>
+          </div>
+          <div class="tool-group reveal d1">
+            <div class="tool-group-head">
+              <div class="tool-group-icon f-green">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5.5" rx="7.5" ry="2.8"/><path d="M4.5 5.5v13c0 1.55 3.36 2.8 7.5 2.8s7.5-1.25 7.5-2.8v-13"/><path d="M4.5 12c0 1.55 3.36 2.8 7.5 2.8s7.5-1.25 7.5-2.8"/></svg>
+              </div>
+              <h3 data-i18n="tools.g2.title">访问</h3>
+              <span data-i18n="tools.g2.count">2 件</span>
+            </div>
+            <div class="tool-list">
+              <div class="tool-item">
+                <span class="tool-name">datanexa_sample_rows</span>
+                <span class="tool-desc" data-i18n="t4.desc">从表中读取一个有界的小样本。</span>
+              </div>
+              <div class="tool-item">
+                <span class="tool-name">datanexa_execute_readonly_sql</span>
+                <span class="tool-desc" data-i18n="t5.desc">执行一条只读查询，结果超限时返回 truncated 标记。</span>
+              </div>
+            </div>
+          </div>
+          <div class="tool-group reveal d2">
+            <div class="tool-group-head">
+              <div class="tool-group-icon f-violet">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17l5-5 3.5 3.5L20 8"/><path d="M15 8h5v5"/></svg>
+              </div>
+              <h3 data-i18n="tools.g3.title">分析</h3>
+              <span data-i18n="tools.g3.count">2 件</span>
+            </div>
+            <div class="tool-list">
+              <div class="tool-item">
+                <span class="tool-name">datanexa_explain_sql</span>
+                <span class="tool-desc" data-i18n="t6.desc">对只读 SQL 执行 EXPLAIN 查询计划。</span>
+              </div>
+              <div class="tool-item">
+                <span class="tool-name">datanexa_policy_check</span>
+                <span class="tool-desc" data-i18n="t7.desc">在不执行的情况下校验 SQL 是否符合只读策略。</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ PREVIEW ============ -->
     <section class="preview section-pad" id="preview">
       <div class="container">
@@ -208,17 +283,60 @@
             <p data-i18n="s4.desc">复制接入配置，添加到支持 MCP 的客户端。</p>
           </div>
         </div>
-        <div class="code-block reveal">
-          <div class="code-head">
-            <span data-i18n="qs.build">从源码构建</span>
-            <button class="copy-btn" type="button" data-copy-target="buildCode" data-i18n="qs.copy">复制</button>
+      </div>
+    </section>
+
+    <!-- ============ DEFENSE IN DEPTH ============ -->
+    <section class="defense section-pad" id="defense">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-tag" data-i18n="def.tag">纵深防御</span>
+          <h2 data-i18n="def.title">多层约束，逐层降低风险</h2>
+          <p data-i18n="def.sub">从网络到审计，全链路逐层设防。</p>
+        </div>
+        <div class="defense-stack">
+          <div class="defense-layer reveal">
+            <div class="defense-layer-head">
+              <span class="defense-layer-num">1</span>
+              <span class="defense-layer-name" data-i18n="def.l1.name">网络层</span>
+            </div>
+            <div class="defense-layer-body" data-i18n="def.l1.body">仅监听 <code>127.0.0.1</code> / <code>localhost</code>，严格 CSP，校验 Host 与 Origin 头，将流量限制在本机。</div>
           </div>
-          <pre><code id="buildCode">git clone https://github.com/MingoZacwu/DataNexa.git
-cd DataNexa
-corepack enable
-corepack prepare pnpm@9 --activate
-pnpm install --frozen-lockfile
-pnpm run build:portable</code></pre>
+          <div class="defense-layer reveal d1">
+            <div class="defense-layer-head">
+              <span class="defense-layer-num">2</span>
+              <span class="defense-layer-name" data-i18n="def.l2.name">鉴权层</span>
+            </div>
+            <div class="defense-layer-body" data-i18n="def.l2.body">Bearer Token（UUIDv4）默认开启，支持手动轮换，轮换不重启服务。</div>
+          </div>
+          <div class="defense-layer reveal d2">
+            <div class="defense-layer-head">
+              <span class="defense-layer-num">3</span>
+              <span class="defense-layer-name" data-i18n="def.l3.name">语法层</span>
+            </div>
+            <div class="defense-layer-body" data-i18n="def.l3.body">基于 <code>sqlparser</code> AST 校验，拒绝 DDL / DML / SELECT INTO / 行锁 / EXPLAIN ANALYZE，并拦截 pg_sleep、dblink、lo_* 等副作用函数。</div>
+          </div>
+          <div class="defense-layer reveal">
+            <div class="defense-layer-head">
+              <span class="defense-layer-num">4</span>
+              <span class="defense-layer-name" data-i18n="def.l4.name">数据库层</span>
+            </div>
+            <div class="defense-layer-body" data-i18n="def.l4.body">SQLite 只读打开；MySQL 执行 <code>SET SESSION TRANSACTION READ ONLY</code>；PostgreSQL 设置 <code>default_transaction_read_only=on</code>。</div>
+          </div>
+          <div class="defense-layer reveal d1">
+            <div class="defense-layer-head">
+              <span class="defense-layer-num">5</span>
+              <span class="defense-layer-name" data-i18n="def.l5.name">资源层</span>
+            </div>
+            <div class="defense-layer-body" data-i18n="def.l5.body">行数 1–5000、超时 500–60000ms、连接池 1–3、结果 64KB–8MB、全局并发 8、限流 2/s，约束失控查询的影响范围。</div>
+          </div>
+          <div class="defense-layer reveal d2">
+            <div class="defense-layer-head">
+              <span class="defense-layer-num">6</span>
+              <span class="defense-layer-name" data-i18n="def.l6.name">审计层</span>
+            </div>
+            <div class="defense-layer-body" data-i18n="def.l6.body">本地 SQLite（WAL）记录 5 种状态，SQL 字面量可脱敏，自动修剪至 5000 条上限，错误信息同样脱敏。</div>
+          </div>
         </div>
       </div>
     </section>
