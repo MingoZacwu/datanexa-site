@@ -218,7 +218,7 @@ ul { list-style: none; }
 .hero-title {
   margin-top: 20px;
   font-size: clamp(40px, 6.4vw, 68px);
-  line-height: 1.12; font-weight: 760;
+  line-height: 1.25; font-weight: 760;
   letter-spacing: -0.02em;
 }
 
@@ -286,11 +286,69 @@ ul { list-style: none; }
   position: absolute; top: 0; left: -40%;
   width: 40%; height: 100%;
   background: linear-gradient(90deg, transparent, var(--blue-2), transparent);
-  animation: flow-dash 2.4s linear infinite;
+  animation: flow-in 3.6s ease-in infinite;
 }
-@keyframes flow-dash { to { left: 100%; } }
 
-.flow-line-delay i { animation-delay: 1.2s; }
+/* 统一 3.6s 主时间轴：
+   0%–28%   光从 Agent 流入中枢（加速汇入）
+   28%–48%  中枢处理：光晕脉冲 + 双层水波纹扩散
+   40%–68%  光从中枢流出到数据库（减速送出）
+   68%–100% 节拍停顿，进入下一循环 */
+@keyframes flow-in {
+  0% { left: -40%; }
+  28% { left: 100%; }
+  100% { left: 100%; }
+}
+
+.flow-line-out i {
+  animation-name: flow-out;
+  animation-timing-function: ease-out;
+}
+@keyframes flow-out {
+  0%, 40% { left: -40%; }
+  68% { left: 100%; }
+  100% { left: 100%; }
+}
+
+/* 中枢处理光效 */
+.hub-core { position: relative; width: 62px; height: 62px; display: grid; place-items: center; }
+.hub-core img { position: relative; z-index: 2; animation: hub-pulse 3.6s ease-in-out infinite; }
+.flow-hub > span { position: relative; z-index: 2; }
+
+.hub-halo {
+  position: absolute; inset: -18px; border-radius: 50%; z-index: 0;
+  background: radial-gradient(circle,
+    color-mix(in srgb, var(--blue) 45%, transparent) 0%,
+    color-mix(in srgb, var(--blue) 12%, transparent) 45%,
+    transparent 70%);
+  opacity: 0; pointer-events: none;
+  animation: hub-halo 3.6s ease-out infinite;
+}
+.hub-ripple {
+  position: absolute; inset: -4px; border-radius: 50%; z-index: 1;
+  border: 2px solid color-mix(in srgb, var(--blue) 70%, transparent);
+  opacity: 0; transform: scale(0.72); pointer-events: none;
+  animation: hub-ripple 3.6s ease-out infinite;
+}
+.hub-ripple.r2 { animation-delay: 0.22s; }
+
+@keyframes hub-halo {
+  0%, 26% { opacity: 0; transform: scale(0.8); }
+  33% { opacity: 1; transform: scale(1); }
+  46% { opacity: 0.55; }
+  60%, 100% { opacity: 0; transform: scale(1.15); }
+}
+@keyframes hub-ripple {
+  0%, 28% { transform: scale(0.72); opacity: 0; }
+  33% { opacity: 0.85; }
+  56% { transform: scale(2.1); opacity: 0; }
+  100% { transform: scale(2.1); opacity: 0; }
+}
+@keyframes hub-pulse {
+  0%, 26% { transform: scale(1); }
+  34% { transform: scale(1.08); }
+  46%, 100% { transform: scale(1); }
+}
 
 .flow-caption { margin-top: 14px; text-align: center; font-size: 14.5px; color: var(--muted); }
 
@@ -536,7 +594,7 @@ ul { list-style: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
-  .ring, .flow-line i, .shield-ring, .pulse-dot { animation: none; }
+  .ring, .flow-line i, .shield-ring, .pulse-dot, .hub-halo, .hub-ripple, .hub-core img { animation: none; }
   html { scroll-behavior: auto; }
 }
 
@@ -557,9 +615,10 @@ ul { list-style: none; }
   .feature-grid { grid-template-columns: 1fr; }
   .steps { grid-template-columns: 1fr; }
   .flow-track { flex-direction: column; gap: 18px; padding: 24px 20px; }
-  .flow-line { width: 2px; height: 44px; margin: 0; flex: none; }
-  .flow-line i { width: 100%; height: 40%; left: 0; top: -40%; background: linear-gradient(180deg, transparent, var(--blue-2), transparent); animation: flow-dash-v 2.4s linear infinite; }
-  @keyframes flow-dash-v { to { top: 100%; } }
+  /* 竖向布局复用同一组动画：仅将轨道旋转 90°。
+     若改用另一组竖向动画，跨断点切换会重启线条动画，
+     而中枢光效不重启，两者计时会错位。 */
+  .flow-line { width: 44px; max-width: none; margin: 21px 0; flex: none; transform: rotate(90deg); }
   .ring-2, .ring-3 { display: none; }
   .hero { min-height: auto; padding: 96px 20px 40px; }
   .bg-glow { filter: blur(60px); }

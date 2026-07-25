@@ -110,7 +110,7 @@
       "sec.i3": "Keep Bearer Token authentication on and never leak the token",
       "sec.i4": "Review audit logs regularly and enable only the tools you need",
       "sec.i5": "Back up your databases — do not rely on DataNexa as the only boundary",
-      "cta.title": "Data is priceless, use with care",
+      "cta.title": "From open source, back to open source",
       "cta.sub": "DataNexa is open source under the MIT License, independently developed and maintained. Issues and Pull Requests are welcome.",
       "cta.download": "Download Now",
       "cta.issue": "Report an Issue",
