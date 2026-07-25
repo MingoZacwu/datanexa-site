@@ -150,6 +150,8 @@ ul { list-style: none; }
 .btn-primary {
   color: #fff;
   background: linear-gradient(135deg, #2563eb, #0ea5e9);
+  border: none;
+  padding: 12px 23px;
   box-shadow: 0 10px 26px rgba(37, 99, 235, 0.32);
 }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(37, 99, 235, 0.40); }
