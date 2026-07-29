@@ -5,8 +5,93 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DataNexa — 面向 AI Agent 的本地只读数据库 MCP 网关</title>
   <meta name="description" content="DataNexa 是运行在本机的数据库 MCP 服务，为 AI Agent 提供统一、受控且可审计的只读数据访问入口，支持 SQLite、MySQL 与 PostgreSQL。">
+  <meta name="keywords" content="DataNexa, MCP, Model Context Protocol, AI Agent, 数据库, 只读, SQLite, MySQL, PostgreSQL, MCP 网关, MCP Server, read-only database gateway">
+  <meta name="author" content="Zachary Wu">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f4f7fb" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#10151f" media="(prefers-color-scheme: dark)">
+  <link rel="canonical" href="https://mingozacwu.github.io/datanexa-site/">
+
+  <!--  Google Site Verification -->
+  <meta name="google-site-verification" content="q0Mm8zDIo0vvhrAOUH-u8omH6jUi90LVHj_WcyY-Xhw" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="DataNexa">
+  <meta property="og:title" content="DataNexa — 面向 AI Agent 的本地只读数据库 MCP 网关">
+  <meta property="og:description" content="DataNexa 是运行在本机的数据库 MCP 服务，为 AI Agent 提供统一、受控且可审计的只读数据访问入口，支持 SQLite、MySQL 与 PostgreSQL。">
+  <meta property="og:url" content="https://mingozacwu.github.io/datanexa-site/">
+  <meta property="og:image" content="https://mingozacwu.github.io/datanexa-site/assets/logo.png">
+  <meta property="og:image:alt" content="DataNexa — 本地只读数据库 MCP 网关">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:locale:alternate" content="en_US">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="DataNexa — 面向 AI Agent 的本地只读数据库 MCP 网关">
+  <meta name="twitter:description" content="运行在本机的数据库 MCP 服务，为 AI Agent 提供统一、受控且可审计的只读数据访问入口，支持 SQLite、MySQL 与 PostgreSQL。">
+  <meta name="twitter:image" content="https://mingozacwu.github.io/datanexa-site/assets/logo.png">
+  <meta name="twitter:image:alt" content="DataNexa — 本地只读数据库 MCP 网关">
+
+  <!-- Icons & Manifest -->
   <link rel="icon" type="image/png" href="assets/icon.png">
+  <link rel="apple-touch-icon" href="assets/icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+
   <link rel="stylesheet" href="assets/style.css">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "DataNexa",
+        "applicationCategory": "DeveloperApplication",
+        "applicationSubCategory": "MCP Server",
+        "operatingSystem": "Windows, macOS, Linux",
+        "description": "DataNexa 是运行在本机的数据库 MCP 服务，为 AI Agent 提供统一、受控且可审计的只读数据访问入口，支持 SQLite、MySQL 与 PostgreSQL。",
+        "url": "https://mingozacwu.github.io/datanexa-site/",
+        "downloadUrl": "https://github.com/MingoZacwu/DataNexa/releases",
+        "codeRepository": "https://github.com/MingoZacwu/DataNexa",
+        "license": "https://github.com/MingoZacwu/DataNexa/blob/main/LICENSE",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "featureList": [
+          "统一连接管理（SQLite / MySQL / PostgreSQL）",
+          "SQL 语法树级只读校验",
+          "操作系统凭证库存储数据库密码",
+          "行数 / 超时 / 连接池资源限额",
+          "本地审计日志与 SQL 字面量脱敏",
+          "工具级开关与紧急熔断"
+        ],
+        "author": { "@type": "Person", "name": "Zachary Wu" }
+      },
+      {
+        "@type": "WebSite",
+        "name": "DataNexa",
+        "url": "https://mingozacwu.github.io/datanexa-site/",
+        "inLanguage": ["zh-CN", "en"],
+        "publisher": { "@id": "https://mingozacwu.github.io/datanexa-site/#org" }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://mingozacwu.github.io/datanexa-site/#org",
+        "name": "DataNexa",
+        "url": "https://mingozacwu.github.io/datanexa-site/",
+        "logo": "https://mingozacwu.github.io/datanexa-site/assets/logo.png",
+        "sameAs": ["https://github.com/MingoZacwu/DataNexa"]
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <div class="bg-orbit" aria-hidden="true">
@@ -254,7 +339,7 @@
           <p data-i18n="preview.sub">基于 Tauri、React 与 Rust 构建，支持浅色 / 深色主题与简体中文、英文界面。</p>
         </div>
         <div class="preview-frame reveal">
-          <img src="assets/overview.png" alt="DataNexa Overview UI" loading="lazy">
+          <img src="assets/overview.png" alt="DataNexa 桌面端界面预览：连接管理、MCP 工具开关与本地审计日志面板" loading="lazy">
         </div>
       </div>
     </section>
