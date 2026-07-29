@@ -1,0 +1,25 @@
+{
+  "name": "DataNexa — 面向 AI Agent 的本地只读数据库 MCP 网关",
+  "short_name": "DataNexa",
+  "description": "运行在本机的数据库 MCP 服务，为 AI Agent 提供统一、受控且可审计的只读数据访问入口，支持 SQLite、MySQL 与 PostgreSQL。",
+  "start_url": "/datanexa-site/",
+  "scope": "/datanexa-site/",
+  "display": "standalone",
+  "background_color": "#10151f",
+  "theme_color": "#10151f",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "assets/icon.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
