@@ -6,24 +6,61 @@
   var root = document.documentElement;
 
   /* ---------- Theme ---------- */
-  function applyTheme(theme) {
-    if (theme === "dark") {
+  var mediaDark = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+  var themeSeg = document.getElementById("themeSeg");
+
+  function resolveTheme(pref) {
+    if (pref === "system") return mediaDark && mediaDark.matches ? "dark" : "light";
+    return pref;
+  }
+
+  function applyTheme(pref) {
+    if (resolveTheme(pref) === "dark") {
       root.classList.add("dark");
     } else {
       root.classList.remove("dark");
     }
-    try { localStorage.setItem("datanexa-theme", theme); } catch (e) { /* ignore */ }
+    try { localStorage.setItem("datanexa-theme", pref); } catch (e) { /* ignore */ }
+    if (themeSeg) {
+      var segBtns = themeSeg.querySelectorAll("[data-theme-opt]");
+      segBtns.forEach(function (btn) {
+        btn.classList.toggle("active", btn.getAttribute("data-theme-opt") === pref);
+      });
+    }
   }
 
   var savedTheme = null;
   try { savedTheme = localStorage.getItem("datanexa-theme"); } catch (e) { /* ignore */ }
-  var initialTheme = savedTheme ||
-    (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-  applyTheme(initialTheme);
+  var themePref = savedTheme || "system";
+  applyTheme(themePref);
+
+  if (mediaDark && mediaDark.addEventListener) {
+    mediaDark.addEventListener("change", function () {
+      if (themePref === "system") applyTheme("system");
+    });
+  }
 
   document.getElementById("themeToggle").addEventListener("click", function () {
-    applyTheme(root.classList.contains("dark") ? "light" : "dark");
+    themePref = root.classList.contains("dark") ? "light" : "dark";
+    applyTheme(themePref);
   });
+
+  if (themeSeg) {
+    themeSeg.addEventListener("click", function (e) {
+      var btn = e.target.closest("[data-theme-opt]");
+      if (!btn) return;
+      themePref = btn.getAttribute("data-theme-opt");
+      applyTheme(themePref);
+    });
+  }
+
+  /* ---------- Mini status card demo ---------- */
+  var miniCommandBtn = document.getElementById("miniCommandBtn");
+  if (miniCommandBtn) {
+    miniCommandBtn.addEventListener("click", function () {
+      miniCommandBtn.closest(".mini-command").classList.toggle("running");
+    });
+  }
 
   /* ---------- i18n ---------- */
   var i18n = {
@@ -74,9 +111,32 @@
       "t5.desc": "Execute one read-only query; returns a truncated flag when results exceed the limit.",
       "t6.desc": "Run EXPLAIN for a read-only SQL statement.",
       "t7.desc": "Validate SQL against the read-only policy without executing it.",
-      "preview.tag": "Preview",
-      "preview.title": "Desktop app, at a glance",
-      "preview.sub": "Built with Tauri, React and Rust. Supports light / dark themes and Simplified Chinese / English UI.",
+      "preview.tag": "Interface",
+      "preview.title": "Crafted for beauty and ease",
+      "preview.sub": "Clear status feedback, flexible light and dark appearances, and window materials that feel at home on each platform.<br>From information hierarchy to interaction feedback, every detail is designed to feel natural and easy to use.",
+      "ui.a.status": "Server",
+      "ui.a.running": "Running",
+      "ui.a.stopped": "Stopped",
+      "ui.a.start": "Start",
+      "ui.a.stop": "Stop",
+      "ui.a.m1": "Connections",
+      "ui.a.m2": "Tools",
+      "ui.a.m3": "24h Calls",
+      "ui.a.title": "A status card that breathes",
+      "ui.a.desc": "Whenever an Agent finishes a call, ripples and a light sweep wash over the status card — green on success, red on failure, state at a glance.",
+      "ui.b.system": "System",
+      "ui.b.light": "Light",
+      "ui.b.dark": "Dark",
+      "ui.b.title": "Light or dark, your choice",
+      "ui.b.desc": "Choose a light or dark appearance, or let it follow your system automatically. The interface stays clear and comfortable, with smooth transitions between themes.",
+      "ui.c.p1": "Succeeded",
+      "ui.c.p2": "Denied",
+      "ui.c.p3": "Paused",
+      "ui.c.title": "A consistent component language",
+      "ui.c.desc": "From switches and status labels to subtle edge fades in scrollable areas, every interface element follows one visual language for a cohesive, considered experience.",
+      "ui.d.pane": "System window materials",
+      "ui.d.title": "Window materials that fit your system",
+      "ui.d.desc": "DataNexa uses Vibrancy on macOS and Mica on Windows 11, following each platform's visual language so the app feels at home on your desktop.",
       "qs.tag": "Quick Start",
       "qs.title": "Connect your Agent in four steps",
       "s1.title": "Add a connection",

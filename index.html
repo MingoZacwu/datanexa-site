@@ -334,12 +334,115 @@
     <section class="preview section-pad" id="preview">
       <div class="container">
         <div class="section-head reveal">
-          <span class="section-tag" data-i18n="preview.tag">界面预览</span>
-          <h2 data-i18n="preview.title">桌面端，一目了然</h2>
-          <p data-i18n="preview.sub">基于 Tauri、React 与 Rust 构建，支持浅色 / 深色主题与简体中文、英文界面。</p>
+          <span class="section-tag" data-i18n="preview.tag">界面设计</span>
+          <h2 data-i18n="preview.title">为美与易用，精雕细琢</h2>
+          <p data-i18n="preview.sub">清晰的状态反馈、可自由选择的明暗外观，以及与系统协调的窗口质感。<br>从信息层级到交互反馈，每一处都为自然易用而设计。</p>
         </div>
         <div class="preview-frame reveal">
-          <img src="assets/overview.png" alt="DataNexa 桌面端界面预览：连接管理、MCP 工具开关与本地审计日志面板" loading="lazy">
+          <img class="preview-img-light" src="assets/overview.png" alt="DataNexa 桌面端浅色模式界面预览：连接管理、MCP 工具开关与本地审计日志面板" loading="lazy">
+          <img class="preview-img-dark" src="assets/overview-dark.png" alt="DataNexa 桌面端深色模式界面预览：连接管理、MCP 工具开关与本地审计日志面板" loading="lazy">
+        </div>
+        <div class="ui-grid">
+          <article class="ui-card reveal">
+            <div class="ui-demo">
+              <div class="mini-command running">
+                <div class="mini-activity" aria-hidden="true">
+                  <i class="mini-ripple r1"></i>
+                  <i class="mini-ripple r2"></i>
+                  <i class="mini-sweep"></i>
+                </div>
+                <div class="mini-command-core">
+                  <span class="mini-beacon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                  </span>
+                  <div>
+                    <span data-i18n="ui.a.status">服务状态</span>
+                    <strong>
+                      <i class="status-running" data-i18n="ui.a.running">运行中</i>
+                      <i class="status-stopped" data-i18n="ui.a.stopped">已停止</i>
+                    </strong>
+                  </div>
+                </div>
+                <div class="mini-command-metrics">
+                  <div><span data-i18n="ui.a.m1">连接</span><strong>3<small> / 3</small></strong></div>
+                  <div><span data-i18n="ui.a.m2">工具</span><strong>7<small> / 7</small></strong></div>
+                  <div><span data-i18n="ui.a.m3">24h 调用</span><strong>128</strong></div>
+                </div>
+                <button type="button" class="mini-command-btn" id="miniCommandBtn">
+                  <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="7 4.5 20 12 7 19.5 7 4.5"/></svg>
+                  <svg class="icon-stop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="14" height="14" rx="2"/></svg>
+                  <i class="label-start" data-i18n="ui.a.start">启动</i>
+                  <i class="label-stop" data-i18n="ui.a.stop">停止</i>
+                </button>
+              </div>
+            </div>
+            <h3 data-i18n="ui.a.title">会「呼吸」的状态卡</h3>
+            <p data-i18n="ui.a.desc">每当 Agent 完成一次调用，状态卡便泛起涟漪与流光——成功是青绿，异常是绯红，运行状态一眼可辨。</p>
+          </article>
+          <article class="ui-card reveal d1">
+            <div class="ui-demo">
+              <div class="mini-seg" id="themeSeg" role="group" aria-label="Theme">
+                <button type="button" data-theme-opt="system">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M9 20h6M12 16v4"/></svg>
+                  <span data-i18n="ui.b.system">系统</span>
+                </button>
+                <button type="button" data-theme-opt="light">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5 5l1.6 1.6M17.4 17.4L19 19M19 5l-1.6 1.6M6.6 17.4L5 19"/></svg>
+                  <span data-i18n="ui.b.light">浅色</span>
+                </button>
+                <button type="button" data-theme-opt="dark">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.4 14.5A8.5 8.5 0 0 1 9.5 3.6a8.5 8.5 0 1 0 10.9 10.9z"/></svg>
+                  <span data-i18n="ui.b.dark">深色</span>
+                </button>
+              </div>
+            </div>
+            <h3 data-i18n="ui.b.title">明暗外观，自由选择</h3>
+            <p data-i18n="ui.b.desc">可选浅色或深色外观，也可跟随系统自动切换。无论日夜，界面始终清晰舒适，切换自然流畅。</p>
+          </article>
+          <article class="ui-card reveal d2">
+            <div class="ui-demo">
+              <div class="mini-tools">
+                <label class="mini-switch-row">
+                  <span class="mini-signal"></span>
+                  <span class="mini-switch-label">datanexa_get_schema</span>
+                  <input type="checkbox" class="mini-switch" checked aria-label="datanexa_get_schema">
+                </label>
+                <label class="mini-switch-row">
+                  <span class="mini-signal"></span>
+                  <span class="mini-switch-label">datanexa_sample_rows</span>
+                  <input type="checkbox" class="mini-switch" checked aria-label="datanexa_sample_rows">
+                </label>
+                <label class="mini-switch-row">
+                  <span class="mini-signal"></span>
+                  <span class="mini-switch-label">datanexa_execute_readonly_sql</span>
+                  <input type="checkbox" class="mini-switch" aria-label="datanexa_execute_readonly_sql">
+                </label>
+              </div>
+              <div class="mini-pills">
+                <span class="mini-pill pill-green" data-i18n="ui.c.p1">成功</span>
+                <span class="mini-pill pill-red" data-i18n="ui.c.p2">已拒绝</span>
+                <span class="mini-pill pill-slate" data-i18n="ui.c.p3">已暂停</span>
+              </div>
+            </div>
+            <h3 data-i18n="ui.c.title">协调一致的界面组件</h3>
+            <p data-i18n="ui.c.desc">从开关、状态标签到滚动区域的边缘渐隐，所有界面元素遵循统一的视觉语言，观感和谐，处处见细节。</p>
+          </article>
+          <article class="ui-card reveal d3">
+            <div class="ui-demo">
+              <div class="glass-stage">
+                <i class="glass-blob b1"></i>
+                <i class="glass-blob b2"></i>
+                <i class="glass-blob b3"></i>
+                <div class="glass-pane">
+                  <span class="glass-pane-kicker">MCP DATABASE GATEWAY</span>
+                  <strong data-i18n="ui.d.pane">系统窗口材质</strong>
+                  <span class="glass-pane-sub">macOS Vibrancy · Windows Mica</span>
+                </div>
+              </div>
+            </div>
+            <h3 data-i18n="ui.d.title">与系统相融的窗口质感</h3>
+            <p data-i18n="ui.d.desc">在 macOS 上采用 Vibrancy、Windows 11 上采用 Mica，遵循各自系统的视觉语言，让应用自然融入桌面环境。</p>
+          </article>
         </div>
       </div>
     </section>
