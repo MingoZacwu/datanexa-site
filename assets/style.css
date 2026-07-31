@@ -69,6 +69,7 @@ ul { list-style: none; }
 
 .container { width: min(1120px, calc(100% - 48px)); margin-inline: auto; }
 .section-pad { padding: 56px 0; position: relative; }
+.section-pad[id] { scroll-margin-top: 80px; }
 
 /* ---------- Background atmosphere ---------- */
 .bg-orbit { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
@@ -907,34 +908,230 @@ ul { list-style: none; }
 .tool-desc { font-size: 13.5px; color: var(--muted); line-height: 1.55; }
 
 /* ---------- Defense in depth ---------- */
-.defense-stack { display: grid; gap: 12px; max-width: 880px; margin: 0 auto; }
+/* 开放式意象场景：无底板、无边框，玻璃盾牌为主体，语句为弱化元素 */
+.defense-stage {
+  --scene: 250px;
+  --shield-w: 170px;
+  --shield-h: 186px;
+  --shield-hh: 93px;
+  position: relative;
+  max-width: 920px; margin: 0 auto; height: 380px;
+}
 
-.defense-layer {
-  display: grid; grid-template-columns: 200px 1fr; gap: 24px; align-items: center;
-  padding: 18px 24px;
+.attack-stream { position: absolute; inset: 0; z-index: 1; }
+
+.sql-chip {
+  position: absolute; top: var(--lane); left: -160px;
+  margin-top: -8px;
+  font-family: "Cascadia Code", "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 12.5px; font-weight: 600; letter-spacing: 0.05em; white-space: nowrap;
+  opacity: 0;
+  animation-duration: 10s; animation-delay: var(--delay);
+  animation-iteration-count: infinite; animation-timing-function: linear;
+}
+.chip-bad { color: var(--red); animation-name: chip-block; }
+.chip-good { color: var(--green); animation-name: chip-pass; }
+
+@keyframes chip-block {
+  0% { left: -160px; opacity: 0; transform: none; filter: blur(0); }
+  5% { opacity: 0.8; }
+  50% { left: calc(94% - var(--scene) - 60px); opacity: 0.8; transform: none; filter: blur(0); }
+  53% { left: calc(94% - var(--scene) - 70px); opacity: 0.55; transform: scale(0.95); }
+  58%, 100% { left: calc(94% - var(--scene) - 76px); opacity: 0; transform: translateY(-8px) scale(0.8); filter: blur(2px); }
+}
+@keyframes chip-pass {
+  0% { left: -160px; opacity: 0; }
+  5% { opacity: 0.9; }
+  55% { left: calc(94% - 158px); opacity: 0.9; }
+  64%, 100% { left: calc(94% - 150px); opacity: 0; }
+}
+
+/* 拦截火花：与对应语句同一节拍，在盾面边缘闪现红色 ✕ */
+.spark {
+  position: absolute; top: var(--lane); left: calc(94% - var(--scene) + 26px);
+  width: 14px; height: 14px; margin-top: -7px;
+  opacity: 0;
+  animation: spark-flash 10s var(--delay) infinite;
+}
+.spark::before, .spark::after {
+  content: ""; position: absolute; top: 6px; left: 1px;
+  width: 12px; height: 2px; border-radius: 2px;
+  background: var(--red);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--red) 65%, transparent);
+}
+.spark::before { transform: rotate(45deg); }
+.spark::after { transform: rotate(-45deg); }
+@keyframes spark-flash {
+  0%, 50% { opacity: 0; transform: scale(0.4) rotate(0deg); }
+  53% { opacity: 0.9; transform: scale(1) rotate(90deg); }
+  58%, 100% { opacity: 0; transform: scale(1.5) rotate(90deg); }
+}
+
+/* 盾 + 库场景 */
+.shield-scene {
+  position: absolute; right: 6%; top: 50%; z-index: 2;
+  width: var(--scene); height: 300px;
+  transform: translateY(-50%);
+}
+
+.scene-ring {
+  position: absolute; left: 50%; top: 50%;
+  width: 460px; height: 460px; margin: -230px;
+  border-radius: 50%; border: 1px dashed var(--line);
+  animation: ring-spin 70s linear infinite;
+}
+.scene-ring::after {
+  content: ""; position: absolute; top: -3px; left: 50%;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb, #0ea5e9);
+  box-shadow: 0 0 10px rgba(14, 165, 233, 0.7);
+}
+.scene-ring.r2 {
+  width: 350px; height: 350px; margin: -175px;
+  border-style: solid; opacity: 0.5;
+  animation-duration: 50s; animation-direction: reverse;
+}
+.scene-ring.r2::after { display: none; }
+
+.shield-aura {
+  position: absolute; left: 50%; top: 50%;
+  width: 520px; height: 520px; margin: -260px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    color-mix(in srgb, var(--blue) 20%, transparent) 0%,
+    color-mix(in srgb, var(--blue-2) 8%, transparent) 42%,
+    transparent 68%);
+  animation: aura-breathe 5s ease-in-out infinite;
+}
+@keyframes aura-breathe {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.06); }
+}
+
+/* 盾内数据库 */
+.shield-db {
+  position: absolute; left: 50%; top: 50%; z-index: 1;
+  width: 64px; height: 64px; color: var(--blue);
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 6px 16px color-mix(in srgb, var(--blue) 28%, transparent));
+}
+
+/* SELECT 抵达时，沿盾牌轮廓向外扩散的绿色涟漪 */
+.shield-ripple {
+  position: absolute; left: 50%; top: 50%; z-index: 3;
+  width: var(--shield-w); height: var(--shield-h);
+  color: color-mix(in srgb, var(--blue) 45%, transparent);
+  opacity: 0;
+  animation: db-accept 10s 5s infinite;
+}
+.shield-ripple.r2 { animation-delay: 5.25s; }
+@keyframes db-accept {
+  0%, 56% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+  62% { opacity: 0.45; }
+  85%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.6); }
+}
+
+/* 水晶玻璃盾：SVG 蒙版塑形 + 背景模糊，顶部高光与底部内影分层，边缘描边勾勒轮廓 */
+.shield-glass {
+  position: absolute; left: 50%; top: 50%; z-index: 2;
+  width: var(--shield-w); height: var(--shield-h);
+  transform: translate(-50%, -50%);
+  background: linear-gradient(165deg,
+    rgba(255, 255, 255, 0.72) 0%,
+    rgba(255, 255, 255, 0.26) 32%,
+    color-mix(in srgb, var(--blue) 12%, rgba(255, 255, 255, 0.05)) 62%,
+    color-mix(in srgb, var(--blue) 26%, transparent) 100%);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  -webkit-mask-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 240'%3E%3Cpath d='M110 8 L198 46 V112 C198 168 162 208 110 232 C58 208 22 168 22 112 V46 Z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 240'%3E%3Cpath d='M110 8 L198 46 V112 C198 168 162 208 110 232 C58 208 22 168 22 112 V46 Z'/%3E%3C/svg%3E");
+  -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
+}
+:root.dark .shield-glass {
+  background: linear-gradient(165deg,
+    rgba(148, 163, 184, 0.34) 0%,
+    rgba(148, 163, 184, 0.12) 32%,
+    color-mix(in srgb, var(--blue) 14%, transparent) 62%,
+    color-mix(in srgb, var(--blue) 26%, transparent) 100%);
+}
+/* 顶部高光 */
+.shield-glass::before {
+  content: ""; position: absolute; left: 10%; right: 10%; top: 3%; height: 34%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.75), transparent 70%);
+}
+:root.dark .shield-glass::before {
+  background: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.22), transparent 70%);
+}
+/* 底部蓝色内影 */
+.shield-glass::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 42%;
+  background: linear-gradient(0deg, color-mix(in srgb, var(--blue) 24%, transparent), transparent);
+}
+
+/* 盾下落地影 */
+.scene-shadow {
+  position: absolute; left: 50%; top: calc(50% + var(--shield-hh) - 6px);
+  width: 220px; height: 24px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse, color-mix(in srgb, var(--blue) 24%, transparent), transparent 70%);
+  filter: blur(6px);
+}
+
+/* 盾面斜向流光，周期性扫过 */
+.shield-sweep {
+  position: absolute; top: -20%; bottom: -20%; left: -45%; width: 42%; z-index: 2;
+  transform: skewX(-12deg);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.50), transparent);
+  opacity: 0;
+  animation: shield-sweep 7s ease-in-out infinite;
+}
+:root.dark .shield-sweep {
+  background: linear-gradient(90deg, transparent, rgba(190, 210, 255, 0.22), transparent);
+}
+@keyframes shield-sweep {
+  0%, 55% { left: -45%; opacity: 0; }
+  66% { opacity: 0.9; }
+  86%, 100% { left: 115%; opacity: 0; }
+}
+
+.shield-edge { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; }
+
+.stage-legend {
+  margin-top: 18px;
+  display: flex; justify-content: center; gap: 20px;
+  font-size: 12px; color: var(--muted);
+}
+.legend-item { display: inline-flex; align-items: center; gap: 7px; }
+.legend-dot { width: 7px; height: 7px; border-radius: 50%; }
+.dot-red { background: var(--red); box-shadow: 0 0 6px color-mix(in srgb, var(--red) 60%, transparent); }
+.dot-green { background: var(--green); box-shadow: 0 0 6px color-mix(in srgb, var(--green) 60%, transparent); }
+
+.defense-caption { margin-top: 8px; text-align: center; font-size: 14.5px; color: var(--muted); }
+
+.defense-grid {
+  margin-top: 28px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+}
+
+.defense-card {
+  padding: 20px 22px;
   background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
   backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
   transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-  position: relative;
 }
-.defense-layer:hover { transform: translateX(4px); border-color: rgba(37, 99, 235, 0.32); box-shadow: var(--soft-shadow); }
-.defense-layer::before {
-  content: ""; position: absolute; left: 0; top: 16px; bottom: 16px; width: 3px;
-  border-radius: 0 3px 3px 0;
-  background: linear-gradient(180deg, var(--blue), var(--blue-2));
-}
+.defense-card:hover { transform: translateY(-4px); border-color: rgba(37, 99, 235, 0.32); box-shadow: var(--shadow); }
 
-.defense-layer-head { display: flex; align-items: center; gap: 12px; }
-.defense-layer-num {
-  flex: none; width: 32px; height: 32px; border-radius: 9px;
+.defense-card-head { display: flex; align-items: center; }
+.defense-card-icon {
+  width: 42px; height: 42px; border-radius: 11px;
   display: grid; place-items: center;
-  font-size: 13px; font-weight: 750; color: #fff;
-  background: linear-gradient(135deg, #2563eb, #0ea5e9);
-  box-shadow: 0 5px 14px rgba(37, 99, 235, 0.28);
 }
-.defense-layer-name { font-size: 16px; font-weight: 720; }
-.defense-layer-body { font-size: 13.5px; color: var(--muted); line-height: 1.6; }
-.defense-layer-body code {
+.defense-card-icon svg { width: 21px; height: 21px; }
+.defense-card h3 { font-size: 16px; font-weight: 720; margin-top: 12px; }
+.defense-card p { margin-top: 6px; font-size: 13.5px; color: var(--muted); line-height: 1.6; }
+.defense-card p code {
   font-size: 12px; padding: 1px 6px; border-radius: 5px;
   background: rgba(102, 112, 133, 0.14); color: var(--ink);
 }
@@ -950,6 +1147,7 @@ ul { list-style: none; }
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
   .ring, .flow-line i, .shield-ring, .pulse-dot, .hub-halo, .hub-ripple, .hub-core img { animation: none; }
+  .sql-chip, .spark, .shield-aura, .shield-ripple, .scene-ring, .shield-sweep { animation: none; }
   html { scroll-behavior: auto; }
 }
 
@@ -960,7 +1158,7 @@ ul { list-style: none; }
   .security-panel { grid-template-columns: 1fr; padding: 40px 32px; }
   .security-visual { display: none; }
   .tool-groups { grid-template-columns: 1fr; }
-  .defense-layer { grid-template-columns: 1fr; gap: 8px; }
+  .defense-grid { grid-template-columns: repeat(2, 1fr); }
   .cta-panel { column-gap: 32px; padding-inline: 40px; }
 }
 
@@ -986,4 +1184,10 @@ ul { list-style: none; }
   .glow-c { width: 240px; height: 240px; top: 50%; left: -60px; }
   .security-panel { padding: 28px 22px; }
   .tool-group { padding: 20px 18px; }
+  .defense-grid { grid-template-columns: 1fr; }
+  .defense-stage { --scene: 190px; --shield-w: 128px; --shield-h: 140px; --shield-hh: 70px; height: 300px; }
+  .shield-scene { right: 4%; }
+  .sql-chip { font-size: 10.5px; margin-top: -7px; }
+  .shield-db { width: 40px; height: 40px; }
+  .scene-ring { display: none; }
 }

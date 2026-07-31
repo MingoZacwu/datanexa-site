@@ -110,9 +110,10 @@
       <nav class="nav-links">
         <a href="#features" data-i18n="nav.features">功能特性</a>
         <a href="#tools" data-i18n="nav.tools">MCP 工具</a>
+        <a href="#defense" data-i18n="nav.defense">纵深防御</a>
         <a href="#preview" data-i18n="nav.preview">界面预览</a>
         <a href="#quickstart" data-i18n="nav.quickstart">快速开始</a>
-        <a href="#defense" data-i18n="nav.security">安全说明</a>
+        <a href="#security" data-i18n="nav.security">安全说明</a>
       </nav>
       <div class="nav-actions">
         <button class="icon-btn" id="langToggle" type="button" aria-label="Switch language" title="EN / 中">中</button>
@@ -487,49 +488,108 @@
           <h2 data-i18n="def.title">多层约束，逐层降低风险</h2>
           <p data-i18n="def.sub">从网络到审计，全链路逐层设防。</p>
         </div>
-        <div class="defense-stack">
-          <div class="defense-layer reveal">
-            <div class="defense-layer-head">
-              <span class="defense-layer-num">1</span>
-              <span class="defense-layer-name" data-i18n="def.l1.name">网络层</span>
-            </div>
-            <div class="defense-layer-body" data-i18n="def.l1.body">仅监听 <code>127.0.0.1</code> / <code>localhost</code>，严格 CSP，校验 Host 与 Origin 头，将流量限制在本机。</div>
+        <div class="defense-stage reveal">
+          <div class="attack-stream" aria-hidden="true">
+            <span class="sql-chip chip-bad" style="--lane: 14%; --delay: 0s">DROP TABLE</span>
+            <span class="sql-chip chip-bad" style="--lane: 29%; --delay: 2s">DELETE</span>
+            <span class="sql-chip chip-bad" style="--lane: 44%; --delay: 4s">UPDATE</span>
+            <span class="sql-chip chip-bad" style="--lane: 59%; --delay: 6s">INSERT INTO</span>
+            <span class="sql-chip chip-bad" style="--lane: 74%; --delay: 8s">TRUNCATE</span>
+            <span class="sql-chip chip-good" style="--lane: 88%; --delay: 5s">SELECT</span>
+            <span class="spark" style="--lane: 14%; --delay: 0s"></span>
+            <span class="spark" style="--lane: 29%; --delay: 2s"></span>
+            <span class="spark" style="--lane: 44%; --delay: 4s"></span>
+            <span class="spark" style="--lane: 59%; --delay: 6s"></span>
+            <span class="spark" style="--lane: 74%; --delay: 8s"></span>
           </div>
-          <div class="defense-layer reveal d1">
-            <div class="defense-layer-head">
-              <span class="defense-layer-num">2</span>
-              <span class="defense-layer-name" data-i18n="def.l2.name">鉴权层</span>
+          <div class="shield-scene" aria-hidden="true">
+            <span class="scene-ring"></span>
+            <span class="scene-ring r2"></span>
+            <span class="shield-aura"></span>
+            <div class="shield-glass">
+              <svg class="shield-db" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><ellipse cx="12" cy="5.5" rx="7.5" ry="2.8"/><path d="M4.5 5.5v13c0 1.55 3.36 2.8 7.5 2.8s7.5-1.25 7.5-2.8v-13"/><path d="M4.5 12c0 1.55 3.36 2.8 7.5 2.8s7.5-1.25 7.5-2.8"/></svg>
+              <span class="shield-sweep"></span>
+              <svg class="shield-edge" viewBox="0 0 220 240" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="shieldEdge" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="rgba(255,255,255,0.95)"/>
+                    <stop offset="0.5" stop-color="rgba(255,255,255,0.22)"/>
+                    <stop offset="1" stop-color="rgba(125,165,255,0.65)"/>
+                  </linearGradient>
+                </defs>
+                <path d="M110 8 L198 46 V112 C198 168 162 208 110 232 C58 208 22 168 22 112 V46 Z" fill="none" stroke="url(#shieldEdge)" stroke-width="2.5"/>
+                <path d="M110 30 L178 60 V110 C178 158 148 192 110 212 C72 192 42 158 42 110 V60 Z" fill="none" stroke="rgba(255,255,255,0.26)" stroke-width="1.2"/>
+              </svg>
             </div>
-            <div class="defense-layer-body" data-i18n="def.l2.body">Bearer Token（UUIDv4）默认开启，支持手动轮换，轮换不重启服务。</div>
+            <svg class="shield-ripple" viewBox="0 0 220 240" preserveAspectRatio="none">
+              <path d="M110 8 L198 46 V112 C198 168 162 208 110 232 C58 208 22 168 22 112 V46 Z" fill="none" stroke="currentColor" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+            </svg>
+            <svg class="shield-ripple r2" viewBox="0 0 220 240" preserveAspectRatio="none">
+              <path d="M110 8 L198 46 V112 C198 168 162 208 110 232 C58 208 22 168 22 112 V46 Z" fill="none" stroke="currentColor" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+            </svg>
+            <span class="scene-shadow"></span>
           </div>
-          <div class="defense-layer reveal d2">
-            <div class="defense-layer-head">
-              <span class="defense-layer-num">3</span>
-              <span class="defense-layer-name" data-i18n="def.l3.name">语法层</span>
+        </div>
+        <div class="stage-legend reveal">
+          <span class="legend-item"><i class="legend-dot dot-red"></i><span data-i18n="def.legend.block">已拦截</span></span>
+          <span class="legend-item"><i class="legend-dot dot-green"></i><span data-i18n="def.legend.pass">只读放行</span></span>
+        </div>
+        <p class="defense-caption reveal" data-i18n="def.caption">写入与危险语句在抵达数据库之前就被拦下，只有只读查询得以通行</p>
+        <div class="defense-grid">
+          <article class="defense-card reveal">
+            <div class="defense-card-head">
+              <div class="defense-card-icon f-blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17"/><path d="M12 3.5c2.6 2.4 3.9 5.4 3.9 8.5s-1.3 6.1-3.9 8.5c-2.6-2.4-3.9-5.4-3.9-8.5s1.3-6.1 3.9-8.5z"/></svg>
+              </div>
             </div>
-            <div class="defense-layer-body" data-i18n="def.l3.body">基于 <code>sqlparser</code> AST 校验，拒绝 DDL / DML / SELECT INTO / 行锁 / EXPLAIN ANALYZE，并拦截 pg_sleep、dblink、lo_* 等副作用函数。</div>
-          </div>
-          <div class="defense-layer reveal">
-            <div class="defense-layer-head">
-              <span class="defense-layer-num">4</span>
-              <span class="defense-layer-name" data-i18n="def.l4.name">数据库层</span>
+            <h3 data-i18n="def.l1.name">网络层</h3>
+            <p data-i18n="def.l1.body">仅监听 <code>127.0.0.1</code> / <code>localhost</code>，严格 CSP，校验 Host 与 Origin 头，将流量限制在本机。</p>
+          </article>
+          <article class="defense-card reveal d1">
+            <div class="defense-card-head">
+              <div class="defense-card-icon f-cyan">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="3.8"/><path d="M10.5 12.5L19 4M15.5 7.5l2.5 2.5M13 10l2 2"/></svg>
+              </div>
             </div>
-            <div class="defense-layer-body" data-i18n="def.l4.body">SQLite 只读打开；MySQL 执行 <code>SET SESSION TRANSACTION READ ONLY</code>；PostgreSQL 设置 <code>default_transaction_read_only=on</code>。</div>
-          </div>
-          <div class="defense-layer reveal d1">
-            <div class="defense-layer-head">
-              <span class="defense-layer-num">5</span>
-              <span class="defense-layer-name" data-i18n="def.l5.name">资源层</span>
+            <h3 data-i18n="def.l2.name">鉴权层</h3>
+            <p data-i18n="def.l2.body">Bearer Token（UUIDv4）默认开启，支持手动轮换，轮换不重启服务。</p>
+          </article>
+          <article class="defense-card reveal d2">
+            <div class="defense-card-head">
+              <div class="defense-card-icon f-violet">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 7l-5 5 5 5M15.5 7l5 5-5 5"/></svg>
+              </div>
             </div>
-            <div class="defense-layer-body" data-i18n="def.l5.body">行数 1–5000、超时 500–60000ms、连接池 1–3、结果 64KB–8MB、全局并发 8、限流 2/s，约束失控查询的影响范围。</div>
-          </div>
-          <div class="defense-layer reveal d2">
-            <div class="defense-layer-head">
-              <span class="defense-layer-num">6</span>
-              <span class="defense-layer-name" data-i18n="def.l6.name">审计层</span>
+            <h3 data-i18n="def.l3.name">语法层</h3>
+            <p data-i18n="def.l3.body">基于 <code>sqlparser</code> AST 校验，拒绝 DDL / DML / SELECT INTO / 行锁 / EXPLAIN ANALYZE，并拦截 pg_sleep、dblink、lo_* 等副作用函数。</p>
+          </article>
+          <article class="defense-card reveal">
+            <div class="defense-card-head">
+              <div class="defense-card-icon f-green">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><ellipse cx="12" cy="5.5" rx="7.5" ry="2.8"/><path d="M4.5 5.5v13c0 1.55 3.36 2.8 7.5 2.8s7.5-1.25 7.5-2.8v-13"/><path d="M4.5 12c0 1.55 3.36 2.8 7.5 2.8s7.5-1.25 7.5-2.8"/></svg>
+              </div>
             </div>
-            <div class="defense-layer-body" data-i18n="def.l6.body">本地 SQLite（WAL）记录 5 种状态，SQL 字面量可脱敏，自动修剪至 5000 条上限，错误信息同样脱敏。</div>
-          </div>
+            <h3 data-i18n="def.l4.name">数据库层</h3>
+            <p data-i18n="def.l4.body">SQLite 只读打开；MySQL 执行 <code>SET SESSION TRANSACTION READ ONLY</code>；PostgreSQL 设置 <code>default_transaction_read_only=on</code>。</p>
+          </article>
+          <article class="defense-card reveal d1">
+            <div class="defense-card-head">
+              <div class="defense-card-icon f-amber">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16a8 8 0 1 1 15 0"/><path d="M12 16l3.8-4.6"/><circle cx="12" cy="16" r="1.2"/></svg>
+              </div>
+            </div>
+            <h3 data-i18n="def.l5.name">资源层</h3>
+            <p data-i18n="def.l5.body">行数 1–5000、超时 500–60000ms、连接池 1–3、结果 64KB–8MB、全局并发 8、限流 2/s，约束失控查询的影响范围。</p>
+          </article>
+          <article class="defense-card reveal d2">
+            <div class="defense-card-head">
+              <div class="defense-card-icon f-red">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14v16l-3-2-2 2-2-2-2 2-2-2-3 2V4z"/><path d="M9 9h6M9 13h6"/></svg>
+              </div>
+            </div>
+            <h3 data-i18n="def.l6.name">审计层</h3>
+            <p data-i18n="def.l6.body">本地 SQLite（WAL）记录 5 种状态，SQL 字面量可脱敏，自动修剪至 5000 条上限，错误信息同样脱敏。</p>
+          </article>
         </div>
       </div>
     </section>

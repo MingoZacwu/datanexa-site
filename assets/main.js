@@ -5,6 +5,16 @@
 
   var root = document.documentElement;
 
+  /* Keep the reading order aligned with the product story. The sections are
+     moved after parsing so anchors, reveal observers and keyboard navigation
+     all see the same order. */
+  var main = document.querySelector("main");
+  var defenseSection = document.getElementById("defense");
+  var previewSection = document.getElementById("preview");
+  if (main && defenseSection && previewSection) {
+    main.insertBefore(defenseSection, previewSection);
+  }
+
   /* ---------- Theme ---------- */
   var mediaDark = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
   var themeSeg = document.getElementById("themeSeg");
@@ -67,6 +77,7 @@
     en: {
       "nav.features": "Features",
       "nav.tools": "MCP Tools",
+      "nav.defense": "Defense",
       "nav.preview": "Preview",
       "nav.quickstart": "Quick Start",
       "nav.security": "Security",
@@ -150,6 +161,9 @@
       "def.tag": "Defense in Depth",
       "def.title": "Multiple constraints, reducing risk layer by layer",
       "def.sub": "From network to audit, guarded across the full chain.",
+      "def.legend.block": "Blocked",
+      "def.legend.pass": "Read-only pass",
+      "def.caption": "Writes and dangerous statements are stopped long before they reach your database — only read-only queries get through.",
       "def.l1.name": "Network",
       "def.l1.body": "Listens only on <code>127.0.0.1</code> / <code>localhost</code>, with a strict CSP and Host / Origin header checks, keeping traffic on the local machine.",
       "def.l2.name": "Authentication",
@@ -206,13 +220,32 @@
     try { localStorage.setItem("datanexa-lang", lang); } catch (e) { /* ignore */ }
   }
 
+  function applyLangPreservingScroll(lang) {
+    var currentY = window.scrollY;
+    var anchor = null;
+    var anchorTop = -Infinity;
+    var sections = document.querySelectorAll("main section[id]");
+    sections.forEach(function (section) {
+      var top = section.getBoundingClientRect().top;
+      if (top <= 96 && (!anchor || top > anchorTop)) {
+        anchor = section;
+        anchorTop = top;
+      }
+    });
+    applyLang(lang);
+    requestAnimationFrame(function () {
+      var delta = anchor ? anchor.getBoundingClientRect().top - anchorTop : 0;
+      window.scrollTo(0, Math.max(0, currentY + delta));
+    });
+  }
+
   var savedLang = null;
   try { savedLang = localStorage.getItem("datanexa-lang"); } catch (e) { /* ignore */ }
   if (savedLang === "en") applyLang("en");
   else langBtn.textContent = "中";
 
   langBtn.addEventListener("click", function () {
-    applyLang(root.getAttribute("lang") === "en" ? "zh" : "en");
+    applyLangPreservingScroll(root.getAttribute("lang") === "en" ? "zh" : "en");
   });
 
   /* ---------- Nav scroll state ---------- */
