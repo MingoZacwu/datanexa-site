@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DataNexa — 面向 AI Agent 的本地只读数据库 MCP 网关</title>
-  <meta name="description" content="DataNexa 是运行在本机的数据库 MCP 服务，为 AI Agent 提供统一、受控且可审计的只读数据访问入口，支持 SQLite、MySQL 与 PostgreSQL。">
-  <meta name="keywords" content="DataNexa, MCP, Model Context Protocol, AI Agent, 数据库, 只读, SQLite, MySQL, PostgreSQL, MCP 网关, MCP Server, read-only database gateway">
+  <meta name="description" content="DataNexa 是运行在本机的数据库 MCP 服务，为 AI Agent 提供统一、受控且可审计的只读数据访问入口，原生支持 SQLite、MySQL 与 PostgreSQL，并通过 JDBC 支持连接任意 JDBC 兼容数据库。">
+  <meta name="keywords" content="DataNexa, MCP, Model Context Protocol, AI Agent, 数据库, 只读, SQLite, MySQL, PostgreSQL, JDBC, JDBC 驱动, JDBC 支持, MCP 网关, MCP Server, read-only database gateway">
   <meta name="author" content="Zachary Wu">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <meta name="color-scheme" content="light dark">
@@ -20,7 +20,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="DataNexa">
   <meta property="og:title" content="DataNexa — 面向 AI Agent 的本地只读数据库 MCP 网关">
-  <meta property="og:description" content="DataNexa 是运行在本机的数据库 MCP 服务，为 AI Agent 提供统一、受控且可审计的只读数据访问入口，支持 SQLite、MySQL 与 PostgreSQL。">
+  <meta property="og:description" content="DataNexa 是运行在本机的数据库 MCP 服务，为 AI Agent 提供统一、受控且可审计的只读数据访问入口，原生支持 SQLite、MySQL 与 PostgreSQL，并通过 JDBC 支持连接任意 JDBC 兼容数据库。">
   <meta property="og:url" content="https://mingozacwu.github.io/datanexa-site/">
   <meta property="og:image" content="https://mingozacwu.github.io/datanexa-site/assets/logo.png">
   <meta property="og:image:alt" content="DataNexa — 本地只读数据库 MCP 网关">
@@ -32,7 +32,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="DataNexa — 面向 AI Agent 的本地只读数据库 MCP 网关">
-  <meta name="twitter:description" content="运行在本机的数据库 MCP 服务，为 AI Agent 提供统一、受控且可审计的只读数据访问入口，支持 SQLite、MySQL 与 PostgreSQL。">
+  <meta name="twitter:description" content="运行在本机的数据库 MCP 服务，为 AI Agent 提供统一、受控且可审计的只读数据访问入口，原生支持 SQLite、MySQL 与 PostgreSQL，并通过 JDBC 支持连接任意 JDBC 兼容数据库。">
   <meta name="twitter:image" content="https://mingozacwu.github.io/datanexa-site/assets/logo.png">
   <meta name="twitter:image:alt" content="DataNexa — 本地只读数据库 MCP 网关">
 
@@ -54,7 +54,7 @@
         "applicationCategory": "DeveloperApplication",
         "applicationSubCategory": "MCP Server",
         "operatingSystem": "Windows, macOS, Linux",
-        "description": "DataNexa 是运行在本机的数据库 MCP 服务，为 AI Agent 提供统一、受控且可审计的只读数据访问入口，支持 SQLite、MySQL 与 PostgreSQL。",
+        "description": "DataNexa 是运行在本机的数据库 MCP 服务，为 AI Agent 提供统一、受控且可审计的只读数据访问入口，原生支持 SQLite、MySQL 与 PostgreSQL，并通过 JDBC 支持连接任意 JDBC 兼容数据库。",
         "url": "https://mingozacwu.github.io/datanexa-site/",
         "downloadUrl": "https://github.com/MingoZacwu/DataNexa/releases",
         "codeRepository": "https://github.com/MingoZacwu/DataNexa",
@@ -66,6 +66,7 @@
         },
         "featureList": [
           "统一连接管理（SQLite / MySQL / PostgreSQL）",
+          "JDBC 支持：连接任意 JDBC 兼容数据库（技术预览）",
           "SQL 语法树级只读校验",
           "操作系统凭证库存储数据库密码",
           "行数 / 超时 / 连接池资源限额",
@@ -109,6 +110,8 @@
       </a>
       <nav class="nav-links">
         <a href="#features" data-i18n="nav.features">功能特性</a>
+        <a href="#databases" data-i18n="nav.databases">数据库支持</a>
+        <a href="#jdbc" data-i18n="nav.jdbc">JDBC 支持</a>
         <a href="#tools" data-i18n="nav.tools">MCP 工具</a>
         <a href="#defense" data-i18n="nav.defense">纵深防御</a>
         <a href="#preview" data-i18n="nav.preview">界面预览</a>
@@ -125,7 +128,27 @@
           <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
           GitHub
         </a>
+        <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="菜单 / Menu" aria-expanded="false" aria-controls="navDrawer">
+          <svg class="icon-burger" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
       </div>
+    </div>
+    <div class="nav-drawer" id="navDrawer">
+      <nav class="nav-drawer-inner">
+        <a href="#features" data-i18n="nav.features">功能特性</a>
+        <a href="#databases" data-i18n="nav.databases">数据库支持</a>
+        <a href="#jdbc" data-i18n="nav.jdbc">JDBC 支持</a>
+        <a href="#tools" data-i18n="nav.tools">MCP 工具</a>
+        <a href="#defense" data-i18n="nav.defense">纵深防御</a>
+        <a href="#preview" data-i18n="nav.preview">界面预览</a>
+        <a href="#quickstart" data-i18n="nav.quickstart">快速开始</a>
+        <a href="#security" data-i18n="nav.security">安全说明</a>
+        <a class="drawer-github" href="https://github.com/MingoZacwu/DataNexa" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+          GitHub
+        </a>
+      </nav>
     </div>
   </header>
 
@@ -165,6 +188,7 @@
             <span class="db-chip"><i class="db-dot sqlite"></i>SQLite</span>
             <span class="db-chip"><i class="db-dot mysql"></i>MySQL</span>
             <span class="db-chip"><i class="db-dot pg"></i>PostgreSQL</span>
+            <span class="db-chip"><i class="db-dot jdbc"></i><span data-i18n="hero.jdbc">JDBC 支持</span></span>
           </div>
         </div>
       </div>
@@ -216,7 +240,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5.5" rx="7.5" ry="2.8"/><path d="M4.5 5.5v13c0 1.55 3.36 2.8 7.5 2.8s7.5-1.25 7.5-2.8v-13"/><path d="M4.5 12c0 1.55 3.36 2.8 7.5 2.8s7.5-1.25 7.5-2.8"/></svg>
             </div>
             <h3 data-i18n="f1.title">统一连接管理</h3>
-            <p data-i18n="f1.desc">集中管理 SQLite、MySQL 与 PostgreSQL 只读连接，支持连接诊断与导入导出。</p>
+            <p data-i18n="f1.desc">集中管理 SQLite、MySQL 与 PostgreSQL 只读连接，并通过 JDBC 支持接入更多数据库，支持连接诊断与导入导出。</p>
           </article>
           <article class="feature-card reveal d1">
             <div class="feature-icon f-violet">
@@ -252,6 +276,120 @@
             </div>
             <h3 data-i18n="f6.title">精细管控开关</h3>
             <p data-i18n="f6.desc">工具级开关、紧急禁用一键熔断，只暴露当前任务必需的 MCP 工具。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ NATIVE DATABASES ============ -->
+    <section class="native-db section-pad" id="databases">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-tag" data-i18n="native.tag">数据库支持</span>
+          <h2 data-i18n="native.title">SQLite · MySQL · PostgreSQL<br><span class="grad-text">原生支持，开箱即用</span></h2>
+          <p data-i18n="native.sub">基于 Rust 生态的 SQLx 构建，三大数据库的支持内置在 DataNexa 中：填好连接信息即可使用，不依赖 JVM、无需安装任何驱动。</p>
+        </div>
+        <div class="native-grid">
+          <article class="native-card reveal">
+            <div class="native-card-head">
+              <i class="db-dot sqlite"></i>
+              <h3>SQLite</h3>
+              <span class="native-badge" data-i18n="native.badge.embedded">嵌入式</span>
+            </div>
+            <p data-i18n="native.sqlite.desc">单文件嵌入式数据库，本地开发与小型项目的首选。DataNexa 以只读模式直接打开数据库文件，无需任何服务进程。</p>
+            <div class="native-meta">
+              <span data-i18n="native.m.zerodeploy">零部署</span>
+              <span data-i18n="native.m.roopen">只读打开</span>
+              <span data-i18n="native.m.singlefile">单文件</span>
+            </div>
+          </article>
+          <article class="native-card reveal d1">
+            <div class="native-card-head">
+              <i class="db-dot mysql"></i>
+              <h3>MySQL</h3>
+              <span class="native-badge" data-i18n="native.badge.protocol">原生协议</span>
+            </div>
+            <p data-i18n="native.mysql.desc">DataNexa 通过 SQLx 的原生协议直连，执行前自动将会话切换为只读事务，无需安装任何驱动。</p>
+            <div class="native-meta">
+              <span data-i18n="native.m.tcp">TCP 直连</span>
+              <span data-i18n="native.m.tls">TLS 加密</span>
+              <span data-i18n="native.m.pool">连接池</span>
+            </div>
+          </article>
+          <article class="native-card reveal d2">
+            <div class="native-card-head">
+              <i class="db-dot pg"></i>
+              <h3>PostgreSQL</h3>
+              <span class="native-badge" data-i18n="native.badge.protocol">原生协议</span>
+            </div>
+            <p data-i18n="native.pg.desc">同样使用 SQLx 原生协议直连，会话自动开启 <code>default_transaction_read_only</code>，配合语法树校验双保险。</p>
+            <div class="native-meta">
+              <span data-i18n="native.m.tcp">TCP 直连</span>
+              <span data-i18n="native.m.tls">TLS 加密</span>
+              <span data-i18n="native.m.pool">连接池</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ JDBC SUPPORT ============ -->
+    <section class="jdbc section-pad" id="jdbc">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-tag"><span class="tag-new">NEW</span><span data-i18n="jdbc.tag">JDBC 支持</span></span>
+          <h2 data-i18n="jdbc.title">没有原生支持的数据库<br><span class="grad-text">DataNexa 也能搞定</span></h2>
+          <p data-i18n="jdbc.sub">企业数据库、国产数据库、行业老系统——只要厂商提供了 JDBC 驱动，装进 DataNexa、填一条连接地址就能接入，只读校验和审计照常生效。</p>
+        </div>
+        <div class="jdbc-panel reveal">
+          <div>
+            <h3><span data-i18n="jdbc.panel.title">DataNexa 现已支持 JDBC 连接</span><span class="jdbc-ver" data-i18n="jdbc.ver">技术预览</span></h3>
+            <p data-i18n="jdbc.panel.desc">像创建原生连接一样：选好已安装的驱动、填上 JDBC 地址，测试通过后保存，就能交给 AI Agent 查询。</p>
+            <div class="driver-chips">
+              <span class="driver-chips-label" data-i18n="jdbc.drivers">驱动获取方式</span>
+              <span class="driver-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg><span data-i18n="jdbc.driver.maven">Maven 坐标</span></span>
+              <span class="driver-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg><span data-i18n="jdbc.driver.jar">本地 JAR</span></span>
+              <span class="driver-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/></svg><span data-i18n="jdbc.driver.bundle">离线 Bundle</span></span>
+            </div>
+          </div>
+          <div class="jdbc-arch">
+            <div class="jdbc-gate">
+              <strong><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 4v5c0 4.4-3 8-7 9-4-1-7-4.6-7-9V7l7-4z"/><path d="M9.5 12l2 2 3.5-4"/></svg><span data-i18n="jdbc.gate.name">所有查询走同一套检查</span></strong>
+              <em data-i18n="jdbc.gate.desc">Token 权限 · 只读校验 · 行数与超时限制 · 审计</em>
+            </div>
+            <div class="jdbc-lanes">
+              <div class="jdbc-lane">
+                <span class="lane-title"><i class="db-dot sqlite"></i><span data-i18n="jdbc.lane.native">原生连接 · SQLx</span></span>
+                <span class="lane-db">SQLite · MySQL · PostgreSQL</span>
+              </div>
+              <div class="jdbc-lane">
+                <span class="lane-title"><i class="db-dot jdbc"></i><span data-i18n="jdbc.lane.jdbc">JDBC 连接 · Java Runtime</span></span>
+                <span class="lane-db" data-i18n="jdbc.lane.jdbc.db">你的驱动 + JDBC URL</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card reveal">
+            <div class="feature-icon f-violet">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 8.5v7M8.5 12h7"/></svg>
+            </div>
+            <h3 data-i18n="jdbc.c1.title">不限数据库品牌</h3>
+            <p data-i18n="jdbc.c1.desc">Maven 坐标、本地 JAR、离线包都能装；遇到装不上的驱动，测试连接会把原因告诉你。</p>
+          </article>
+          <article class="feature-card reveal d1">
+            <div class="feature-icon f-cyan">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9h11v6a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9z"/><path d="M16 10h1.5a2.5 2.5 0 0 1 0 5H16"/><path d="M8 5.5v-2M11.5 5.5v-2"/></svg>
+            </div>
+            <h3 data-i18n="jdbc.c2.title">隔离运行</h3>
+            <p data-i18n="jdbc.c2.desc">驱动和查询跑在独立的 Java 进程里，JRE 由 DataNexa 托管；崩溃会被就地隔离，不影响其他连接与 MCP 服务。</p>
+          </article>
+          <article class="feature-card reveal d2">
+            <div class="feature-icon f-green">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 4v5c0 4.4-3 8-7 9-4-1-7-4.6-7-9V7l7-4z"/><path d="M9.5 12l2 2 3.5-4"/></svg>
+            </div>
+            <h3 data-i18n="jdbc.c3.title">同一套风控</h3>
+            <p data-i18n="jdbc.c3.desc">只读校验、Token 权限、审计、超时与行数上限对 JDBC 连接同样生效；解析器读不懂的新方言，还有词法检查兜底。</p>
           </article>
         </div>
       </div>
@@ -561,7 +699,7 @@
               </div>
             </div>
             <h3 data-i18n="def.l3.name">语法层</h3>
-            <p data-i18n="def.l3.body">基于 <code>sqlparser</code> AST 校验，拒绝 DDL / DML / SELECT INTO / 行锁 / EXPLAIN ANALYZE，并拦截 pg_sleep、dblink、lo_* 等副作用函数。</p>
+            <p data-i18n="def.l3.body">基于 <code>sqlparser</code> AST 校验，拒绝 DDL / DML / SELECT INTO / 行锁 / EXPLAIN ANALYZE，并拦截 pg_sleep、dblink、lo_* 等副作用函数。未知 JDBC 方言走通用 AST 基线加词法检查兜底，风险最高的场景也能覆盖。</p>
           </article>
           <article class="defense-card reveal">
             <div class="defense-card-head">
