@@ -83,6 +83,7 @@
       "nav.preview": "Preview",
       "nav.quickstart": "Quick Start",
       "nav.security": "Security",
+      "nav.home": "Home",
       "hero.badge": "Local read-only MCP gateway",
       "hero.title1": "Connect AI Agents to",
       "hero.title2": "your databases, safely",
@@ -226,7 +227,21 @@
       "cta.sub": "Download DataNexa — making AI database connections simpler",
       "cta.download": "Download Now",
       "cta.issue": "Report an Issue",
+      "credits.tag": "Links & Credits",
+      "credits.title": "To open source, to friends",
+      "credits.sub": "DataNexa grows with the support of the open-source community and friends — this page is our thank-you note.",
+      "credits.nav.ack": "Acknowledgements",
+      "credits.nav.links": "Friendly Links",
+      "credits.ack.tag": "Acknowledgements",
+      "credits.ack.title": "To inspire and be inspired —<br><span class=\"grad-text\">the best cycle of open source</span>",
+      "credits.ack.desc": "Special thanks to the DBX project. While implementing JDBC support, DataNexa drew on DBX's architecture design and implementation ideas. Our sincere gratitude goes to the DBX project and its contributors.",
+      "credits.links.tag": "Friendly Links",
+      "credits.links.title": "Sites worth a visit",
+      "credits.friend.xd.name": "Xiangdong Lab",
+      "credits.friend.xd.desc": "A software engineer's personal site — engineering write-ups, cloud-native and AI explorations, and open-source projects.",
+      "credits.back": "Back to Home",
       "footer.tag": "MCP Database Gateway",
+      "footer.friends": "Links & Credits",
       "footer.copy1": "Copyright © 2026 Zachary Wu All Rights Reserved.",
       "footer.copy2": "MySQL, PostgreSQL, SQLite and other names and trademarks belong to their respective owners"
     }
@@ -235,6 +250,8 @@
   var zhCache = {};
   var langBtn = document.getElementById("langToggle");
 
+  /* The document title is per-page: body[data-title-zh / data-title-en] overrides
+     the site default, so subpages keep their own title after a language switch. */
   function applyLang(lang) {
     var nodes = document.querySelectorAll("[data-i18n]");
     if (lang === "en") {
@@ -245,7 +262,7 @@
       });
       root.setAttribute("lang", "en");
       langBtn.textContent = "EN";
-      document.title = "DataNexa — Local Read-Only Database MCP Gateway for AI Agents";
+      document.title = document.body.getAttribute("data-title-en") || "DataNexa — Local Read-Only Database MCP Gateway for AI Agents";
     } else {
       nodes.forEach(function (node) {
         var key = node.getAttribute("data-i18n");
@@ -253,7 +270,7 @@
       });
       root.setAttribute("lang", "zh-CN");
       langBtn.textContent = "中";
-      document.title = "DataNexa — 面向 AI Agent 的本地只读数据库 MCP 网关";
+      document.title = document.body.getAttribute("data-title-zh") || "DataNexa — 面向 AI Agent 的本地只读数据库 MCP 网关";
     }
     try { localStorage.setItem("datanexa-lang", lang); } catch (e) { /* ignore */ }
   }
