@@ -237,7 +237,7 @@
       "credits.ack.desc": "Special thanks to the DBX project. While implementing JDBC support, DataNexa drew on DBX's architecture design and implementation ideas. Our sincere gratitude goes to the DBX project and its contributors.",
       "credits.links.tag": "Friendly Links",
       "credits.links.title": "Sites worth a visit",
-      "credits.friend.xd.name": "Xiangdong Lab",
+      "credits.friend.xd.name": "XD Lab",
       "credits.friend.xd.desc": "A software engineer's personal site — engineering write-ups, cloud-native and AI explorations, and open-source projects.",
       "credits.back": "Back to Home",
       "footer.tag": "MCP Database Gateway",
