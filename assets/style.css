@@ -13,9 +13,7 @@
   --blue: #2563eb;
   --blue-2: #0ea5e9;
   --green: #16a064;
-  --amber: #f59e0b;
   --red: #e5484d;
-  --violet: #7c3aed;
   --shadow: 0 18px 42px rgba(32, 48, 78, 0.12);
   --soft-shadow: 0 8px 20px rgba(41, 71, 121, 0.07);
   --glow-a: rgba(37, 99, 235, 0.14);
@@ -35,9 +33,7 @@
   --blue: #60a5fa;
   --blue-2: #8bb7ff;
   --green: #4ade80;
-  --amber: #fbbf24;
   --red: #fb7185;
-  --violet: #c4b5fd;
   --shadow: 0 24px 70px rgba(0, 0, 0, 0.30);
   --soft-shadow: 0 14px 38px rgba(0, 0, 0, 0.20);
   --glow-a: rgba(96, 165, 250, 0.16);
@@ -139,7 +135,6 @@ ul { list-style: none; }
 .nav-compact .nav-github { display: none; }
 .nav-compact .nav-toggle { display: inline-grid; }
 .nav-compact .nav-actions { margin-left: auto; }
-.nav:not(.nav-compact) .nav-toggle { display: none; }
 .nav:not(.nav-compact) .nav-drawer { display: none; }
 
 .nav.open {
@@ -340,6 +335,97 @@ ul { list-style: none; }
 .db-dot.sqlite { background: #0ea5e9; }
 .db-dot.mysql { background: #f59e0b; }
 .db-dot.pg { background: #2563eb; }
+
+/* ---------- Why（前置介绍：为什么做 DataNexa） ---------- */
+/* 「痛点 → 解法」等式面板：每行一条可扫读的转换式，
+   不用卡片/图标方块/大段文字，与下方 card 网格明确分层 */
+.why {
+  padding: 0 0 32px; /* 紧跟 Hero：覆盖 section-pad 的顶部间距 */
+}
+
+/* 标题沿用全站 section-head（居中）；字号略小，中文整句单行呈现 */
+.why .section-head { max-width: 900px; margin-bottom: 40px; }
+.why .section-head h2 { font-size: clamp(24px, 3vw, 34px); }
+
+.why-panel {
+  /* 轨道宽度按「当前语言最长文案」实测预留（含胶囊左右内边距与边框，
+     并留出余量以吸收不同平台的字体渲染差异），使三行胶囊尺寸完全一致；
+     英文文案更长，切换语言时整体变宽而不裁切、不换行 */
+  --why-pain-w: 176px;
+  --why-fix-w: 170px;
+  --why-note-w: 480px;
+  /* 撑满容器，与下方 .flow-track 等宽对齐；行内内容水平居中 */
+  margin: 0 auto;
+  background: var(--surface);
+  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+  border: 1px solid var(--line); border-radius: 18px;
+  overflow: hidden;
+}
+:root[lang="en"] .why-panel {
+  --why-pain-w: 278px;
+  --why-fix-w: 240px;
+  --why-note-w: 480px;
+}
+
+.why-row {
+  /* 单一网格贯通四列：痛点 | 箭头 | 解法 | 说明，
+     说明列紧随解法胶囊；整行内容在面板内水平居中 */
+  display: grid;
+  grid-template-columns: var(--why-pain-w) 18px var(--why-fix-w) minmax(0, var(--why-note-w));
+  justify-content: center;
+  gap: 12px; align-items: center;
+  padding: 22px 26px;
+  border-top: 1px solid var(--line);
+  transition: background 0.25s ease;
+}
+.why-row:first-child { border-top: 0; }
+.why-row:hover { background: linear-gradient(90deg, rgba(37, 99, 235, 0.05), transparent 65%); }
+:root.dark .why-row:hover { background: linear-gradient(90deg, rgba(96, 165, 250, 0.07), transparent 65%); }
+
+/* 三行共用同一组轨道宽度，箭头与解法胶囊左边界逐行对齐。
+   痛点列与解法列都取固定宽度（按最长文案预留），
+   因此三行四个胶囊尺寸完全一致，只随语言切换整体变化。
+   注意：必须用固定轨道而非 minmax(auto)，否则各行会按自身文案
+   独立撑宽，跨行对齐失效 */
+.why-eq { display: contents; }
+
+.why-chip {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 100%;
+  padding: 7px 13px; border-radius: 999px;
+  font-size: 13.5px; font-weight: 650; line-height: 1.3;
+  text-align: center;
+  /* 胶囊内文案永不换行；轨道已按最长文案预留，故不会溢出 */
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+.why-chip-pain {
+  color: var(--muted);
+  background: transparent;
+  border: 1px dashed var(--line);
+  text-decoration: line-through;
+  text-decoration-color: rgba(239, 68, 68, 0.85);
+  text-decoration-thickness: 2.5px;
+}
+.why-chip-fix {
+  color: #fff;
+  background: linear-gradient(135deg, var(--blue), var(--blue-2));
+  box-shadow: 0 4px 14px -4px rgba(37, 99, 235, 0.45);
+}
+:root.dark .why-chip-fix { box-shadow: 0 4px 16px -4px rgba(14, 165, 233, 0.35); }
+
+.why-arrow {
+  width: 18px; height: 18px; flex: none;
+  color: var(--blue);
+  transition: transform 0.25s ease;
+}
+.why-row:hover .why-arrow { transform: translateX(4px); }
+
+.why-note {
+  margin: 0;
+  padding-left: 24px;
+  font-size: 13.5px; color: var(--muted); line-height: 1.7;
+}
 
 /* ---------- Flow ---------- */
 .flow { padding-top: 8px; }
@@ -790,8 +876,7 @@ ul { list-style: none; }
   .ui-demo { padding: 14px; }
   .mini-seg { width: 100%; }
   .mini-seg button { flex: 1; justify-content: center; padding-inline: 7px; gap: 4px; font-size: 11.5px; }
-  .mini-command { grid-template-columns: auto 1fr; }
-  .mini-command { gap: 10px; padding: 12px; }
+  .mini-command { grid-template-columns: auto 1fr; gap: 10px; padding: 12px; }
   .mini-command-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
   .mini-command-metrics > div { padding-left: 7px; }
   .mini-command-metrics span { font-size: 10px; }
@@ -1251,10 +1336,6 @@ ul { list-style: none; }
   border: 1px solid var(--line);
 }
 
-.native-more { margin-top: 24px; text-align: center; font-size: 14px; color: var(--muted); }
-.native-more a { color: var(--blue); font-weight: 650; }
-.native-more a:hover { text-decoration: underline; }
-
 /* ---------- JDBC support ---------- */
 .db-dot.jdbc { background: linear-gradient(135deg, #7c3aed, #0ea5e9); }
 
@@ -1274,10 +1355,13 @@ ul { list-style: none; }
 }
 .jdbc-panel h3 {
   font-size: clamp(22px, 2.6vw, 28px); font-weight: 740; letter-spacing: -0.015em;
+  /* 中文按词断行，避免「连接」等词被拆到两行、版本胶囊孤悬行尾 */
+  word-break: keep-all;
 }
 .jdbc-ver {
   display: inline-block; margin-left: 10px; padding: 3px 10px; border-radius: 999px;
   font-size: 12px; font-weight: 650; vertical-align: 3px; letter-spacing: 0.02em;
+  white-space: nowrap;
   color: #7c3aed;
   background: rgba(124, 58, 237, 0.10);
   border: 1px solid rgba(124, 58, 237, 0.25);
@@ -1288,6 +1372,9 @@ ul { list-style: none; }
 
 .driver-chips { margin-top: 20px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .driver-chips-label { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+/* 英文标签与胶囊文案较长，三个胶囊放不下一行；
+   让标签独占一行，胶囊自成一行排齐，避免折行后与标签错位 */
+:root[lang="en"] .driver-chips-label { flex-basis: 100%; }
 .driver-chip {
   display: inline-flex; align-items: center; gap: 7px;
   padding: 7px 14px; border-radius: 999px;
@@ -1346,6 +1433,11 @@ ul { list-style: none; }
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
   .feature-grid { grid-template-columns: repeat(2, 1fr); }
+  .why-row { grid-template-columns: 1fr; gap: 8px; justify-items: center; padding: 20px 22px; }
+  .why-chip { width: auto; }
+  .why-arrow { transform: rotate(90deg); }
+  .why-row:hover .why-arrow { transform: rotate(90deg) translateX(3px); }
+  .why-note { justify-self: stretch; padding-left: 0; }
   .steps { grid-template-columns: repeat(2, 1fr); }
   .security-panel { grid-template-columns: 1fr; padding: 40px 32px; }
   .security-visual { display: none; }
@@ -1364,6 +1456,8 @@ ul { list-style: none; }
   .feature-grid { grid-template-columns: 1fr; grid-auto-rows: auto; }
   .native-grid { grid-template-columns: 1fr; }
   .steps { grid-template-columns: 1fr; }
+  /* 窄屏下等式改为纵向：痛点在上、箭头转向下、解法在下（居中排布，
+     规则已上移至 900px 断点）；胶囊按内容收缩，不再等宽 */
   .flow-track { flex-direction: column; gap: 18px; padding: 24px 20px; }
   /* 竖向布局复用同一组动画：仅将轨道旋转 90°。
      若改用另一组竖向动画，跨断点切换会重启线条动画，

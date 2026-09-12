@@ -82,7 +82,6 @@
       "nav.defense": "Defense",
       "nav.preview": "Preview",
       "nav.quickstart": "Quick Start",
-      "nav.security": "Security",
       "nav.home": "Home",
       "hero.badge": "Local read-only MCP gateway",
       "hero.title1": "Connect AI Agents to",
@@ -92,6 +91,18 @@
       "hero.source": "View Source",
       "hero.support": "Supported Databases",
       "hero.jdbc": "JDBC Support",
+      "why.lead1": "Connecting AI to a database is easy. Making it ",
+      "why.lead2": "controlled and trustworthy",
+      "why.lead3": " is the hard part.",
+      "why.r1.pain": "One MCP config per database",
+      "why.r1.fix": "One config, every database",
+      "why.r1.note": "All connections live in a single local MCP service — your Agent keeps just one config.",
+      "why.r2.pain": "No read-only account available",
+      "why.r2.fix": "A front-line defense",
+      "why.r2.note": "AST validation blocks any non-read-only statement, with caps on rows, execution time and connections.",
+      "why.r3.pain": "No idea what the AI actually ran",
+      "why.r3.fix": "Fully audited, always",
+      "why.r3.note": "A complete local audit trail: which SQL, when it ran, and how it turned out — every access is traceable.",
       "flow.agent": "AI Agent",
       "flow.db": "Your Database",
       "flow.caption": "Every query is validated against the SQL syntax tree — only read-only statements pass, so Agents can never write to your data",
@@ -227,7 +238,6 @@
       "cta.sub": "Download DataNexa — making AI database connections simpler",
       "cta.download": "Download Now",
       "cta.issue": "Report an Issue",
-      "credits.tag": "Links & Credits",
       "credits.title": "To open source, to friends",
       "credits.sub": "DataNexa grows with the support of the open-source community and friends — this page is our thank-you note.",
       "credits.nav.ack": "Acknowledgements",
@@ -358,17 +368,31 @@
 
   /* ---------- Scroll reveal ---------- */
   var revealNodes = document.querySelectorAll(".reveal");
+  var pendingReveal = Array.prototype.slice.call(revealNodes);
+  function revealNode(node) {
+    node.classList.add("visible");
+    var i = pendingReveal.indexOf(node);
+    if (i > -1) pendingReveal.splice(i, 1);
+  }
   if ("IntersectionObserver" in window) {
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
+          revealNode(entry.target);
           observer.unobserve(entry.target);
         }
       });
     }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
     revealNodes.forEach(function (node) { observer.observe(node); });
+    /* 锚点跳转/快速滚动会瞬间越过部分区块，IO 不会为「从未相交」的元素回调；
+       滚动时兜底：完全滚出视口上方的元素直接显示，避免回滚后内容仍隐藏 */
+    var revealSkipped = function () {
+      for (var i = pendingReveal.length - 1; i >= 0; i--) {
+        if (pendingReveal[i].getBoundingClientRect().bottom < 0) revealNode(pendingReveal[i]);
+      }
+    };
+    window.addEventListener("scroll", revealSkipped, { passive: true });
   } else {
-    revealNodes.forEach(function (node) { node.classList.add("visible"); });
+    revealNodes.forEach(revealNode);
   }
 })();
