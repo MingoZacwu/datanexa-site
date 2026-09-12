@@ -76,11 +76,14 @@
   var i18n = {
     en: {
       "nav.features": "Features",
+      "nav.databases": "DB Support",
+      "nav.jdbc": "JDBC Support",
       "nav.tools": "MCP Tools",
       "nav.defense": "Defense",
       "nav.preview": "Preview",
       "nav.quickstart": "Quick Start",
       "nav.security": "Security",
+      "nav.home": "Home",
       "hero.badge": "Local read-only MCP gateway",
       "hero.title1": "Connect AI Agents to",
       "hero.title2": "your databases, safely",
@@ -88,6 +91,7 @@
       "hero.download": "Download",
       "hero.source": "View Source",
       "hero.support": "Supported Databases",
+      "hero.jdbc": "JDBC Support",
       "flow.agent": "AI Agent",
       "flow.db": "Your Database",
       "flow.caption": "Every query is validated against the SQL syntax tree — only read-only statements pass, so Agents can never write to your data",
@@ -95,7 +99,7 @@
       "features.title": "Every detail designed for controlled access",
       "features.sub": "From connection management to audit trails, DataNexa moves the database security boundary between the Agent and your data.",
       "f1.title": "Unified Connections",
-      "f1.desc": "Manage read-only connections for SQLite, MySQL and PostgreSQL in one place, with diagnostics and import/export.",
+      "f1.desc": "Manage read-only connections for SQLite, MySQL and PostgreSQL in one place, reach more databases via JDBC support, with diagnostics and import/export.",
       "f2.title": "AST-Level Read-Only Validation",
       "f2.desc": "Queries are validated against the SQL syntax tree, structurally rejecting any writes or DDL operations.",
       "f3.title": "Secure Credential Storage",
@@ -148,6 +152,41 @@
       "ui.d.pane": "System window materials",
       "ui.d.title": "Window materials that fit your system",
       "ui.d.desc": "DataNexa uses Vibrancy on macOS and Mica on Windows 11, following each platform's visual language so the app feels at home on your desktop.",
+      "native.tag": "Database Support",
+      "native.title": "SQLite · MySQL · PostgreSQL<br><span class=\"grad-text\">Natively supported, out of the box</span>",
+      "native.sub": "Built on SQLx from the Rust ecosystem. Support for all three databases ships inside DataNexa — just fill in the connection details. No JVM, no drivers to install.",
+      "native.badge.embedded": "Embedded",
+      "native.badge.protocol": "Native protocol",
+      "native.sqlite.desc": "A single-file embedded database, the go-to for local development and small projects. DataNexa opens the file read-only — no server process required.",
+      "native.mysql.desc": "DataNexa connects over SQLx's native protocol, switching the session to a read-only transaction before execution. No drivers to install.",
+      "native.pg.desc": "Also connected via the SQLx native protocol, with <code>default_transaction_read_only</code> enabled on the session — plus AST validation as a second line of defense.",
+      "native.m.zerodeploy": "Zero setup",
+      "native.m.roopen": "Read-only open",
+      "native.m.singlefile": "Single file",
+      "native.m.tcp": "Direct TCP",
+      "native.m.tls": "TLS",
+      "native.m.pool": "Connection pool",
+      "jdbc.tag": "JDBC Support",
+      "jdbc.title": "Databases without native support?<br><span class=\"grad-text\">DataNexa can still reach them</span>",
+      "jdbc.sub": "Enterprise databases, domestic databases, legacy systems — if the vendor ships a JDBC driver, add it to DataNexa, paste a connection URL, and you are in. The same read-only checks and audit trail still apply.",
+      "jdbc.panel.title": "DataNexa now supports JDBC connections",
+      "jdbc.ver": "Tech Preview",
+      "jdbc.panel.desc": "Just like creating a native connection: pick an installed driver, paste the JDBC URL, test and save — then hand it to your AI Agent to query.",
+      "jdbc.drivers": "Get a driver by",
+      "jdbc.driver.maven": "Maven coordinates",
+      "jdbc.driver.jar": "Local JARs",
+      "jdbc.driver.bundle": "Offline bundle",
+      "jdbc.gate.name": "Every query passes the same checks",
+      "jdbc.gate.desc": "Token permissions · Read-only checks · Row & timeout limits · Audit",
+      "jdbc.lane.native": "Native · SQLx",
+      "jdbc.lane.jdbc": "JDBC · Java Runtime",
+      "jdbc.lane.jdbc.db": "Your driver + JDBC URL",
+      "jdbc.c1.title": "No vendor whitelist",
+      "jdbc.c1.desc": "Install from Maven coordinates, local JARs or offline bundles. If a driver won't work, the connection test tells you why.",
+      "jdbc.c2.title": "Isolated by design",
+      "jdbc.c2.desc": "Drivers and queries run in a separate Java process with a DataNexa-managed JRE. A crash there stays there — your other connections and the MCP service are unaffected.",
+      "jdbc.c3.title": "Same guardrails",
+      "jdbc.c3.desc": "Read-only checks, token permissions, audit, timeout and row limits all apply to JDBC connections. Dialects the parser can't read fall back to lexical analysis.",
       "qs.tag": "Quick Start",
       "qs.title": "Connect your Agent in four steps",
       "s1.title": "Add a connection",
@@ -169,7 +208,7 @@
       "def.l2.name": "Authentication",
       "def.l2.body": "Bearer token (UUIDv4) on by default, with manual rotation that needs no server restart.",
       "def.l3.name": "Syntax",
-      "def.l3.body": "Validated via the <code>sqlparser</code> AST — rejects DDL / DML / SELECT INTO / row locks / EXPLAIN ANALYZE, and blocks side-effect functions like pg_sleep, dblink and lo_*.",
+      "def.l3.body": "Validated via the <code>sqlparser</code> AST — rejects DDL / DML / SELECT INTO / row locks / EXPLAIN ANALYZE, and blocks side-effect functions like pg_sleep, dblink and lo_*. Unknown JDBC dialects go through a generic AST baseline plus lexical fallback, so even the highest-risk dialects are covered.",
       "def.l4.name": "Database",
       "def.l4.body": "SQLite opened read-only; MySQL runs <code>SET SESSION TRANSACTION READ ONLY</code>; PostgreSQL sets <code>default_transaction_read_only=on</code>.",
       "def.l5.name": "Resource",
@@ -188,7 +227,21 @@
       "cta.sub": "Download DataNexa — making AI database connections simpler",
       "cta.download": "Download Now",
       "cta.issue": "Report an Issue",
+      "credits.tag": "Links & Credits",
+      "credits.title": "To open source, to friends",
+      "credits.sub": "DataNexa grows with the support of the open-source community and friends — this page is our thank-you note.",
+      "credits.nav.ack": "Acknowledgements",
+      "credits.nav.links": "Friendly Links",
+      "credits.ack.tag": "Acknowledgements",
+      "credits.ack.title": "To inspire and be inspired —<br><span class=\"grad-text\">the best cycle of open source</span>",
+      "credits.ack.desc": "Special thanks to the DBX project. While implementing JDBC support, DataNexa drew on DBX's architecture design and implementation ideas. Our sincere gratitude goes to the DBX project and its contributors.",
+      "credits.links.tag": "Friendly Links",
+      "credits.links.title": "Sites worth a visit",
+      "credits.friend.xd.name": "XD Lab",
+      "credits.friend.xd.desc": "A software engineer's personal site — engineering write-ups, cloud-native and AI explorations, and open-source projects.",
+      "credits.back": "Back to Home",
       "footer.tag": "MCP Database Gateway",
+      "footer.friends": "Links & Credits",
       "footer.copy1": "Copyright © 2026 Zachary Wu All Rights Reserved.",
       "footer.copy2": "MySQL, PostgreSQL, SQLite and other names and trademarks belong to their respective owners"
     }
@@ -197,6 +250,8 @@
   var zhCache = {};
   var langBtn = document.getElementById("langToggle");
 
+  /* The document title is per-page: body[data-title-zh / data-title-en] overrides
+     the site default, so subpages keep their own title after a language switch. */
   function applyLang(lang) {
     var nodes = document.querySelectorAll("[data-i18n]");
     if (lang === "en") {
@@ -207,7 +262,7 @@
       });
       root.setAttribute("lang", "en");
       langBtn.textContent = "EN";
-      document.title = "DataNexa — Local Read-Only Database MCP Gateway for AI Agents";
+      document.title = document.body.getAttribute("data-title-en") || "DataNexa — Local Read-Only Database MCP Gateway for AI Agents";
     } else {
       nodes.forEach(function (node) {
         var key = node.getAttribute("data-i18n");
@@ -215,7 +270,7 @@
       });
       root.setAttribute("lang", "zh-CN");
       langBtn.textContent = "中";
-      document.title = "DataNexa — 面向 AI Agent 的本地只读数据库 MCP 网关";
+      document.title = document.body.getAttribute("data-title-zh") || "DataNexa — 面向 AI Agent 的本地只读数据库 MCP 网关";
     }
     try { localStorage.setItem("datanexa-lang", lang); } catch (e) { /* ignore */ }
   }
@@ -246,6 +301,7 @@
 
   langBtn.addEventListener("click", function () {
     applyLangPreservingScroll(root.getAttribute("lang") === "en" ? "zh" : "en");
+    updateNavLayout();
   });
 
   /* ---------- Nav scroll state ---------- */
@@ -256,6 +312,49 @@
   }
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+
+  /* ---------- Responsive nav: compact mode + drawer ---------- */
+  var navToggle = document.getElementById("navToggle");
+  var navDrawer = document.getElementById("navDrawer");
+  var navInner = document.querySelector(".nav-inner");
+  nav.classList.add("nav-js");
+
+  function closeNavDrawer() {
+    nav.classList.remove("open");
+    navToggle.setAttribute("aria-expanded", "false");
+  }
+
+  /* Keep the full navigation on desktop. The drawer is a deliberate tablet/mobile
+     layout, rather than a content-width toggle that can hide links on wide screens. */
+  function updateNavLayout() {
+    if (!navInner) return;
+    var compact = window.innerWidth <= 1080;
+    nav.classList.toggle("nav-compact", compact);
+    if (!compact) closeNavDrawer();
+  }
+
+  window.addEventListener("resize", updateNavLayout, { passive: true });
+  window.addEventListener("load", updateNavLayout);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(updateNavLayout);
+  if (window.ResizeObserver && navInner) {
+    new ResizeObserver(updateNavLayout).observe(navInner);
+  }
+
+  navToggle.addEventListener("click", function () {
+    var open = nav.classList.toggle("open");
+    navToggle.setAttribute("aria-expanded", String(open));
+  });
+  navDrawer.addEventListener("click", function (e) {
+    if (e.target.closest("a")) closeNavDrawer();
+  });
+  document.addEventListener("click", function (e) {
+    if (nav.classList.contains("open") && !nav.contains(e.target)) closeNavDrawer();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closeNavDrawer();
+  });
+
+  updateNavLayout();
 
   /* ---------- Scroll reveal ---------- */
   var revealNodes = document.querySelectorAll(".reveal");

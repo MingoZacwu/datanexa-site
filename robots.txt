@@ -1,9 +1,10 @@
 # DataNexa — GitHub Pages
-# Allow all crawlers to access everything except asset source maps (if any).
+# Allow all crawlers to access everything except the credits page and asset source maps.
 
 User-agent: *
 Allow: /
 Disallow: /assets/*.map
+Disallow: /datanexa-site/credits.html
 
 # Reference the sitemap so crawlers can discover it.
 Sitemap: https://mingozacwu.github.io/datanexa-site/sitemap.xml
