@@ -135,6 +135,11 @@ ul { list-style: none; }
 .nav-compact .nav-github { display: none; }
 .nav-compact .nav-toggle { display: inline-grid; }
 .nav-compact .nav-actions { margin-left: auto; }
+/* 桌面端必须隐藏汉堡按钮。注意不能只依赖上面的 .nav-toggle { display: none }：
+   按钮同时带 .icon-btn，而 .icon-btn 也声明了 display: inline-grid，
+   两者特异性相同且 .icon-btn 位于文件更靠后处，会覆盖前者；
+   故此处用 .nav:not(.nav-compact) 提高特异性，与下面抽屉的规则对称 */
+.nav:not(.nav-compact) .nav-toggle { display: none; }
 .nav:not(.nav-compact) .nav-drawer { display: none; }
 
 .nav.open {
