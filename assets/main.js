@@ -262,7 +262,7 @@
 
   /* The document title is per-page: body[data-title-zh / data-title-en] overrides
      the site default, so subpages keep their own title after a language switch. */
-  function applyLang(lang) {
+  function applyLang(lang, persist) {
     var nodes = document.querySelectorAll("[data-i18n]");
     if (lang === "en") {
       nodes.forEach(function (node) {
@@ -282,7 +282,9 @@
       langBtn.textContent = "中";
       document.title = document.body.getAttribute("data-title-zh") || "DataNexa — 面向 AI Agent 的本地只读数据库 MCP 网关";
     }
-    try { localStorage.setItem("datanexa-lang", lang); } catch (e) { /* ignore */ }
+    if (persist !== false) {
+      try { localStorage.setItem("datanexa-lang", lang); } catch (e) { /* ignore */ }
+    }
   }
 
   function applyLangPreservingScroll(lang) {
@@ -304,10 +306,25 @@
     });
   }
 
+  /* Language init. An explicit choice made with the toggle always wins. Otherwise the
+     default follows the system language: Chinese for zh / zh-CN / zh-TW / zh-HK …,
+     English for everything else. The detected default is deliberately NOT persisted,
+     so it keeps tracking the OS setting until the visitor picks a language manually. */
+  function systemPrefersChinese() {
+    var tag = (navigator.language || navigator.userLanguage || "").toLowerCase();
+    return tag.indexOf("zh") === 0;
+  }
+
   var savedLang = null;
   try { savedLang = localStorage.getItem("datanexa-lang"); } catch (e) { /* ignore */ }
-  if (savedLang === "en") applyLang("en");
-  else langBtn.textContent = "中";
+
+  if (savedLang === "en" || savedLang === "zh") {
+    applyLang(savedLang);
+  } else if (systemPrefersChinese()) {
+    langBtn.textContent = "中"; /* markup already ships Chinese */
+  } else {
+    applyLang("en", false);
+  }
 
   langBtn.addEventListener("click", function () {
     applyLangPreservingScroll(root.getAttribute("lang") === "en" ? "zh" : "en");
