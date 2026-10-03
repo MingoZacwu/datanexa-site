@@ -238,6 +238,10 @@
       "cta.sub": "Download DataNexa — making AI database connections simpler",
       "cta.download": "Download Now",
       "cta.issue": "Report an Issue",
+      "star.title": "Enjoying DataNexa? Give it a Star",
+      "star.desc": "It is open source and free to use. If it helps you, a star is the best encouragement — and it helps more people who need a tool like this find it.",
+      "star.cta": "Star on GitHub",
+      "star.continue": "Download Anyway",
       "credits.title": "To open source, to friends",
       "credits.sub": "DataNexa grows with the support of the open-source community and friends — this page is our thank-you note.",
       "credits.nav.ack": "Acknowledgements",
@@ -382,6 +386,91 @@
   });
 
   updateNavLayout();
+
+  /* ---------- Star 提示弹窗：点击下载时提示一次，之后不再打扰 ---------- */
+  var starModal = document.getElementById("starModal");
+
+  if (starModal) {
+    /* 只弹一次：只要弹过并把结果写进 localStorage，之后永远不再弹出。
+       写入时机为关闭弹窗的那一刻（去 Star / 直接下载 / × / 遮罩 / Esc 都算）。 */
+    var STAR_KEY = "datanexa-star-prompt";
+    var dialog = starModal.querySelector(".modal-dialog");
+    var lastFocused = null;
+
+    function hasPrompted() {
+      try { return localStorage.getItem(STAR_KEY) !== null; } catch (e) { return false; }
+    }
+
+    function rememberPrompted(action) {
+      try {
+        localStorage.setItem(STAR_KEY, JSON.stringify({ action: action, at: Date.now() }));
+      } catch (e) { /* ignore */ }
+    }
+
+    function isOpen() { return !starModal.hidden; }
+
+    function openStarModal(trigger) {
+      lastFocused = trigger || null;
+      starModal.hidden = false;
+      document.body.classList.add("modal-open");
+      var target = starModal.querySelector(".js-star-cta") || dialog;
+      if (target && target.focus) target.focus();
+    }
+
+    function closeStarModal(action) {
+      if (!isOpen()) return;
+      rememberPrompted(action || "closed");
+      starModal.hidden = true;
+      document.body.classList.remove("modal-open");
+      if (lastFocused && lastFocused.focus) lastFocused.focus();
+    }
+
+    /* 下载入口：首次点击拦截跳转并展示弹窗，之后直接放行下载 */
+    document.querySelectorAll(".js-download").forEach(function (link) {
+      link.addEventListener("click", function (e) {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+        if (hasPrompted()) return;
+        e.preventDefault();
+        openStarModal(link);
+      });
+    });
+
+    /* 去 Star：打开仓库 */
+    var starCta = starModal.querySelector(".js-star-cta");
+    if (starCta) {
+      starCta.addEventListener("click", function () { closeStarModal("starred"); });
+    }
+
+    /* 直接下载：放行本次下载 */
+    var starContinue = starModal.querySelector(".js-star-continue");
+    if (starContinue) {
+      starContinue.addEventListener("click", function () { closeStarModal("continued"); });
+    }
+
+    starModal.querySelectorAll("[data-modal-close]").forEach(function (node) {
+      node.addEventListener("click", function () { closeStarModal("dismissed"); });
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (!isOpen()) return;
+      if (e.key === "Escape") {
+        closeStarModal("dismissed");
+        return;
+      }
+      /* 焦点留在弹窗内，Tab 循环 */
+      if (e.key === "Tab" && dialog) {
+        var focusables = dialog.querySelectorAll("a[href], button:not([disabled])");
+        if (!focusables.length) return;
+        var first = focusables[0];
+        var last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault(); last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault(); first.focus();
+        }
+      }
+    });
+  }
 
   /* ---------- Scroll reveal ---------- */
   var revealNodes = document.querySelectorAll(".reveal");

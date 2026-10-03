@@ -1553,3 +1553,87 @@ ul { list-style: none; }
   .page-head { padding-top: 120px; }
   .ack-card, .friend-card { grid-template-columns: 1fr; gap: 20px; padding: 26px 22px; align-items: start; }
 }
+
+/* ---------- Star 提示弹窗（点击下载时出现） ---------- */
+.modal { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 24px; }
+.modal[hidden] { display: none; }
+
+.modal-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(16, 21, 31, 0.42);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  animation: modal-fade 0.22s ease both;
+}
+
+.modal-dialog {
+  position: relative;
+  width: min(440px, 100%);
+  padding: 30px 30px 24px;
+  text-align: center;
+  background: var(--surface-strong); border: 1px solid var(--line); border-radius: 20px;
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  box-shadow: var(--shadow);
+  animation: modal-in 0.26s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.modal-dialog::before {
+  content: ""; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.34), rgba(14, 165, 233, 0.20) 52%, rgba(124, 58, 237, 0.30));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  padding: 1px;
+}
+:root.dark .modal-backdrop { background: rgba(6, 9, 15, 0.58); }
+:root.dark .modal-dialog::before {
+  background: linear-gradient(135deg, rgba(96, 165, 250, 0.42), rgba(56, 189, 248, 0.24) 52%, rgba(167, 139, 250, 0.38));
+}
+
+.modal-close {
+  position: absolute; top: 12px; right: 12px;
+  width: 30px; height: 30px; display: grid; place-items: center;
+  padding: 0; border: none; border-radius: 8px;
+  background: transparent; color: var(--muted); cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+}
+.modal-close:hover { color: var(--ink); background: rgba(105, 120, 145, 0.12); }
+.modal-close svg { width: 15px; height: 15px; }
+
+.modal-icon { position: relative; width: 60px; height: 60px; margin: 0 auto 18px; }
+.modal-icon .modal-mark { width: 44px; height: 44px; color: var(--ink); }
+.modal-star {
+  position: absolute; right: 0; bottom: 0;
+  display: grid; place-items: center;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue), var(--blue-2));
+  color: #fff; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.40);
+}
+.modal-star svg { width: 14px; height: 14px; }
+
+.modal-title { font-size: 20px; font-weight: 740; letter-spacing: -0.01em; line-height: 1.4; }
+.modal-desc { margin-top: 10px; font-size: 14px; line-height: 1.75; color: var(--muted); }
+
+.modal-actions { display: flex; gap: 10px; margin-top: 22px; }
+.modal-actions .btn {
+  flex: 1 1 0; min-width: 0;
+  justify-content: center; gap: 7px;
+  padding: 11px 16px;
+  white-space: nowrap; /* 按钮文字不换行 */
+}
+.modal-actions .btn svg { flex: none; width: 15px; height: 15px; }
+
+@keyframes modal-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+
+body.modal-open { overflow: hidden; }
+
+@media (max-width: 420px) {
+  .modal { padding: 16px; }
+  .modal-dialog { padding: 26px 20px 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-backdrop, .modal-dialog { animation: none; }
+}
