@@ -1,0 +1,87 @@
+name: Sync changelog
+
+# Merges three sources into data/releases.json, which the changelog page reads at
+# runtime (same-origin, never from GitHub directly):
+#   1. CHANGELOG.md in the main repo — the maintained text written for new releases
+#   2. the notes already stored here — published history lives in this repository
+#   3. the GitHub release body (filtered) — only for a release with no CHANGELOG entry
+#
+# The merge runs here, in this repository, which is also where the script lives: the
+# main repo only notifies us and never touches website files itself.
+#
+# Triggers:
+#   repository_dispatch — normal path: the main repo sends "release-published" right
+#                         after a release is published
+#   schedule            — daily catch-up: covers a missed notification, a token that
+#                         is not configured, or a release edited after the fact
+#   workflow_dispatch   — run it by hand when data looks stale
+#
+# Only data/releases.json is ever written; the page and its styles are untouched.
+
+on:
+  repository_dispatch:
+    types: [release-published]
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Optional note for this manual run'
+        required: false
+        type: string
+  schedule:
+    # 每天 09:10（北京时间）兜底同步。GitHub Actions 的 cron 一律按 UTC 计：
+    # 01:10 UTC = 09:10 UTC+8。挑这个点有两个考虑——上班后不久运行，万一失败或
+    # 产生了意料外的提交当天就能看到；避开整点（GitHub 在整点前后负载最高，
+    # 定时任务会被延迟，官方文档明确提示过）。
+    - cron: '10 1 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-changelog
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Sync releases
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Sync releases from the main repository
+        env:
+          # Read-only is enough for the public main repository; a token only lifts
+          # the anonymous API rate limit (60 requests/hour)
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ github.event.client_payload.tag }}
+        run: |
+          if [ -n "$RELEASE_TAG" ]; then
+            echo "Notified by the main repository: release $RELEASE_TAG is published."
+          else
+            echo "Scheduled/manual run (no release notification)."
+          fi
+          node scripts/sync-releases.mjs
+
+      - name: Commit changes
+        env:
+          RELEASE_TAG: ${{ github.event.client_payload.tag }}
+        run: |
+          if git diff --quiet -- data/releases.json; then
+            echo "::notice::data/releases.json is already up to date — nothing to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/releases.json
+          if [ -n "$RELEASE_TAG" ]; then
+            git commit -m "chore(changelog): sync release data ($RELEASE_TAG)"
+          else
+            git commit -m "chore(changelog): sync release data ($(date -u +%Y-%m-%d))"
+          fi
+          git push

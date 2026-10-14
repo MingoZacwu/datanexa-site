@@ -1,0 +1,259 @@
+/* ============================================================
+   DataNexa Official Site — Changelog page（更新日志）
+   ============================================================
+   页面数据来自 data/releases.json（由 CI 生成，渲染逻辑在 assets/changelog.js）。
+   样式单独成文件：自动同步只改数据，改版式只改这里，两者互不干扰；
+   其他页面也不会为更新日志的样式付出体积代价。 */
+
+/* ---------- 最新版本速览条 ---------- */
+.cl-latest-wrap { padding: 18px 0 6px; }
+.cl-latest-wrap[hidden] { display: none; }
+.cl-latest {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 18px 28px;
+  padding: 22px 26px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 20px;
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--shadow);
+}
+.cl-latest-info { display: grid; gap: 8px; min-width: 0; }
+.cl-latest-top { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.cl-latest-tag { font-size: 25px; font-weight: 760; letter-spacing: -0.02em; }
+.cl-latest-date { font-size: 13.5px; color: var(--muted); }
+.cl-latest-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.cl-latest-link { white-space: nowrap; }
+
+/* ---------- 版本徽标 ---------- */
+.cl-badge {
+  display: inline-flex; align-items: center;
+  padding: 2px 9px; border-radius: 999px;
+  font-size: 11.5px; font-weight: 650; letter-spacing: 0.01em; white-space: nowrap;
+}
+.cl-badge-latest { color: #fff; background: linear-gradient(135deg, var(--blue), var(--blue-2)); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.30); }
+.cl-badge-stable { color: var(--blue); background: rgba(37, 99, 235, 0.12); border: 1px solid rgba(37, 99, 235, 0.22); }
+.cl-badge-pre { color: #b45309; background: rgba(245, 158, 11, 0.14); border: 1px solid rgba(245, 158, 11, 0.28); }
+:root.dark .cl-badge-stable { color: #93c5fd; background: rgba(96, 165, 250, 0.12); border-color: rgba(96, 165, 250, 0.26); }
+:root.dark .cl-badge-pre { color: #fbbf24; background: rgba(251, 191, 36, 0.12); border-color: rgba(251, 191, 36, 0.26); }
+
+/* ---------- 工具条：检索 + 预发布开关 + 计数 ---------- */
+.cl-toolbar {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 14px; margin-bottom: 20px;
+}
+.cl-search {
+  position: relative; display: flex; align-items: center; flex: 1 1 300px; max-width: 460px;
+}
+/* input 上的 backdrop-filter 会生成层叠上下文、把绝对定位的图标盖住，
+   所以图标必须显式抬一层——否则放大镜是"渲染了但看不见"。 */
+.cl-search svg {
+  position: absolute; left: 14px; z-index: 1;
+  width: 16px; height: 16px;
+  color: var(--muted); pointer-events: none;
+}
+.cl-search input {
+  width: 100%; height: 44px; padding: 0 14px 0 40px;
+  font: inherit; font-size: 14.5px; color: var(--ink);
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.cl-search input::placeholder { color: var(--muted); }
+.cl-search input:focus {
+  outline: none; border-color: rgba(37, 99, 235, 0.45);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+:root.dark .cl-search input:focus { border-color: rgba(96, 165, 250, 0.45); box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.14); }
+
+.cl-toolbar-side { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+
+/* 预发布开关：自绘轨道 + 圆点，避免各平台原生复选框的样式差异。
+   原生 input 设为透明并覆盖在轨道位置——它对键盘与辅助技术可见可操作，
+   同时自身就是鼠标的点击目标（否则会被轨道盖住，自动化与部分辅助技术点不到）。 */
+.cl-switch {
+  position: relative;
+  display: inline-flex; align-items: center; gap: 9px;
+  font-size: 13.5px; color: var(--muted);
+  cursor: pointer; user-select: none;
+  transition: color 0.2s ease;
+}
+.cl-switch:hover { color: var(--ink); }
+.cl-switch input {
+  position: absolute; top: 0; left: 0; z-index: 1;
+  width: 36px; height: 20px; margin: 0; padding: 0;
+  opacity: 0; cursor: pointer;
+}
+.cl-switch-track {
+  position: relative; flex: none;
+  width: 36px; height: 20px; border-radius: 999px;
+  background: rgba(105, 120, 145, 0.26);
+  transition: background 0.22s ease;
+}
+:root.dark .cl-switch-track { background: rgba(146, 160, 182, 0.30); }
+.cl-switch-knob {
+  position: absolute; top: 3px; left: 3px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: #fff; box-shadow: 0 1px 3px rgba(16, 21, 31, 0.30);
+  transition: transform 0.22s ease;
+}
+.cl-switch input:checked + .cl-switch-track { background: linear-gradient(135deg, var(--blue), var(--blue-2)); }
+.cl-switch input:checked + .cl-switch-track .cl-switch-knob { transform: translateX(16px); }
+.cl-switch input:focus-visible + .cl-switch-track { box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.20); }
+
+/* ---------- 状态行（加载 / 无结果 / 出错） ---------- */
+.cl-status { margin: 4px 0 18px; font-size: 14px; color: var(--muted); }
+.cl-status[hidden] { display: none; }
+.cl-status.is-error {
+  padding: 16px 18px; border-radius: 14px;
+  color: var(--ink);
+  background: rgba(229, 72, 77, 0.08); border: 1px solid rgba(229, 72, 77, 0.28);
+}
+.cl-status.is-error strong { font-weight: 700; }
+.cl-status.is-error a { color: var(--blue); margin-left: 4px; }
+.cl-status-hint { display: block; margin-top: 8px; font-size: 13px; color: var(--muted); }
+
+/* ---------- 版本卡片 ---------- */
+.cl-list { display: grid; gap: 14px; }
+.cl-card {
+  border: 1px solid var(--line); border-radius: 18px;
+  background: var(--surface);
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  box-shadow: var(--soft-shadow);
+  scroll-margin-top: 96px; /* 固定导航之下的锚点落点 */
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.cl-card[hidden] { display: none; }
+.cl-card:hover { border-color: rgba(37, 99, 235, 0.28); }
+.cl-card[open] { box-shadow: var(--shadow); border-color: rgba(37, 99, 235, 0.30); }
+.cl-card.is-latest { border-color: rgba(37, 99, 235, 0.34); }
+
+.cl-head {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 12px;
+  padding: 18px 22px;
+  cursor: pointer; list-style: none;
+  border-radius: 18px;
+}
+.cl-head::-webkit-details-marker { display: none; }
+.cl-card[open] .cl-head { border-bottom: 1px solid var(--line); border-radius: 18px 18px 0 0; }
+.cl-head:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+.cl-version { font-size: 19px; font-weight: 750; letter-spacing: -0.01em; white-space: nowrap; }
+.cl-badges { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+.cl-head-date { margin-left: auto; font-size: 13.5px; color: var(--muted); white-space: nowrap; }
+.cl-caret { display: inline-flex; color: var(--muted); transition: transform 0.25s ease; }
+.cl-caret svg { width: 18px; height: 18px; }
+.cl-card[open] .cl-caret { transform: rotate(180deg); }
+
+.cl-body { padding: 18px 22px 22px; }
+
+/* ---------- 卡片页脚：完整发布说明入口 ---------- */
+.cl-foot { display: flex; flex-wrap: wrap; align-items: center; margin-top: 18px; }
+.cl-gh {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 550;
+  color: var(--muted); text-decoration: none;
+  transition: color 0.2s;
+}
+.cl-gh svg { width: 13px; height: 13px; }
+.cl-gh:hover { color: var(--blue); }
+
+/* ---------- 更新内容正文 ---------- */
+.cl-notes { font-size: 14.5px; line-height: 1.8; }
+.cl-notes h2, .cl-notes h3 { scroll-margin-top: 100px; }
+.cl-notes h2 {
+  position: relative;
+  margin: 26px 0 12px; padding-left: 13px;
+  font-size: 15.5px; font-weight: 740; letter-spacing: 0.01em;
+}
+.cl-notes h2::before {
+  content: ""; position: absolute; left: 0; top: 0.32em; bottom: 0.32em;
+  width: 3px; border-radius: 3px;
+  background: linear-gradient(180deg, var(--blue), var(--blue-2));
+}
+.cl-notes h2:first-child { margin-top: 8px; }
+.cl-notes h3 { margin: 18px 0 8px; font-size: 14.5px; font-weight: 700; }
+.cl-notes p { margin: 10px 0; }
+/* 站点全局把 ul 的符号重置掉了（见 style.css 的 `ul { list-style: none }`），
+   更新正文需要把项目符号显式还原，否则每条更新都会挤成裸段落。 */
+.cl-notes ul { margin: 10px 0; padding-left: 22px; list-style: disc; }
+.cl-notes ol { margin: 10px 0; padding-left: 22px; list-style: decimal; }
+.cl-notes li { margin: 7px 0; }
+.cl-notes li > ul, .cl-notes li > ol { margin: 7px 0 2px; }
+.cl-notes li > ul { list-style: circle; }
+.cl-notes li::marker { color: var(--blue); }
+.cl-notes a { color: var(--blue); text-decoration: none; border-bottom: 1px solid rgba(37, 99, 235, 0.28); }
+.cl-notes a:hover { border-bottom-color: currentColor; }
+.cl-notes strong { font-weight: 720; }
+.cl-notes code {
+  padding: 1px 6px; border-radius: 6px;
+  font-size: 0.88em;
+  background: rgba(37, 99, 235, 0.09); border: 1px solid rgba(37, 99, 235, 0.14);
+}
+:root.dark .cl-notes code { background: rgba(96, 165, 250, 0.10); border-color: rgba(96, 165, 250, 0.18); }
+.cl-notes pre {
+  margin: 12px 0; padding: 14px 16px; overflow-x: auto;
+  border-radius: 12px;
+  background: rgba(105, 120, 145, 0.09); border: 1px solid var(--line);
+  font-size: 12.5px; line-height: 1.7;
+}
+.cl-notes pre code { padding: 0; background: none; border: none; font-size: inherit; }
+.cl-notes table { width: 100%; margin: 12px 0; border-collapse: collapse; font-size: 13.5px; }
+.cl-notes th, .cl-notes td { padding: 8px 10px; border: 1px solid var(--line); text-align: left; }
+.cl-notes th { background: rgba(105, 120, 145, 0.08); font-weight: 700; }
+.cl-notes hr { margin: 20px 0; border: none; border-top: 1px solid var(--line); }
+.cl-notes blockquote {
+  margin: 12px 0; padding: 4px 0 4px 14px;
+  border-left: 3px solid rgba(37, 99, 235, 0.35); color: var(--muted);
+}
+.cl-notes img { max-width: 100%; height: auto; border-radius: 12px; }
+
+/* 锚点命中时的短暂高亮 */
+@keyframes cl-flash {
+  from { background: rgba(37, 99, 235, 0.18); }
+  to { background: transparent; }
+}
+.cl-flash { animation: cl-flash 1.6s ease-out; border-radius: 8px; }
+
+.cl-note {
+  margin: 10px 0; padding: 10px 14px; border-radius: 12px;
+  font-size: 13.5px; color: var(--muted);
+  background: rgba(105, 120, 145, 0.09);
+}
+.cl-note-fallback { border-left: 3px solid rgba(37, 99, 235, 0.35); }
+
+/* ---------- 下载入口 ---------- */
+.cl-assets { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 20px; }
+.cl-assets-label { font-size: 13px; font-weight: 650; color: var(--muted); }
+.cl-assets.is-compact { margin-top: 0; }
+.cl-asset {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 14px; border-radius: 12px;
+  font-size: 13.5px; font-weight: 600; text-decoration: none;
+  color: var(--ink); background: var(--surface-strong);
+  border: 1px solid var(--line);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.cl-asset:hover { transform: translateY(-2px); border-color: rgba(37, 99, 235, 0.35); box-shadow: var(--soft-shadow); }
+.cl-asset svg { width: 15px; height: 15px; color: var(--blue); flex: none; }
+.cl-asset-meta { font-weight: 500; font-size: 12px; color: var(--muted); }
+.cl-asset.is-recommended { border-color: rgba(37, 99, 235, 0.38); background: rgba(37, 99, 235, 0.07); }
+.cl-asset.is-recommended .cl-asset-meta { color: var(--blue); }
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 720px) {
+  .cl-latest { padding: 20px 20px; }
+  .cl-latest-tag { font-size: 22px; }
+  .cl-head { padding: 16px 18px; gap: 10px; }
+  .cl-head-date { flex-basis: 100%; margin-left: 0; order: 3; }
+  .cl-version { font-size: 17.5px; }
+  .cl-body { padding: 16px 18px 18px; }
+  .cl-latest-actions, .cl-assets { width: 100%; }
+  .cl-asset { flex: 1 1 100%; justify-content: center; }
+  /* 工具条改为两行：检索占一行，开关在下一行 */
+  .cl-search { flex: 1 1 100%; max-width: none; }
+  .cl-toolbar-side { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cl-card, .cl-asset, .cl-caret, .cl-gh, .cl-switch, .cl-switch-track, .cl-switch-knob { transition: none; }
+  .cl-flash { animation: none; }
+}

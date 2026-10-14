@@ -88,7 +88,7 @@
       "hero.title2": "your databases, safely",
       "hero.sub": "DataNexa is a database MCP service running on your machine. It gives AI Agents a unified, controlled and auditable data access entry — enforcing read-only policies before queries, with limits on returned rows, execution time and connections.",
       "hero.download": "Download",
-      "hero.source": "View Source",
+      "hero.changelog": "Changelog",
       "hero.support": "Supported Databases",
       "hero.jdbc": "JDBC Support",
       "why.lead1": "Connecting AI to a database is easy. Making it ",
@@ -254,7 +254,16 @@
       "credits.friend.xd.name": "XD Lab",
       "credits.friend.xd.desc": "A software engineer's personal site — engineering write-ups, cloud-native and AI explorations, and open-source projects.",
       "credits.back": "Back to Home",
+      "changelog.title": "Changelog",
+      "changelog.sub": "DataNexa keeps improving — a better experience with every release.",
+      "changelog.nav.versions": "Versions",
+      "changelog.nav.releases": "GitHub Releases",
+      "changelog.search": "Search a version or keyword",
+      "changelog.filter.prerelease": "Include pre-releases",
+      "changelog.status.loading": "Loading release history…",
+      "changelog.noscript": "The changelog needs JavaScript to render. You can also read the release notes on GitHub Releases.",
       "footer.tag": "MCP Database Gateway",
+      "footer.changelog": "Changelog",
       "footer.friends": "Links & Credits",
       "footer.copy1": "Copyright © 2026 Zachary Wu All Rights Reserved.",
       "footer.copy2": "MySQL, PostgreSQL, SQLite and other names and trademarks belong to their respective owners"
@@ -262,6 +271,7 @@
   };
 
   var zhCache = {};
+  var attributeCache = {};
   var langBtn = document.getElementById("langToggle");
 
   /* The document title is per-page: body[data-title-zh / data-title-en] overrides
@@ -286,6 +296,34 @@
       langBtn.textContent = "中";
       document.title = document.body.getAttribute("data-title-zh") || "DataNexa — 面向 AI Agent 的本地只读数据库 MCP 网关";
     }
+
+    /* Attribute translations (placeholders, aria-labels…) live in their own cache,
+       since an attribute value cannot be recovered from innerHTML. The syntax is
+       data-i18n-attr="placeholder:key;aria-label:key". */
+    document.querySelectorAll("[data-i18n-attr]").forEach(function (node) {
+      node.getAttribute("data-i18n-attr").split(";").forEach(function (pair) {
+        var separator = pair.indexOf(":");
+        if (separator < 1) return;
+        var attribute = pair.slice(0, separator).trim();
+        var key = pair.slice(separator + 1).trim();
+        if (!attribute || !key) return;
+        var cacheKey = attribute + "|" + key;
+        if (lang === "en") {
+          if (!(cacheKey in attributeCache)) {
+            attributeCache[cacheKey] = node.getAttribute(attribute) || "";
+          }
+          if (i18n.en[key]) node.setAttribute(attribute, i18n.en[key]);
+        } else if (cacheKey in attributeCache) {
+          node.setAttribute(attribute, attributeCache[cacheKey]);
+        }
+      });
+    });
+
+    /* Scripts that render their own text (the changelog) follow the toggle. */
+    try {
+      document.dispatchEvent(new CustomEvent("datanexa:langchange", { detail: { lang: lang } }));
+    } catch (e) { /* ignore */ }
+
     if (persist !== false) {
       try { localStorage.setItem("datanexa-lang", lang); } catch (e) { /* ignore */ }
     }
