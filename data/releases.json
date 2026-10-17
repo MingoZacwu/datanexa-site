@@ -1,14 +1,14 @@
 {
   "schema": 2,
-  "generatedAt": "2026-10-14T01:49:15.591Z",
+  "generatedAt": "2026-10-17T05:33:03.452Z",
   "source": {
     "repository": "MingoZacwu/DataNexa",
     "releasesUrl": "https://github.com/MingoZacwu/DataNexa/releases",
     "changelog": {
       "path": "CHANGELOG.md",
       "ref": "HEAD",
-      "found": false,
-      "sections": 0
+      "found": true,
+      "sections": 1
     }
   },
   "latest": "v0.8.1",
