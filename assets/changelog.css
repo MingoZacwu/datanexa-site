@@ -238,6 +238,49 @@
 .cl-asset.is-recommended { border-color: rgba(37, 99, 235, 0.38); background: rgba(37, 99, 235, 0.07); }
 .cl-asset.is-recommended .cl-asset-meta { color: var(--blue); }
 
+/* 分体按钮：主体直连 GitHub，右侧箭头展开加速下载 */
+.cl-asset-group { position: relative; display: inline-flex; }
+.cl-asset-group .cl-asset {
+  border-top-right-radius: 0; border-bottom-right-radius: 0;
+  transition: border-color 0.2s ease;
+}
+.cl-asset-group .cl-asset:hover { transform: none; border-color: rgba(37, 99, 235, 0.35); box-shadow: none; }
+.cl-asset-toggle {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; padding: 0;
+  color: var(--muted); background: var(--surface-strong);
+  border: 1px solid var(--line); border-left: none;
+  border-radius: 0 12px 12px 0;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.cl-asset-toggle svg { width: 14px; height: 14px; transition: transform 0.2s ease; }
+.cl-asset-toggle:hover { color: var(--blue); border-color: rgba(37, 99, 235, 0.35); }
+.cl-asset-toggle[aria-expanded="true"] { color: var(--blue); border-color: rgba(37, 99, 235, 0.35); }
+.cl-asset-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
+.cl-asset-group.is-recommended .cl-asset-toggle {
+  border-color: rgba(37, 99, 235, 0.38);
+  background: rgba(37, 99, 235, 0.07);
+}
+
+.cl-asset-menu {
+  position: fixed; z-index: 320;
+  min-width: 218px; padding: 6px;
+  background: var(--surface-strong);
+  border: 1px solid var(--line); border-radius: 12px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+}
+.cl-asset-menu[hidden] { display: none; }
+.cl-asset-menu-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 10px; border-radius: 8px;
+  font-size: 13px; font-weight: 550; color: var(--ink);
+  text-decoration: none; white-space: nowrap;
+}
+.cl-asset-menu-item:hover { color: var(--blue); background: rgba(37, 99, 235, 0.08); }
+.cl-asset-menu-item svg { width: 15px; height: 15px; flex: none; color: var(--blue); }
+
 /* ---------- 响应式 ---------- */
 @media (max-width: 720px) {
   .cl-latest { padding: 20px 20px; }
@@ -247,6 +290,8 @@
   .cl-version { font-size: 17.5px; }
   .cl-body { padding: 16px 18px 18px; }
   .cl-latest-actions, .cl-assets { width: 100%; }
+  .cl-asset-group { flex: 1 1 100%; }
+  .cl-asset-group .cl-asset { flex: 1 1 auto; }
   .cl-asset { flex: 1 1 100%; justify-content: center; }
   /* 工具条改为两行：检索占一行，开关在下一行 */
   .cl-search { flex: 1 1 100%; max-width: none; }
@@ -254,6 +299,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cl-card, .cl-asset, .cl-caret, .cl-gh, .cl-switch, .cl-switch-track, .cl-switch-knob { transition: none; }
+  .cl-card, .cl-asset, .cl-asset-toggle, .cl-caret, .cl-gh, .cl-switch, .cl-switch-track, .cl-switch-knob { transition: none; }
   .cl-flash { animation: none; }
 }

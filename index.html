@@ -761,7 +761,7 @@
               </div>
             </div>
             <h3 data-i18n="def.l6.name">审计层</h3>
-            <p data-i18n="def.l6.body">本地 SQLite（WAL）记录 5 种状态，SQL 字面量可脱敏，自动修剪至 5000 条上限，错误信息同样脱敏。</p>
+            <p data-i18n="def.l6.body">本地 SQLite（WAL）记录 5 种状态，SQL 字面量可脱敏，按保留天数自动清理（3/7/15/30 天可选），错误信息同样脱敏。</p>
           </article>
         </div>
       </div>
@@ -856,6 +856,47 @@
         </a>
         <a class="btn btn-ghost js-star-continue" href="https://github.com/MingoZacwu/DataNexa/releases" target="_blank" rel="noopener" data-i18n="star.continue">直接下载</a>
       </div>
+    </div>
+  </div>
+
+  <!-- ============ 下载方式弹窗（点击下载按钮后出现） ============ -->
+  <div class="modal" id="downloadModal" hidden>
+    <div class="modal-backdrop" data-download-close></div>
+    <div class="modal-dialog modal-download" role="dialog" aria-modal="true" aria-labelledby="downloadModalTitle" aria-describedby="downloadModalDesc">
+      <button class="modal-close" type="button" data-download-close aria-label="关闭 / Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <h3 class="modal-title" id="downloadModalTitle" data-i18n="download.title">下载 DataNexa</h3>
+      <p class="modal-desc" id="downloadModalDesc" data-i18n="download.desc">选择适合你系统的安装包。GitHub 访问缓慢时，可以选择加速下载。</p>
+      <div class="dl-options">
+        <div class="dl-platform" data-dl-platform="macos">
+          <div class="dl-platform-info">
+            <span class="dl-platform-name">
+              <svg class="dl-platform-logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09z"/><path d="M15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+              macOS <span class="dl-platform-badge" data-i18n="download.current" hidden>当前系统</span>
+            </span>
+            <span class="dl-platform-meta" data-dl-meta="macos"></span>
+          </div>
+          <div class="dl-platform-actions">
+            <a class="btn btn-primary dl-direct" data-dl-direct="macos" href="https://github.com/MingoZacwu/DataNexa/releases" target="_blank" rel="noopener" data-i18n="download.direct">GitHub 下载</a>
+            <a class="btn btn-ghost dl-proxy" data-dl-proxy="macos" href="https://github.com/MingoZacwu/DataNexa/releases" target="_blank" rel="noopener" data-i18n="download.proxy" hidden>加速下载</a>
+          </div>
+        </div>
+        <div class="dl-platform" data-dl-platform="windows">
+          <div class="dl-platform-info">
+            <span class="dl-platform-name">
+              <svg class="dl-platform-logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+              Windows <span class="dl-platform-badge" data-i18n="download.current" hidden>当前系统</span>
+            </span>
+            <span class="dl-platform-meta" data-dl-meta="windows"></span>
+          </div>
+          <div class="dl-platform-actions">
+            <a class="btn btn-primary dl-direct" data-dl-direct="windows" href="https://github.com/MingoZacwu/DataNexa/releases" target="_blank" rel="noopener" data-i18n="download.direct">GitHub 下载</a>
+            <a class="btn btn-ghost dl-proxy" data-dl-proxy="windows" href="https://github.com/MingoZacwu/DataNexa/releases" target="_blank" rel="noopener" data-i18n="download.proxy" hidden>加速下载</a>
+          </div>
+        </div>
+      </div>
+      <p class="dl-notes" data-i18n="download.note" hidden>加速下载由 GH-Proxy 提供加速服务，DataNexa 不对第三方服务的可用性做出保证。</p>
     </div>
   </div>
 

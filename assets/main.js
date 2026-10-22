@@ -225,7 +225,7 @@
       "def.l5.name": "Resource",
       "def.l5.body": "Rows 1–5000, timeout 500–60000ms, pool 1–3, result 64KB–8MB, global concurrency 8, rate limit 2/s — constraining the blast radius of runaway queries.",
       "def.l6.name": "Audit",
-      "def.l6.body": "Local SQLite (WAL) records 5 statuses, SQL literals can be redacted, auto-trimmed to a 5000-event cap, and error messages are redacted too.",
+      "def.l6.body": "Local SQLite (WAL) records 5 statuses, SQL literals can be redacted, old entries are purged by a configurable retention window (3/7/15/30 days), and error messages are redacted too.",
       "sec.tag": "Security",
       "sec.title": "Read-only is a guardrail, not everything",
       "sec.desc": "Read-only policies reduce risk but are not absolute safety. Before connecting real data, consider these measures:",
@@ -238,6 +238,12 @@
       "cta.sub": "Download DataNexa — making AI database connections simpler",
       "cta.download": "Download Now",
       "cta.issue": "Report an Issue",
+      "download.title": "Download DataNexa",
+      "download.desc": "Choose the installer for your system. If GitHub is slow, use the accelerated download.",
+      "download.direct": "GitHub Direct",
+      "download.proxy": "Accelerated",
+      "download.current": "For your system",
+      "download.note": "Accelerated downloads are provided by GH-Proxy; DataNexa makes no guarantee regarding the availability of third-party services.",
       "star.title": "Enjoying DataNexa? Give it a Star",
       "star.desc": "It is open source and free to use. If it helps you, a star is the best encouragement — and it helps more people who need a tool like this find it.",
       "star.cta": "Star on GitHub",
@@ -249,6 +255,10 @@
       "credits.ack.tag": "Acknowledgements",
       "credits.ack.title": "To inspire and be inspired —<br><span class=\"grad-text\">the best cycle of open source</span>",
       "credits.ack.desc": "Special thanks to the DBX project. While implementing JDBC support, DataNexa drew on DBX's architecture design and implementation ideas. Our sincere gratitude goes to the DBX project and its contributors.",
+      "credits.ack.ghproxy.title": "Download & update acceleration by <span class=\"grad-text\">GH-Proxy</span>",
+      "credits.ack.ghproxy.desc": "Download acceleration for the DataNexa website and client is supported by GH-Proxy<sup class=\"footnote-mark\" aria-hidden=\"true\">*</sup>. Our respect goes to GH-Proxy for providing this free public service.",
+      "credits.proxyDisclaimer": "The update download acceleration feature is implemented through a third-party service, and DataNexa cannot guarantee its availability.",
+      "credits.service.title": "Open public acceleration<br><span class=\"grad-text\">is also an extension of the open-source spirit</span>",
       "credits.links.tag": "Friendly Links",
       "credits.links.title": "Sites worth a visit",
       "credits.friend.xd.name": "XD Lab",
@@ -425,6 +435,145 @@
 
   updateNavLayout();
 
+  /* ---------- 下载方式弹窗：GitHub 直连 / GH-Proxy 加速 ---------- */
+  /* GH-Proxy 前缀只在这里定义一次，更新日志页从 window.DataNexaDownloads 取用。
+     gh-proxy 只代理具体文件，无法代理 Releases 页面，
+     所以安装包地址统一从 data/releases.json 取最新稳定版。 */
+  var GH_PROXY = "https://gh-proxy.com/";
+
+  /* 保证最终地址始终是 https://gh-proxy.com/https://github.com/…
+     即使数据源给出协议相对地址（//github.com/…）或漏写协议，也会补齐。 */
+  function proxyUrl(url) {
+    var target = String(url || "").trim();
+    if (target.indexOf("//") === 0) {
+      target = "https:" + target;
+    } else if (!/^[a-z][a-z0-9+.-]*:\/\//i.test(target)) {
+      target = "https://" + target;
+    }
+    return GH_PROXY + target;
+  }
+
+  window.DataNexaDownloads = { proxyUrl: proxyUrl };
+
+  var downloadModal = document.getElementById("downloadModal");
+  var openDownloadModal = null;
+
+  if (downloadModal) {
+    var downloadDialog = downloadModal.querySelector(".modal-dialog");
+    var downloadLastFocused = null;
+    var releasePromise = null;
+
+    function formatDownloadSize(bytes) {
+      if (!bytes) return "";
+      var mb = bytes / 1048576;
+      if (mb >= 1) return (Math.round(mb * 10) / 10).toFixed(1) + " MB";
+      return Math.max(1, Math.round(bytes / 1024)) + " KB";
+    }
+
+    function detectDownloadPlatform() {
+      var ua = navigator.userAgent || "";
+      if (/Windows|Win32|Win64/i.test(ua)) return "windows";
+      if (/Macintosh|Mac OS X/i.test(ua)) return "macos";
+      return "";
+    }
+
+    function loadLatestRelease() {
+      if (!releasePromise) {
+        releasePromise = fetch("data/releases.json", { cache: "no-cache" })
+          .then(function (response) {
+            if (!response.ok) throw new Error("HTTP " + response.status);
+            return response.json();
+          })
+          .then(function (data) {
+            var releases = (data && data.releases) || [];
+            for (var i = 0; i < releases.length; i++) {
+              if (releases[i].tag === data.latestStable) return releases[i];
+            }
+            return releases[0] || null;
+          })
+          .catch(function () { return null; });
+      }
+      return releasePromise;
+    }
+
+    function applyDownloadRelease(release) {
+      if (!release) return;
+      var platform = detectDownloadPlatform();
+      var assets = release.assets || [];
+
+      downloadModal.querySelectorAll("[data-dl-platform]").forEach(function (row) {
+        var key = row.getAttribute("data-dl-platform");
+        var asset = null;
+        for (var i = 0; i < assets.length; i++) {
+          if (assets[i].platform === key) { asset = assets[i]; break; }
+        }
+        if (!asset || !asset.downloadUrl) { row.hidden = true; return; }
+
+        var meta = row.querySelector("[data-dl-meta]");
+        if (meta) {
+          meta.textContent = release.tag + (asset.sizeBytes ? " · " + formatDownloadSize(asset.sizeBytes) : "");
+        }
+        var direct = row.querySelector("[data-dl-direct]");
+        if (direct) direct.href = asset.downloadUrl;
+        var proxy = row.querySelector("[data-dl-proxy]");
+        if (proxy) {
+          proxy.href = proxyUrl(asset.downloadUrl);
+          proxy.hidden = false;
+        }
+        var badge = row.querySelector(".dl-platform-badge");
+        if (badge) badge.hidden = key !== platform;
+        if (key === platform) row.classList.add("is-recommended");
+      });
+
+      var notes = downloadModal.querySelector(".dl-notes");
+      if (notes) notes.hidden = !downloadModal.querySelector("[data-dl-proxy]:not([hidden])");
+    }
+
+    function closeDownloadModal() {
+      if (downloadModal.hidden) return;
+      downloadModal.hidden = true;
+      document.body.classList.remove("modal-open");
+      if (downloadLastFocused && downloadLastFocused.focus) downloadLastFocused.focus();
+    }
+
+    openDownloadModal = function (trigger) {
+      downloadLastFocused = trigger || document.activeElement || null;
+      downloadModal.hidden = false;
+      document.body.classList.add("modal-open");
+      var target = downloadModal.querySelector(".dl-direct") || downloadDialog;
+      if (target && target.focus) target.focus();
+      loadLatestRelease().then(applyDownloadRelease);
+    };
+
+    downloadModal.querySelectorAll("[data-download-close]").forEach(function (node) {
+      node.addEventListener("click", closeDownloadModal);
+    });
+
+    /* 选中任一方式后收起弹窗，让下载在后台开始 */
+    downloadModal.querySelectorAll(".dl-options a").forEach(function (link) {
+      link.addEventListener("click", function () { closeDownloadModal(); });
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (downloadModal.hidden) return;
+      if (e.key === "Escape") { closeDownloadModal(); return; }
+      if (e.key === "Tab" && downloadDialog) {
+        var focusables = Array.prototype.filter.call(
+          downloadDialog.querySelectorAll("a[href], button:not([disabled])"),
+          function (node) { return node.offsetParent !== null; }
+        );
+        if (!focusables.length) return;
+        var first = focusables[0];
+        var last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault(); last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault(); first.focus();
+        }
+      }
+    });
+  }
+
   /* ---------- Star 提示弹窗：点击下载时提示一次，之后不再打扰 ---------- */
   var starModal = document.getElementById("starModal");
 
@@ -463,26 +612,40 @@
       if (lastFocused && lastFocused.focus) lastFocused.focus();
     }
 
-    /* 下载入口：首次点击拦截跳转并展示弹窗，之后直接放行下载 */
+    /* 下载入口：首次点击先提示 Star，之后每次点击打开下载方式弹窗 */
     document.querySelectorAll(".js-download").forEach(function (link) {
       link.addEventListener("click", function (e) {
         if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
-        if (hasPrompted()) return;
+        if (!hasPrompted()) {
+          e.preventDefault();
+          openStarModal(link);
+          return;
+        }
+        if (!openDownloadModal) return;
         e.preventDefault();
-        openStarModal(link);
+        openDownloadModal(link);
       });
     });
 
-    /* 去 Star：打开仓库 */
+    /* 去 Star：新标签页打开仓库，同时在当前页准备好下载弹窗，
+       这样从 GitHub 切回来时可以直接选择下载方式 */
     var starCta = starModal.querySelector(".js-star-cta");
     if (starCta) {
-      starCta.addEventListener("click", function () { closeStarModal("starred"); });
+      starCta.addEventListener("click", function () {
+        closeStarModal("starred");
+        if (openDownloadModal) openDownloadModal();
+      });
     }
 
-    /* 直接下载：放行本次下载 */
+    /* 直接下载：关闭 Star 提示后进入下载方式选择 */
     var starContinue = starModal.querySelector(".js-star-continue");
     if (starContinue) {
-      starContinue.addEventListener("click", function () { closeStarModal("continued"); });
+      starContinue.addEventListener("click", function (e) {
+        if (!openDownloadModal) return; /* 弹窗不可用时回退到 Releases 链接 */
+        e.preventDefault();
+        closeStarModal("continued");
+        openDownloadModal();
+      });
     }
 
     starModal.querySelectorAll("[data-modal-close]").forEach(function (node) {

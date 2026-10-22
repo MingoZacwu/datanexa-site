@@ -31,12 +31,13 @@
       prerelease: "预发布",
       released: "发布于",
       downloads: "下载",
-      recommended: "适用于当前系统",
       loading: "正在加载版本记录……",
       noMatch: "没有匹配的版本，换个关键词试试。",
       empty: "该版本的发布说明中没有独立的更新记录，完整内容可在 GitHub 上查看。",
       fallback: "该版本没有英文说明，以下为发布时的原始说明。",
       viewOnGithub: "在 GitHub 上查看",
+      moreDownloads: "更多下载方式",
+      proxyDownload: "通过加速代理下载",
       error: "无法加载更新日志数据（{detail}）。",
       errorHint: "本地预览请通过 HTTP 打开（例如：python -m http.server），file:// 下浏览器会阻止读取数据文件。"
     },
@@ -46,12 +47,13 @@
       prerelease: "Pre-release",
       released: "Released",
       downloads: "Downloads",
-      recommended: "For your system",
       loading: "Loading release history…",
       noMatch: "No matching release — try another keyword.",
       empty: "This release has no separate change log; view the full description on GitHub.",
       fallback: "English notes were not published for this version — the original notes are shown.",
       viewOnGithub: "View on GitHub",
+      moreDownloads: "More download options",
+      proxyDownload: "Download via accelerator",
       error: "Could not load the changelog data ({detail}).",
       errorHint: "To preview locally, serve the folder over HTTP (for example: python -m http.server) — browsers block reading data files over file://."
     }
@@ -81,6 +83,17 @@
     chevron: [["path", { d: "M6 9l6 6 6-6" }]]
   };
 
+  /* 平台 Logo 用填充路径，和上面描边图标分开处理 */
+  var BRAND_ICONS = {
+    macos: [
+      "M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09z",
+      "M15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"
+    ],
+    windows: [
+      "M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"
+    ]
+  };
+
   function el(tag, className, text) {
     var node = document.createElement(tag);
     if (className) node.className = className;
@@ -103,6 +116,21 @@
         child.setAttribute(attribute, entry[1][attribute]);
       });
       svg.appendChild(child);
+    });
+    return svg;
+  }
+
+  function brandIcon(platform) {
+    var paths = BRAND_ICONS[platform];
+    if (!paths) return svgIcon("download");
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("fill", "currentColor");
+    svg.setAttribute("aria-hidden", "true");
+    paths.forEach(function (d) {
+      var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", d);
+      svg.appendChild(path);
     });
     return svg;
   }
@@ -149,18 +177,96 @@
 
     entry.assets.forEach(function (asset) {
       var recommended = asset.platform && asset.platform === options.recommendedPlatform;
+      var group = el("div", "cl-asset-group" + (recommended ? " is-recommended" : ""));
+
       var link = el("a", "cl-asset" + (recommended ? " is-recommended" : ""));
       link.href = asset.downloadUrl;
       link.rel = "noopener";
-      link.appendChild(svgIcon("download"));
+      link.appendChild(brandIcon(asset.platform));
       link.appendChild(el("span", "cl-asset-name", PLATFORM_LABEL[asset.platform] || asset.platform));
       var meta = formatBytes(asset.sizeBytes);
-      if (recommended) meta = meta ? meta + " · " + t("recommended") : t("recommended");
       if (meta) link.appendChild(el("span", "cl-asset-meta", meta));
-      wrap.appendChild(link);
+      group.appendChild(link);
+
+      /* 主按钮保持直连 GitHub；下拉里才提供加速代理，避免把默认下载改道。 */
+      var toggle = el("button", "cl-asset-toggle");
+      toggle.type = "button";
+      toggle.setAttribute("aria-haspopup", "menu");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-label", t("moreDownloads"));
+      toggle.appendChild(svgIcon("chevron"));
+      toggle.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        var proxy = window.DataNexaDownloads;
+        openAssetMenu(toggle, proxy ? proxy.proxyUrl(asset.downloadUrl) : asset.downloadUrl);
+      });
+      group.appendChild(toggle);
+
+      wrap.appendChild(group);
     });
 
     return wrap;
+  }
+
+  /* ---------- 下载下拉菜单 ---------- */
+  /* 菜单挂在 body 上：版本卡片有 backdrop-filter 形成的层叠上下文，
+     菜单放在卡片里会被后面的卡片盖住。 */
+
+  var menuState = { el: null, item: null, toggle: null };
+
+  function ensureAssetMenu() {
+    if (menuState.el) return menuState.el;
+    var menu = el("div", "cl-asset-menu");
+    menu.hidden = true;
+    menu.setAttribute("role", "menu");
+    var item = el("a", "cl-asset-menu-item");
+    item.href = "#";
+    item.setAttribute("role", "menuitem");
+    item.appendChild(svgIcon("download"));
+    item.appendChild(el("span", "cl-asset-menu-text", t("proxyDownload")));
+    item.addEventListener("click", closeAssetMenu);
+    menu.appendChild(item);
+    document.body.appendChild(menu);
+    menuState.el = menu;
+    menuState.item = item;
+    return menu;
+  }
+
+  function closeAssetMenu() {
+    if (!menuState.el || menuState.el.hidden) return;
+    menuState.el.hidden = true;
+    if (menuState.toggle) {
+      menuState.toggle.setAttribute("aria-expanded", "false");
+      menuState.toggle = null;
+    }
+  }
+
+  function openAssetMenu(toggle, url) {
+    var menu = ensureAssetMenu();
+    if (menuState.toggle === toggle && !menu.hidden) {
+      closeAssetMenu();
+      return;
+    }
+    closeAssetMenu();
+    menuState.toggle = toggle;
+    menuState.item.href = url;
+    menuState.item.querySelector(".cl-asset-menu-text").textContent = t("proxyDownload");
+    toggle.setAttribute("aria-expanded", "true");
+    menu.hidden = false;
+
+    /* 先显示再测量，菜单宽度由文案决定 */
+    var rect = toggle.getBoundingClientRect();
+    var box = menu.getBoundingClientRect();
+    var gap = 6;
+    var left = Math.max(8, Math.min(rect.right - box.width, window.innerWidth - box.width - 8));
+    var top = rect.bottom + gap;
+    if (top + box.height > window.innerHeight - 8) top = rect.top - box.height - gap;
+    menu.style.left = Math.round(left) + "px";
+    menu.style.top = Math.round(Math.max(8, top)) + "px";
+
+    /* 键盘打开时焦点直接落在菜单项上，Esc 再回到箭头按钮 */
+    if (menuState.item && menuState.item.focus) menuState.item.focus();
   }
 
   function buildCard(entry, index, platform) {
@@ -254,6 +360,7 @@
 
   function render() {
     state.lang = currentLang();
+    closeAssetMenu();
     var platform = detectPlatform();
     var firstRender = state.cards.length === 0;
     var openTags = state.cards
@@ -399,6 +506,24 @@
       applyFilters();
     });
   }
+
+  /* 下拉菜单：点击外部、Esc、滚动或缩放时收起 */
+  document.addEventListener("click", function (event) {
+    if (!menuState.el || menuState.el.hidden) return;
+    if (menuState.el.contains(event.target)) return;
+    if (menuState.toggle && menuState.toggle.contains(event.target)) return;
+    closeAssetMenu();
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key !== "Escape" || !menuState.el || menuState.el.hidden) return;
+    var toggle = menuState.toggle;
+    closeAssetMenu();
+    if (toggle) toggle.focus();
+  });
+
+  window.addEventListener("scroll", closeAssetMenu, { passive: true });
+  window.addEventListener("resize", closeAssetMenu);
 
   window.addEventListener("hashchange", function () { focusHash(true); });
 
