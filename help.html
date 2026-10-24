@@ -1,0 +1,2086 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DataNexa 帮助文档</title>
+  <meta name="description" content="DataNexa 官方帮助文档：安装、数据库连接、JDBC、MCP 服务与 Agent 接入、七个 MCP 工具、访问控制、审计日志和设置的操作说明与排错方法。">
+  <meta name="keywords" content="DataNexa, 帮助文档, MCP, 数据库连接, SQLite, MySQL, PostgreSQL, JDBC, Agent 接入, 访问控制, 审计日志">
+  <meta name="author" content="Zachary Wu">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f4f7fb" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#10151f" media="(prefers-color-scheme: dark)">
+  <link rel="canonical" href="https://mingozacwu.github.io/datanexa-site/help.html">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="DataNexa">
+  <meta property="og:title" content="DataNexa 帮助文档">
+  <meta property="og:description" content="安装、数据库连接、JDBC、MCP 服务与 Agent 接入、七个 MCP 工具、访问控制、审计日志和设置的操作说明与排错方法。">
+  <meta property="og:url" content="https://mingozacwu.github.io/datanexa-site/help.html">
+  <meta property="og:image" content="https://mingozacwu.github.io/datanexa-site/assets/logo.png">
+  <meta property="og:image:alt" content="DataNexa — 本地只读数据库 MCP 网关">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:locale:alternate" content="en_US">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="DataNexa 帮助文档">
+  <meta name="twitter:description" content="安装、数据库连接、JDBC、MCP 服务与 Agent 接入、七个 MCP 工具、访问控制、审计日志和设置的操作说明与排错方法。">
+  <meta name="twitter:image" content="https://mingozacwu.github.io/datanexa-site/assets/logo.png">
+  <meta name="twitter:image:alt" content="DataNexa — 本地只读数据库 MCP 网关">
+
+  <!-- Icons & Manifest -->
+  <link rel="icon" type="image/png" href="assets/icon.png">
+  <link rel="apple-touch-icon" href="assets/icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/help.css">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "TechArticle",
+        "headline": "DataNexa 帮助文档",
+        "name": "DataNexa 帮助文档",
+        "description": "DataNexa 官方帮助文档：数据库连接、JDBC 支持、MCP 服务与 Agent 接入、MCP 工具、访问控制、审计日志与设置。",
+        "inLanguage": "zh-CN",
+        "url": "https://mingozacwu.github.io/datanexa-site/help.html",
+        "mainEntityOfPage": "https://mingozacwu.github.io/datanexa-site/help.html",
+        "author": { "@type": "Person", "name": "Zachary Wu" },
+        "publisher": { "@id": "https://mingozacwu.github.io/datanexa-site/#org" },
+        "about": { "@type": "SoftwareApplication", "name": "DataNexa", "applicationCategory": "DeveloperApplication" }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "首页", "item": "https://mingozacwu.github.io/datanexa-site/" },
+          { "@type": "ListItem", "position": 2, "name": "帮助文档", "item": "https://mingozacwu.github.io/datanexa-site/help.html" }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body class="docs-page" data-title-zh="DataNexa 帮助文档" data-title-en="DataNexa Documentation">
+  <div class="bg-orbit" aria-hidden="true">
+    <div class="bg-grid"></div>
+    <div class="bg-glow glow-a"></div>
+    <div class="bg-glow glow-b"></div>
+    <div class="bg-glow glow-c"></div>
+  </div>
+
+  <a class="docs-skip" href="#docContent"><span data-i18n="doc.a11y.skip">跳到正文</span></a>
+
+  <header class="nav" id="nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="index.html">
+        <img src="assets/logo.png" alt="DataNexa Logo">
+        <span>DataNexa</span>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html" data-i18n="nav.home">返回首页</a>
+        <a href="index.html#features" data-i18n="nav.features">功能特性</a>
+        <a href="index.html#tools" data-i18n="nav.tools">MCP 工具</a>
+        <a href="help.html" data-i18n="nav.help" aria-current="page">帮助文档</a>
+        <a href="changelog.html" data-i18n="footer.changelog">更新日志</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn" id="langToggle" type="button" aria-label="Switch language" title="EN / 中">中</button>
+        <button class="icon-btn" id="themeToggle" type="button" aria-label="Toggle theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5 5l1.6 1.6M17.4 17.4L19 19M19 5l-1.6 1.6M6.6 17.4L5 19"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.4 14.5A8.5 8.5 0 0 1 9.5 3.6a8.5 8.5 0 1 0 10.9 10.9z"/></svg>
+        </button>
+        <a class="btn btn-ghost nav-github" href="https://github.com/MingoZacwu/DataNexa" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+          GitHub
+        </a>
+        <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="菜单 / Menu" aria-expanded="false" aria-controls="navDrawer">
+          <svg class="icon-burger" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="nav-drawer" id="navDrawer">
+      <nav class="nav-drawer-inner">
+        <a href="index.html" data-i18n="nav.home">返回首页</a>
+        <a href="index.html#features" data-i18n="nav.features">功能特性</a>
+        <a href="index.html#tools" data-i18n="nav.tools">MCP 工具</a>
+        <a href="help.html" data-i18n="nav.help">帮助文档</a>
+        <a href="changelog.html" data-i18n="footer.changelog">更新日志</a>
+        <a class="drawer-github" href="https://github.com/MingoZacwu/DataNexa" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+          GitHub
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="docs-progress" aria-hidden="true"><i></i></div>
+
+  <main id="top">
+    <!-- ============ HERO ============ -->
+    <section class="docs-hero">
+      <div class="docs-container docs-hero-inner">
+        <div class="docs-hero-grid">
+          <div>
+            <h1 class="docs-title">
+              <span data-i18n="doc.hero.title1">DataNexa</span>
+              <span class="grad-text" data-i18n="doc.hero.title2">帮助文档</span>
+            </h1>
+            <p class="docs-sub" data-i18n="doc.hero.sub">按实际操作顺序说明每个页面、每项设置怎么用；遇到报错，可以到「常见问题」查找处理方法，也可以直接搜索关键词。</p>
+            <div class="docs-search" role="search">
+              <div class="docs-search-field">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+                <input type="search" id="docSearch" data-i18n-attr="placeholder:doc.search.placeholder;aria-label:doc.search.placeholder" placeholder="搜索功能、设置或错误提示…" aria-label="搜索文档" autocomplete="off" spellcheck="false">
+                <kbd>⌘ K</kbd>
+              </div>
+              <div class="docs-search-results" id="docSearchResults" role="listbox" aria-label="搜索结果" hidden></div>
+            </div>
+            <div class="docs-meta">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v3M16 4v3"/></svg><span data-i18n="doc.hero.updated">上次更新：<b>2026-10</b></span></span>
+            </div>
+          </div>
+
+          <aside class="docs-quick" aria-label="快速入口">
+            <h2 data-i18n="doc.quick.title">从这里开始</h2>
+            <ul>
+              <li><a href="#start"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i><span data-i18n="doc.quick.install">安装与首次启动</span></a></li>
+              <li><a href="#quickstart"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i><span data-i18n="doc.quick.connect">四步接入 Agent</span></a></li>
+              <li><a href="#connections"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i><span data-i18n="doc.quick.db">配置数据库连接</span></a></li>
+              <li><a href="#tools"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i><span data-i18n="doc.quick.tools">MCP 工具速查</span></a></li>
+              <li><a href="#faq"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i><span data-i18n="doc.quick.faq">常见问题排查</span></a></li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BODY ============ -->
+    <div class="docs-container docs-wrap">
+      <!-- 左侧章节目录 -->
+      <aside class="docs-side">
+        <button class="docs-side-toggle" id="docNavToggle" type="button" aria-expanded="false" aria-controls="docNav">
+          <span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+            <span data-i18n="doc.nav.toggle">文档目录</span>
+          </span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <nav class="docs-nav" id="docNav" aria-label="文档目录">
+          <div class="doc-nav-group">
+            <span class="doc-nav-title" data-i18n="doc.nav.group.start">入门</span>
+            <a href="#start" data-i18n="doc.nav.start">开始使用</a>
+            <a href="#interface" data-i18n="doc.nav.interface">界面导览</a>
+            <a href="#quickstart" data-i18n="doc.nav.quickstart">四步接入 Agent</a>
+          </div>
+          <div class="doc-nav-group">
+            <span class="doc-nav-title" data-i18n="doc.nav.group.setup">配置</span>
+            <a href="#connections" data-i18n="doc.nav.connections">数据库连接</a>
+            <a href="#jdbc" data-i18n="doc.nav.jdbc">JDBC 支持</a>
+            <a href="#service" data-i18n="doc.nav.service">MCP 服务与接入</a>
+            <a href="#access" data-i18n="doc.nav.access">访问控制</a>
+          </div>
+          <div class="doc-nav-group">
+            <span class="doc-nav-title" data-i18n="doc.nav.group.reference">参考</span>
+            <a href="#tools" data-i18n="doc.nav.tools">MCP 工具参考</a>
+            <a href="#audit" data-i18n="doc.nav.audit">审计日志</a>
+            <a href="#settings" data-i18n="doc.nav.settings">设置</a>
+            <a href="#security" data-i18n="doc.nav.security">安全模型</a>
+            <a href="#faq" data-i18n="doc.nav.faq">常见问题</a>
+            <a href="#appendix" data-i18n="doc.nav.appendix">附录</a>
+          </div>
+        </nav>
+        <div class="docs-side-card">
+          <strong>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 16.5v.2M9.6 9.2a2.6 2.6 0 1 1 3.7 2.4c-.8.4-1.3 1-1.3 1.9"/></svg>
+            <span data-i18n="doc.side.helpTitle">仍然卡住了？</span>
+          </strong>
+          <p data-i18n="doc.side.helpText">查看 GitHub Issues 中的已知问题，或提交一份带日志的反馈。</p>
+          <a href="https://github.com/MingoZacwu/DataNexa/issues" target="_blank" rel="noopener">
+            <span data-i18n="doc.side.helpLink">前往 Issues</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </a>
+        </div>
+      </aside>
+
+      <!-- 正文 -->
+      <article class="docs-main" id="docContent">
+        <!-- 01 开始使用 -->
+        <section class="doc-section" id="start">
+          <div class="doc-chapter"><span>01</span><span data-i18n="doc.ch.start">开始使用</span></div>
+          <h2><span data-i18n="doc.start.title">第一次打开 DataNexa</span><a class="doc-anchor" href="#start" aria-label="链接到本节">#</a></h2>
+          <p class="doc-lead" data-i18n="doc.start.lead">DataNexa 是一个运行在你本机的数据库 MCP 网关。它把 SQLite、MySQL、PostgreSQL 以及通过 JDBC 接入的数据库，统一成一份 MCP 服务提供给 AI Agent，并在查询到达数据库之前完成只读校验、资源限制与审计记录。</p>
+
+          <div class="doc-tldr">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 4v5c0 4.4-3 8-7 9-4-1-7-4.6-7-9V7l7-4z"/><path d="M9.5 12l2 2 3.5-4"/></svg>
+            <div><b data-i18n="doc.start.tldrLabel">要点：</b><span data-i18n="doc.start.tldr">Agent 不再直连数据库，而是连到 DataNexa；DataNexa 只放行只读查询，并留下每一条调用记录。</span></div>
+          </div>
+
+          <h3 class="doc-h3" data-i18n="doc.start.installTitle">安装与首次启动</h3>
+          <ol>
+            <li data-i18n="doc.start.installLi1">从 <a href="https://github.com/MingoZacwu/DataNexa/releases" target="_blank" rel="noopener">GitHub Releases</a> 下载对应系统的安装包，安装后启动 DataNexa。安装包不内置 Java 运行时，JDBC 功能会在需要时单独准备。</li>
+            <li data-i18n="doc.start.installLi2">首次打开会进入<b>概览</b>页。此时 MCP 服务尚未启动，连接数为 0，属于正常状态。</li>
+            <li data-i18n="doc.start.installLi3">建议先完成<b>新建数据库连接 → 测试连接 → 启动 MCP 服务 → 接入 Agent</b> 四步。</li>
+          </ol>
+
+          <div class="callout callout-note">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.2"/></svg>
+            <div class="callout-body"><span class="callout-title" data-i18n="doc.start.noteTitle">关闭窗口不等于停止服务</span><span data-i18n="doc.start.noteText">DataNexa 关闭窗口后会继续在后台提供 MCP 服务。如果希望开机后自动恢复，可在「设置 → 通用 → 启动与后台」中开启「开机自启动」与「启动 DataNexa 时自动开启 MCP 服务」。</span></div>
+          </div>
+
+          <figure class="doc-shot">
+            <div class="shot-frame" style="--shot-ratio: 2584 / 1744">
+              <div class="shot-placeholder" aria-hidden="true">
+                <span class="shot-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg></span>
+                <span class="shot-label">截图占位 · 01</span>
+                <code class="shot-name">01-overview.png</code>
+                <span class="shot-desc">概览页全貌：侧边栏、服务状态卡、四项指标、快速开始与最近日志。</span>
+                <span class="shot-size">建议 1600 × 1000 · PNG · 浅色主题 · 服务保持运行中</span>
+              </div>
+              <img src="assets/help/01-overview.png" alt="DataNexa 概览页，展示服务状态、数据库连接数、MCP 工具数与最近日志" loading="lazy" decoding="async">
+            </div>
+            <figcaption><span class="shot-num">图 1-1</span><span data-i18n="doc.fig.overview">概览页是每次打开应用后的起点，服务状态与调用情况都在这里汇总。</span></figcaption>
+          </figure>
+
+          <h3 class="doc-h3" data-i18n="doc.start.dataTitle">你的数据存在哪里</h3>
+          <div class="doc-table-wrap">
+            <div class="doc-table-scroll">
+              <table class="doc-table">
+                <thead>
+                  <tr><th data-i18n="doc.start.dataTh1">内容</th><th data-i18n="doc.start.dataTh2">存放位置</th><th data-i18n="doc.start.dataTh3">说明</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td data-i18n="doc.start.dataR1a">连接元数据</td><td data-i18n="doc.start.dataR1b">本地 TOML 配置文件</td><td data-i18n="doc.start.dataR1c">名称、类型、主机、端口、数据库、限额等；不含密码。</td></tr>
+                  <tr><td data-i18n="doc.start.dataR2a">数据库密码</td><td data-i18n="doc.start.dataR2b">操作系统凭证库</td><td data-i18n="doc.start.dataR2c">macOS 钥匙串、Windows 凭据管理器、Linux Secret Service。</td></tr>
+                  <tr><td data-i18n="doc.start.dataR3a">审计日志</td><td data-i18n="doc.start.dataR3b">本地 SQLite（WAL）</td><td data-i18n="doc.start.dataR3c">按保留天数自动清理，可在审计日志页查看。</td></tr>
+                  <tr><td data-i18n="doc.start.dataR4a">JDBC 驱动与运行时</td><td data-i18n="doc.start.dataR4b">应用数据目录</td><td data-i18n="doc.start.dataR4c">可在「设置 → 存储与性能」查看占用并打开目录。</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <p data-i18n="doc.start.dataNote">导出连接文件会把数据库密码写入文件（默认要求设置加密密码）。请只在受控位置保存，迁移完成后及时删除。</p>
+        </section>
+
+        <!-- 02 界面导览 -->
+        <section class="doc-section" id="interface">
+          <div class="doc-chapter"><span>02</span><span data-i18n="doc.ch.interface">界面导览</span></div>
+          <h2><span data-i18n="doc.interface.title">六个页面分别做什么</span><a class="doc-anchor" href="#interface" aria-label="链接到本节">#</a></h2>
+          <p class="doc-lead" data-i18n="doc.interface.lead">DataNexa 的左侧导航固定为六项：概览、数据库连接、工具、访问控制、审计日志、设置。日常使用基本沿着这条路径：先在「数据库连接」里准备数据源，再到「概览」启动服务，最后把配置交给 Agent。</p>
+
+          <div class="doc-table-wrap">
+            <div class="doc-table-scroll">
+              <table class="doc-table">
+                <thead>
+                  <tr><th data-i18n="doc.interface.th1">页面</th><th data-i18n="doc.interface.th2">用来做什么</th><th data-i18n="doc.interface.th3">对应章节</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><span data-i18n="doc.nav.overview">概览</span></td><td data-i18n="doc.interface.r1">看服务状态与近 24 小时调用，启动/停止服务，复制接入配置，处理首次使用的引导。</td><td><a href="#service" data-i18n="doc.interface.link1">MCP 服务与接入</a></td></tr>
+                  <tr><td><span data-i18n="doc.nav.connections">数据库连接</span></td><td data-i18n="doc.interface.r2">新增、编辑、启停连接，测试与诊断，紧急断连，导入导出。</td><td><a href="#connections" data-i18n="doc.interface.link2">数据库连接</a></td></tr>
+                  <tr><td><span data-i18n="doc.nav.tools">工具</span></td><td data-i18n="doc.interface.r3">逐个开关 7 件 MCP 工具，控制 Agent 能看见、能调用的能力。</td><td><a href="#tools" data-i18n="doc.interface.link3">MCP 工具参考</a></td></tr>
+                  <tr><td><span data-i18n="doc.nav.access">访问控制</span></td><td data-i18n="doc.interface.r4">创建命名令牌，为不同 Agent 分配不同的数据库与工具权限。</td><td><a href="#access" data-i18n="doc.interface.link4">访问控制</a></td></tr>
+                  <tr><td><span data-i18n="doc.nav.audit">审计日志</span></td><td data-i18n="doc.interface.r5">按时间、工具、连接、状态筛选调用记录，查看 SQL 与结果详情。</td><td><a href="#audit" data-i18n="doc.interface.link5">审计日志</a></td></tr>
+                  <tr><td><span data-i18n="doc.nav.settings">设置</span></td><td data-i18n="doc.interface.r6">外观、语言、服务策略、审计保留、JDBC 驱动与运行时、存储与更新。</td><td><a href="#settings" data-i18n="doc.interface.link6">设置</a></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <figure class="doc-shot doc-shot-tall">
+            <div class="shot-frame" style="--shot-ratio: 891 / 1687">
+              <div class="shot-placeholder" aria-hidden="true">
+                <span class="shot-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg></span>
+                <span class="shot-label">截图占位 · 02</span>
+                <code class="shot-name">02-sidebar-navigation.png</code>
+                <span class="shot-desc">左侧导航栏特写：六个菜单项、底部服务状态与主题切换。</span>
+                <span class="shot-size">建议 720 × 1000 · PNG · 深色主题</span>
+              </div>
+              <img src="assets/help/02-sidebar-navigation.png" alt="DataNexa 左侧导航栏，包含概览、数据库连接、工具、访问控制、审计日志与设置" loading="lazy" decoding="async">
+            </div>
+            <figcaption><span class="shot-num">图 2-1</span><span data-i18n="doc.fig.sidebar">左侧导航是唯一的全局入口，底部会一直显示服务状态。</span></figcaption>
+          </figure>
+
+          <h3 class="doc-h3" data-i18n="doc.interface.topTitle">顶栏与全局状态</h3>
+          <p data-i18n="doc.interface.topP1">页面右上角的快捷操作随页面变化：在「数据库连接」页可以一键<b>紧急断连</b>，在「审计日志」页可以打开<b>筛选</b>，在「访问控制」页可以快速<b>创建令牌</b>。</p>
+          <p data-i18n="doc.interface.topP2">侧边栏底部始终显示 MCP 服务的状态：<b>服务运行中 · 端口</b> 或 <b>服务已停止</b>。点击状态可以在概览页查看详情。</p>
+
+          <h3 class="doc-h3" data-i18n="doc.interface.themeTitle">主题、语言与动效</h3>
+          <ul>
+            <li data-i18n="doc.interface.themeLi1"><strong>主题：</strong>侧边栏底部的按钮在浅色与深色之间切换；「设置 → 通用 → 显示」还可以选择「跟随系统」。</li>
+            <li data-i18n="doc.interface.themeLi2"><strong>语言：</strong>「设置 → 通用 → 显示 → 界面语言」可在简体中文与 English 之间切换，立即生效。</li>
+            <li data-i18n="doc.interface.themeLi3"><strong>动效：</strong>「MCP 被调用时显示能量脉冲」默认开启。调用成功与失败会在概览状态卡上留下不同颜色的反馈。</li>
+          </ul>
+        </section>
+
+        <!-- 03 四步接入 -->
+        <section class="doc-section" id="quickstart">
+          <div class="doc-chapter"><span>03</span><span data-i18n="doc.ch.quickstart">快速接入</span></div>
+          <h2><span data-i18n="doc.quickstart.title">四步接入 Agent</span><a class="doc-anchor" href="#quickstart" aria-label="链接到本节">#</a></h2>
+          <p class="doc-lead" data-i18n="doc.quickstart.lead">如果你刚装好 DataNexa，跟着这一章走一遍即可完成最小可用配置。每一步都可以在后续章节找到更细的说明。</p>
+
+          <div class="doc-steps">
+            <div class="doc-step">
+              <h4 data-i18n="doc.quickstart.s1t">新建连接</h4>
+              <p data-i18n="doc.quickstart.s1p">进入「数据库连接 → 新建连接」，选择数据库类型并填写连接信息。强烈建议使用数据库侧的只读账号；SQLite 需要选择数据库文件。</p>
+            </div>
+            <div class="doc-step">
+              <h4 data-i18n="doc.quickstart.s2t">测试连接</h4>
+              <p data-i18n="doc.quickstart.s2p">保存后点击「测试连接」，确认网络、凭证与权限都正确。失败时先看错误信息，再用「诊断连接」检查凭证状态与地址。</p>
+            </div>
+            <div class="doc-step">
+              <h4 data-i18n="doc.quickstart.s3t">启动服务</h4>
+              <p data-i18n="doc.quickstart.s3p">回到「概览」，点击服务状态卡上的「启动」；或在「设置 → 通用 → 服务策略」中确认端口与鉴权配置后启动。服务默认只监听本机。</p>
+            </div>
+            <div class="doc-step">
+              <h4 data-i18n="doc.quickstart.s4t">接入 Agent</h4>
+              <p data-i18n="doc.quickstart.s4p">点击「复制接入配置」，把生成的内容交给支持 MCP 的客户端；或按第六章的 JSON 示例手动填写。完成后让 Agent 调用一次 list_connections 验证。</p>
+            </div>
+          </div>
+
+          <figure class="doc-shot">
+            <div class="shot-frame" style="--shot-ratio: 1400 / 292">
+              <div class="shot-placeholder" aria-hidden="true">
+                <span class="shot-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg></span>
+                <span class="shot-label">截图占位 · 03</span>
+                <code class="shot-name">03-quickstart-cards.png</code>
+                <span class="shot-desc">概览页「快速开始」三张卡片：连接数据库、启动服务、接入 Agent。</span>
+                <span class="shot-size">建议 1400 × 760 · PNG · 浅色主题</span>
+              </div>
+              <img src="assets/help/03-quickstart-cards.png" alt="DataNexa 概览页的快速开始三张卡片" loading="lazy" decoding="async">
+            </div>
+            <figcaption><span class="shot-num">图 3-1</span><span data-i18n="doc.fig.quickstart">概览页把接入流程拆成了三张卡片，点击即可跳到对应操作。</span></figcaption>
+          </figure>
+
+          <h3 class="doc-h3" data-i18n="doc.quickstart.checkTitle">完成前的自查清单</h3>
+          <ul>
+            <li data-i18n="doc.quickstart.check1">连接状态为「启用」，而不是「暂停」。</li>
+            <li data-i18n="doc.quickstart.check2">服务状态显示「运行中」，并记下端点地址与端口。</li>
+            <li data-i18n="doc.quickstart.check3">Bearer 鉴权开启时，客户端配置里带有正确的 <code>Authorization</code> 头。</li>
+            <li data-i18n="doc.quickstart.check4">至少保持 <code>datanexa_list_connections</code> 与 <code>datanexa_get_schema</code> 两个工具开启，便于 Agent 先发现数据结构。</li>
+            <li data-i18n="doc.quickstart.check5">在「审计日志」中能看到刚才的调用记录。</li>
+          </ul>
+
+          <div class="callout callout-tip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5.9 1.2.9 2.1h5.2c0-.9.3-1.6.9-2.1A6 6 0 0 0 12 3z"/></svg>
+            <div class="callout-body"><span class="callout-title" data-i18n="doc.quickstart.tipTitle">给 Agent 的提示词也很重要</span><span data-i18n="doc.quickstart.tipText">接入配置只解决「能连上」。在对话开始时告诉 Agent：先用 list_connections 和 get_schema 了解结构，再执行查询；不要用截断结果推断总量。这两句话能显著减少无效调用。</span></div>
+          </div>
+        </section>
+
+        <!-- 04 数据库连接 -->
+<section class="doc-section" id="connections">
+  <div class="doc-chapter"><span>04</span><span data-i18n="doc.ch.connections">数据库连接</span></div>
+  <h2><span data-i18n="doc.connections.title">添加数据库连接</span><a class="doc-anchor" href="#connections" aria-label="链接到本节">#</a></h2>
+  <p class="doc-lead" data-i18n="doc.connections.lead">这一章说明一条连接怎么建、怎么测、怎么停，以及密码最后落在哪里。做完之后你会得到一条「能连、能查、能停」的只读连接，后面的 MCP 服务与 Agent 才有数据可用。</p>
+
+  <div class="doc-tldr">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 4v5c0 4.4-3 8-7 9-4-1-7-4.6-7-9V7l7-4z"/><path d="M9.5 12l2 2 3.5-4"/></svg>
+    <div><b data-i18n="doc.connections.tldrLabel">要点：</b><span data-i18n="doc.connections.tldr">连接是「名称 + 类型 + 地址 + 凭证引用 + 限额」的一条配置；元数据写进配置文件的 TOML，密码只进本机凭证库。只读由 DataNexa 在 SQL 策略和数据库会话两层强制，不需要在数据库里改任何设置。</span></div>
+  </div>
+
+  <h3 class="doc-h3" id="conn-list" data-i18n="doc.connections.listTitle">连接列表与右侧检查器</h3>
+  <p data-i18n="doc.connections.listP1">「数据库连接」页面分两栏：左边是全部连接，右边是当前选中连接的明细。每条记录显示数据库图标、名称、状态标签和一行地址摘要：SQLite 显示数据库文件，MySQL 与 PostgreSQL 显示 <code>host:port</code>，JDBC 显示 JDBC URL。</p>
+  <p data-i18n="doc.connections.listP2">行内右侧是五个图标按钮，鼠标悬停会显示名称：电源图标切换启用与暂停，线缆图标是「测试连接」，放大镜图标是「诊断连接」且对 JDBC 连接不可用，竖排点图标打开编辑，垃圾桶图标删除。连接被暂停后，测试与诊断都会失效。复制入口只在右侧检查器里：点那里的连接名即复制，并提示「连接名已复制。」。</p>
+  <p data-i18n="doc.connections.listP3">右侧检查器列出这台连接的全部关键参数：主机、端口、数据库、用户名、SSL 模式、最大返回行数、查询超时（毫秒）、最大连接数、最大结果大小（按 KiB 显示）。SQLite 的主机一栏固定显示 <code>LOCAL</code>；JDBC 连接只显示 JDBC URL，其余地址字段不适用。</p>
+
+  <figure class="doc-shot">
+    <div class="shot-frame" style="--shot-ratio: 2584 / 1744">
+      <div class="shot-placeholder" aria-hidden="true">
+        <span class="shot-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg></span>
+        <span class="shot-label">截图占位 · 04</span>
+        <code class="shot-name">04-connections-list.png</code>
+        <span class="shot-desc">画面内容：连接列表至少 3 条（含启用与暂停各一），右上角「新建连接」，行内测试/编辑入口，右侧检查器，左侧侧边栏。</span>
+        <span class="shot-size">建议 1600 × 1000 · PNG · 浅色主题</span>
+      </div>
+      <img src="assets/help/04-connections-list.png" alt="DataNexa 数据库连接页：左侧连接列表中有三条连接，其中一条显示为暂停，右侧是选中连接的主机、端口、限额等参数" loading="lazy" decoding="async">
+    </div>
+    <figcaption><span class="shot-num"><span data-i18n="doc.shared.figure">图</span> 4-1</span><span data-i18n="doc.fig.connectionsList">左列表右明细：状态、地址摘要和行内操作都在一屏内完成。</span></figcaption>
+  </figure>
+
+  <h3 class="doc-h3" id="conn-editor" data-i18n="doc.connections.createTitle">新建一条连接</h3>
+  <p data-i18n="doc.connections.createP">新建和编辑共用同一个弹窗，分为基础信息、连接地址、凭证与限制三段。保存前可以先点「测试连接」，用当前填写的值试连一次，不会先写入配置。</p>
+
+  <div class="doc-steps">
+    <div class="doc-step">
+      <h4 data-i18n="doc.connections.s1t">打开弹窗</h4>
+      <p data-i18n="doc.connections.s1p">点页面右上角的「新建连接」。名称默认填入「新的只读连接」，类型默认是 <code>MySQL</code>，主机 <code>localhost</code>，端口 <code>3306</code>，SSL 模式为「优先 / 自动」。</p>
+    </div>
+    <div class="doc-step">
+      <h4 data-i18n="doc.connections.s2t">选择数据库类型</h4>
+      <p data-i18n="doc.connections.s2p">可选 <code>SQLite</code>、<code>MySQL</code>、<code>PostgreSQL</code>、<code>JDBC</code>。切换类型会把不适用的字段清空，端口自动改成该类型的默认值，因此类型要最先确定。</p>
+    </div>
+    <div class="doc-step">
+      <h4 data-i18n="doc.connections.s3t">填写连接地址</h4>
+      <p data-i18n="doc.connections.s3p">SQLite 只填数据库文件路径；MySQL 与 PostgreSQL 填主机、端口、数据库名；JDBC 则从已安装的驱动 Bundle 里选一个，再填以 <code>jdbc:</code> 开头的 URL。</p>
+    </div>
+    <div class="doc-step">
+      <h4 data-i18n="doc.connections.s4t">填写凭证与限额</h4>
+      <p data-i18n="doc.connections.s4p">密码框的占位文字会提示「保存到本机凭证库」，编辑已有连接时改为「留空则保留现有密码」。四项限额都有默认值，可以先不动，之后再按需调小。</p>
+    </div>
+    <div class="doc-step">
+      <h4 data-i18n="doc.connections.s5t">测试后保存</h4>
+      <p data-i18n="doc.connections.s5p">点「测试连接」确认能通，提示「连接可用 · 12 ms」这样的消息后，再点「保存连接」。成功会提示「连接配置已保存。」；JDBC 连接在未选驱动时保存按钮不可用。</p>
+    </div>
+  </div>
+
+  <figure class="doc-shot">
+    <div class="shot-frame" style="--shot-ratio: 1004 / 1000">
+      <div class="shot-placeholder" aria-hidden="true">
+        <span class="shot-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg></span>
+        <span class="shot-label">截图占位 · 05</span>
+        <code class="shot-name">05-connection-editor.png</code>
+        <span class="shot-desc">画面内容：新建连接弹窗，类型下拉加上已填写的 MySQL 或 PostgreSQL 字段，密码输入框打码，下方是限额区域与「测试连接」「保存连接」。</span>
+        <span class="shot-size">建议 1400 × 1000 · PNG · 浅色主题</span>
+      </div>
+      <img src="assets/help/05-connection-editor.png" alt="新增连接弹窗：数据库类型选择、已填写的主机端口与数据库名、打码的密码框，以及最大返回行数、查询超时等限额" loading="lazy" decoding="async">
+    </div>
+    <figcaption><span class="shot-num"><span data-i18n="doc.shared.figure">图</span> 4-2</span><span data-i18n="doc.fig.connectionEditor">三段式表单：先选类型，地址字段随之变化，凭证与限额在最后一组。</span></figcaption>
+  </figure>
+
+  <h3 class="doc-h3" id="conn-fields" data-i18n="doc.connections.fieldsTitle">字段与默认值</h3>
+  <p data-i18n="doc.connections.fieldsP">下表列出弹窗里的全部字段。标注「必填」的字段留空时保存会被拒绝，并给出对应的错误提示。</p>
+
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.connections.thField">字段</th><th data-i18n="doc.connections.thApplies">适用类型</th><th data-i18n="doc.connections.thNote">说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span data-i18n="doc.connections.fName">连接名称</span><span class="is-req" data-i18n="doc.shared.req">必填</span></td><td data-i18n="doc.connections.fAll">全部</td><td data-i18n="doc.connections.fNameNote">列表、审计日志和 Agent 返回的连接清单里都用这个名字。</td></tr>
+          <tr><td data-i18n="doc.connections.fType">数据库类型</td><td data-i18n="doc.connections.fAllTypes">全部类型</td><td data-i18n="doc.connections.fTypeNote">切换类型会重置端口与不适用的地址字段。</td></tr>
+          <tr><td><span data-i18n="doc.connections.fFile">数据库文件</span><span class="is-req" data-i18n="doc.shared.req">必填</span></td><td><code>SQLite</code></td><td data-i18n="doc.connections.fFileNote">文件的绝对路径，以只读方式打开，不需要用户名和密码。</td></tr>
+          <tr><td><span data-i18n="doc.connections.fHost">主机</span><span class="is-req" data-i18n="doc.shared.req">必填</span></td><td><code>MySQL</code> <code>PostgreSQL</code></td><td data-i18n="doc.connections.fHostNote">数据库地址；本机可填 <code>localhost</code> 或 <code>127.0.0.1</code>。</td></tr>
+          <tr><td><span data-i18n="doc.connections.fPort">端口</span><span class="is-req" data-i18n="doc.shared.req">必填</span></td><td><code>MySQL</code> <code>PostgreSQL</code></td><td data-i18n="doc.connections.fPortNote">默认 <code>3306</code> / <code>5432</code>，换类型时自动改写。</td></tr>
+          <tr><td><span data-i18n="doc.connections.fDatabase">数据库</span><span class="is-req" data-i18n="doc.shared.req">必填</span></td><td><code>MySQL</code> <code>PostgreSQL</code></td><td data-i18n="doc.connections.fDatabaseNote">库名，不是表名。SQLite 与 JDBC 不需要这一项。</td></tr>
+          <tr><td data-i18n="doc.connections.fUser">用户名</td><td><code>MySQL</code> <code>PostgreSQL</code> <code>JDBC</code></td><td data-i18n="doc.connections.fUserNote">可留空；建议专建一个只有读权限的账号。</td></tr>
+          <tr><td data-i18n="doc.connections.fSsl">SSL 模式</td><td><code>MySQL</code> <code>PostgreSQL</code></td><td data-i18n="doc.connections.fSslNote">「禁用」「优先 / 自动」「强制」三选一，默认为「优先 / 自动」。</td></tr>
+          <tr><td><span data-i18n="doc.connections.fBundle">JDBC 驱动</span><span class="is-req" data-i18n="doc.shared.req">必填</span></td><td><code>JDBC</code></td><td data-i18n="doc.connections.fBundleNote">只能从已安装的驱动 Bundle 里选，未安装时下拉框只有占位提示。</td></tr>
+          <tr><td><span data-i18n="doc.connections.fUrl">JDBC URL</span><span class="is-req" data-i18n="doc.shared.req">必填</span></td><td><code>JDBC</code></td><td data-i18n="doc.connections.fUrlNote">必须以 <code>jdbc:</code> 开头，否则提示 URL 无效。</td></tr>
+          <tr><td data-i18n="doc.connections.fClass">Driver Class</td><td><code>JDBC</code></td><td data-i18n="doc.connections.fClassNote">可选。自动发现失败时才需要手填，占位提示正是「自动发现失败时填写」。</td></tr>
+          <tr><td data-i18n="doc.connections.fPassword">密码</td><td><code>MySQL</code> <code>PostgreSQL</code> <code>JDBC</code></td><td data-i18n="doc.connections.fPasswordNote">写入本机凭证库；编辑时留空表示保持不变。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <p data-i18n="doc.connections.limitP">四项限额决定单次查询最多能返回多少内容。填超出范围的值会被自动夹到最近的边界，数值换算关系是 1 KiB = 1024 字节。</p>
+
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.connections.thLimit">限额</th><th data-i18n="doc.connections.thDefault">默认值</th><th data-i18n="doc.connections.thRange">允许范围</th></tr>
+        </thead>
+        <tbody>
+          <tr><td data-i18n="doc.connections.limRows">最大返回行数</td><td><code>500</code></td><td data-i18n="doc.connections.limRowsRange">1 到 5000 行</td></tr>
+          <tr><td data-i18n="doc.connections.limTimeout">查询超时毫秒</td><td><code>8000</code></td><td data-i18n="doc.connections.limTimeoutRange">500 到 60000 毫秒</td></tr>
+          <tr><td data-i18n="doc.connections.limPool">最大连接数</td><td><code>1</code></td><td data-i18n="doc.connections.limPoolRange">1 到 3 条</td></tr>
+          <tr><td data-i18n="doc.connections.limBytes">最大结果大小</td><td><code>1024</code> KiB</td><td data-i18n="doc.connections.limBytesRange">64 到 8192 KiB，即 64 KiB 到 8 MiB</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h3 class="doc-h3" id="conn-creds" data-i18n="doc.connections.credTitle">密码存在哪里</h3>
+  <p data-i18n="doc.connections.credP1">连接元数据保存在 TOML 配置文件里，密码单独存入本机凭证库。配置文件只保存形如 <code>vault://local_db</code> 的引用，不是密码本身；凭证库就是操作系统的凭证存储，服务名固定为 <code>com.mingo.datanexa</code>。</p>
+  <p data-i18n="doc.connections.credP2">「凭证与限制」组底部会显示当前状态，例如「当前凭证：vault://local_db。DataNexa 不会把明文密码写入配置文件。」，没有存过密码时显示「尚未保存」。点「清除已保存凭证」会把该连接在凭证库里的条目删掉，之后这条连接必须重新输入密码才能使用。</p>
+
+  <div class="callout callout-tip">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5.9 1.2.9 2.1h5.2c0-.9.3-1.6.9-2.1A6 6 0 0 0 12 3z"/></svg>
+    <div class="callout-body"><span class="callout-title" data-i18n="doc.connections.readonlyTitle">建议使用数据库只读账号</span><span data-i18n="doc.connections.readonlyText">DataNexa 会在 SQL 策略和数据库会话两层限制读写，但这两层都是「软件层」。给 Agent 用的账号建议在数据库里就只授予 <code>SELECT</code>，这样即使某一层被绕过，数据库仍然会拒绝写入。</span></div>
+  </div>
+
+  <h3 class="doc-h3" id="conn-test" data-i18n="doc.connections.testTitle">「测试连接」与「诊断连接」的区别</h3>
+  <p data-i18n="doc.connections.testP1">两个按钮长得像，做的事情完全不同。「测试连接」会真的连一次数据库：成功时提示「连接可用 · 耗时」，失败时把数据库返回的错误原样带出来。原生连接测试失败后还会附上一段本地诊断信息，方便一起判断。</p>
+  <p data-i18n="doc.connections.testP2">「诊断连接」不连数据库，只读本地配置与凭证库，然后给出一行摘要：连接名称、类型和凭证状态，必要时再加一条针对性的提示。凭证状态有六种取值——「不需要」（SQLite）、「未保存」、「已保存空密码」、「已保存」、「凭证引用存在，但本机凭证库里找不到密码」、「读取本机凭证库失败」。诊断只在原生连接上可用，JDBC 连接不会显示这个按钮。</p>
+
+  
+
+  <h3 class="doc-h3" id="conn-emergency" data-i18n="doc.connections.emergencyTitle">紧急断连</h3>
+  <p data-i18n="doc.connections.emergencyP">连接页顶部有一个三角警告图标的动作，名字是「紧急断连」。它的用途是当你怀疑 Agent 正在做不该做的事时，用一次点击切断所有数据库访问，而不是逐条去关连接。</p>
+  <ul>
+    <li data-i18n="doc.connections.emLi1"><strong>前置条件：</strong>MCP 服务必须在运行，服务已停止时按钮是灰的。</li>
+    <li data-i18n="doc.connections.emLi2"><strong>按下之后：</strong>进行中的请求被取消，已打开的原生连接池与 JDBC 会话全部关闭，界面上所有连接操作同时禁用。</li>
+    <li data-i18n="doc.connections.emLi3"><strong>恢复：</strong>同一按钮此时显示为「退出紧急断连」，再点一次即回到正常状态，连接开关回到进入前的样子。</li>
+  </ul>
+
+  <h3 class="doc-h3" id="conn-transfer" data-i18n="doc.connections.transferTitle">导入与导出</h3>
+  <p data-i18n="doc.connections.transferP1">入口在「设置 → 通用 → 导入/导出」，面板里只有两个动作：「导出连接」和「导入连接」。导出前必须二选一：设置加密密码，或者选择不加密导出。</p>
+  <p data-i18n="doc.connections.transferP2">加密导出需要输入两遍「加密密码」，至少 8 个字符，两次不一致会提示「两次输入的加密密码不一致。」。这个密码不会被保存，文件一旦丢失就无法恢复。选择「不加密导出」时会先弹出警告，列出三条风险，并要你勾选「我了解导出文件会以明文保存数据库密码」才允许继续。</p>
+  <p data-i18n="doc.connections.transferP3">导入是追加，不是覆盖：文件里的每条连接都会拿到一个新的内部 ID，与现有连接同名也不会覆盖。个别条目无法导入时会被跳过，提示会写成「已新建 N 个数据库连接，跳过 M 个无法导入的连接。」。加密文件会先要求输入密码，并显示文件的导出时间；密码错误提示「加密密码错误，或文件已损坏。」。单个导入文件上限 5 MB、最多 1000 条连接。</p>
+
+  <div class="callout callout-warn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3l9-16z"/><path d="M12 10v4M12 17v.2"/></svg>
+    <div class="callout-body"><span class="callout-title" data-i18n="doc.connections.transferWarnTitle">导出文件里有密码</span><span data-i18n="doc.connections.transferWarnText">无论是否加密，导出的文件都带着数据库密码，已经脱离操作系统凭证库的保护。只把它存到可信、访问受控的位置，不要放进代码仓库或公共网盘，迁移完成后及时删除，并清理备份与回收站里的副本。</span></div>
+  </div>
+
+  <h3 class="doc-h3" id="conn-trouble" data-i18n="doc.connections.troubleTitle">排错</h3>
+
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.connections.thSymptom">现象</th><th data-i18n="doc.connections.thCause">常见原因</th><th data-i18n="doc.connections.thFix">处理</th></tr>
+        </thead>
+        <tbody>
+          <tr><td data-i18n="doc.connections.tr1a">SQLite 打不开</td><td data-i18n="doc.connections.tr1b">路径写错，或当前用户对该文件没有读权限</td><td data-i18n="doc.connections.tr1c">改成绝对路径，确认文件存在且可读；数据库文件必须已存在，应用不会替你创建。</td></tr>
+          <tr><td data-i18n="doc.connections.tr2a">MySQL 报 Access denied</td><td data-i18n="doc.connections.tr2b">MySQL 授权区分 <code>user@localhost</code> 与 <code>user@127.0.0.1</code></td><td data-i18n="doc.connections.tr2c">在主机里把 <code>127.0.0.1</code> 与 <code>localhost</code> 互换再试，诊断连接会给出同样的提示。</td></tr>
+          <tr><td data-i18n="doc.connections.tr3a">本地库连不上且没有明确报错</td><td data-i18n="doc.connections.tr3b">SSL 模式为「强制」，但本地库没有启用 SSL</td><td data-i18n="doc.connections.tr3c">编辑连接，把 SSL 模式改为「禁用」。</td></tr>
+          <tr><td data-i18n="doc.connections.tr4a">提示没有可用密码</td><td data-i18n="doc.connections.tr4b">凭证引用在，但凭证库里找不到对应条目</td><td data-i18n="doc.connections.tr4c">编辑连接，重新输入密码并保存；换过机器或重装过，凭证不会跟着走。</td></tr>
+          <tr><td data-i18n="doc.connections.tr5a">测试按钮点不动</td><td data-i18n="doc.connections.tr5b">连接处于暂停状态，或审计日志迁移尚未完成</td><td data-i18n="doc.connections.tr5c">先启用连接；迁移未完成时等迁移结束再试。</td></tr>
+          <tr><td data-i18n="doc.connections.tr6a">保存时被拒绝</td><td data-i18n="doc.connections.tr6b">名称、数据库名或主机为空</td><td data-i18n="doc.connections.tr6c">补全必填字段；JDBC 连接还要确认已选驱动且 URL 以 <code>jdbc:</code> 开头。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <p data-i18n="doc.connections.troubleP">仍然连不上时，先点「诊断连接」确认凭证状态，再看「审计日志」里有没有对应的失败记录。开启调试日志后，连接测试失败的原因也会写进日志文件。</p>
+</section>
+
+        <!-- 05 JDBC 支持 -->
+<section class="doc-section" id="jdbc">
+  <div class="doc-chapter"><span>05</span><span data-i18n="doc.ch.jdbc">JDBC 支持</span></div>
+  <h2><span data-i18n="doc.jdbc.title">通过 JDBC 连接其他数据库</span><a class="doc-anchor" href="#jdbc" aria-label="链接到本节">#</a></h2>
+  <p class="doc-lead" data-i18n="doc.jdbc.lead">SQLite、MySQL、PostgreSQL 之外，DataNexa 可以借 JDBC 驱动连到更多数据库。这一章讲清楚三件事的先后关系——Java 运行时、驱动 Bundle、连接，以及这项能力在哪里会失效。</p>
+
+  <div class="doc-tldr">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 4v5c0 4.4-3 8-7 9-4-1-7-4.6-7-9V7l7-4z"/><path d="M9.5 12l2 2 3.5-4"/></svg>
+    <div><b data-i18n="doc.jdbc.tldrLabel">要点：</b><span data-i18n="doc.jdbc.tldr">JDBC 是通用通道，不是通用保证：驱动来自 Maven 或本地 JAR，打包成不可变的 Bundle；只读与超时是 DataNexa 自己兜底的，未知方言下这层保护会变薄，所以生产库请配只读账号。</span></div>
+  </div>
+
+  <h3 class="doc-h3" id="jdbc-why" data-i18n="doc.jdbc.whyTitle">JDBC 支持的范围与限制</h3>
+  <p data-i18n="doc.jdbc.whyP1">原生连接只覆盖三种数据库，且每种都做了针对性适配。其他数据库（例如各类国产库、ClickHouse、Hive、Oracle 等）没有一个统一的协议，只能借 JDBC 驱动去连。设置页把这一项标成「JDBC 支持」，标签上带一个「预览」角标，意思是功能可用但还在演进。</p>
+  <p data-i18n="doc.jdbc.whyP2">代价是 DataNexa 无法替每个驱动、每个数据库版本、每种 SQL 方言做验证。设置页底部常驻两段说明：一段是「无论驱动原生能力如何，DataNexa 的只读保护与超时兜底始终生效」，另一段是风险摘要，点「查看详情」可以看到完整清单。风险归成四类：兼容性、方言、资源、驱动本身。</p>
+
+  <div class="doc-split">
+    <div class="doc-panel doc-panel-good">
+      <h4 data-i18n="doc.jdbc.goodTitle">JDBC 路径能做的</h4>
+      <ul>
+        <li data-i18n="doc.jdbc.good1">执行经过策略引擎校验的受控只读查询。</li>
+        <li data-i18n="doc.jdbc.good2">读取表与视图清单、表结构、采样行。</li>
+        <li data-i18n="doc.jdbc.good3">沿用同一套行数、大小、超时与审计限制。</li>
+      </ul>
+    </div>
+    <div class="doc-panel doc-panel-bad">
+      <h4 data-i18n="doc.jdbc.badTitle">它做不到的</h4>
+      <ul>
+        <li data-i18n="doc.jdbc.bad1">无法保证识别所有写入操作或其他副作用。</li>
+        <li data-i18n="doc.jdbc.bad2">数据库特有的语法、函数、Hint 可能解析失败而被拒。</li>
+        <li data-i18n="doc.jdbc.bad3">部分数据库特定的能力在 JDBC 路径下不可用。</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="doc-h3" id="jdbc-runtime" data-i18n="doc.jdbc.runtimeTitle">第一步：Java 运行时</h3>
+  <p data-i18n="doc.jdbc.runtimeP1">JDBC 驱动是一段 Java 代码，必须有一个 Java 运行时来跑。入口在「设置 → JDBC 支持」，页面最上方是「Java 运行时」卡片，显示可用或不可用、Java 版本、以及来源。</p>
+  <ul>
+    <li data-i18n="doc.jdbc.runtimeLi1"><strong>来源有两种：</strong>「DataNexa Java 运行时」（由应用下载托管）和「外部 Java 运行时」（你指定的 <code>JAVA_HOME</code>）。</li>
+    <li data-i18n="doc.jdbc.runtimeLi2"><strong>下载：</strong>运行时不可用时卡片上出现「下载 DataNexa Java 运行时」，过程依次显示准备、下载、校验、解压、安装五个阶段。</li>
+    <li data-i18n="doc.jdbc.runtimeLi3"><strong>更新：</strong>托管运行时可以点「检查 Java 运行时更新」，有新版本时按钮变成「更新到 {版本}」。</li>
+    <li data-i18n="doc.jdbc.runtimeLi4"><strong>换成外部运行时：</strong>文件夹图标是「选择外部 Java 运行时」；选过之后出现「使用 DataNexa Java 运行时」用来切回。</li>
+    <li data-i18n="doc.jdbc.runtimeLi5"><strong>卸载：</strong>托管运行时存在时才有垃圾桶按钮，确认后删除；外部运行时不受影响，JDBC 会话运行期间不允许卸载。</li>
+  </ul>
+
+  <figure class="doc-shot">
+    <div class="shot-frame" style="--shot-ratio: 1400 / 292">
+      <div class="shot-placeholder" aria-hidden="true">
+        <span class="shot-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg></span>
+        <span class="shot-label">截图占位 · 08</span>
+        <code class="shot-name">08-jdbc-runtime.png</code>
+        <span class="shot-desc">画面内容：Java 运行时卡片，显示可用状态、Java 版本、来源（DataNexa Java 运行时），以及右上角的更新与卸载入口。</span>
+        <span class="shot-size">建议 1400 × 900 · PNG · 浅色主题</span>
+      </div>
+      <img src="assets/help/08-jdbc-runtime.png" alt="设置页的 Java 运行时卡片：状态为可用，显示 Java 版本与来源为 DataNexa Java 运行时，右上角是选择外部运行时、检查更新、卸载与刷新按钮" loading="lazy" decoding="async">
+    </div>
+    <figcaption><span class="shot-num"><span data-i18n="doc.shared.figure">图</span> 5-1</span><span data-i18n="doc.fig.jdbcRuntime">运行时的状态、版本和来源都在一张卡上，装好之后才能安装驱动。</span></figcaption>
+  </figure>
+
+  <h3 class="doc-h3" id="jdbc-drivers" data-i18n="doc.jdbc.driversTitle">第二步：安装驱动 Bundle</h3>
+  <p data-i18n="doc.jdbc.driversP1">驱动卡片上有两个动作：「安装驱动」从 Maven 仓库拉取，「导入本地驱动」直接选本地 JAR 或目录。两者都要求 Java 运行时可用，否则按钮是灰的。安装完成后生成一个<strong>不可变 Bundle</strong>：目录里是 JAR 与一份清单，清单记录每个文件的大小与 SHA-256，每次使用前都会校验，文件被改动或缺失会直接报「驱动 Bundle 不完整或已损坏」。</p>
+  <p data-i18n="doc.jdbc.driversP2">从 Maven 安装时需要填「显示名称」和「Maven 坐标」，坐标格式是 <code>groupId:artifactId:version</code>，例如 <code>org.postgresql:postgresql:42.7.4</code>。「Maven 镜像源」可选 Maven Central、Aliyun、Huawei Cloud、Tencent Cloud，或选「自定义仓库」后填自己的 HTTPS 地址。过程中依次显示：准备安装、下载运行时依赖、校验文件完整性、检测 JDBC Driver、创建驱动 Bundle。</p>
+  <p data-i18n="doc.jdbc.driversP3">导入本地驱动时填「显示名称」，再用「选择 JAR 文件」挑文件；也可以直接在路径框里写多条路径，用分号分隔，路径可以是 JAR 也可以是包含 JAR 的目录。安装时要能从 JAR 里找到至少一个 JDBC <code>Driver</code> 实现，否则会失败；成功后被发现的类就记在 Bundle 里，新建连接时不必再填。</p>
+
+  <figure class="doc-shot">
+    <div class="shot-frame" style="--shot-ratio: 1580 / 518">
+      <div class="shot-placeholder" aria-hidden="true">
+        <span class="shot-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg></span>
+        <span class="shot-label">截图占位 · 07</span>
+        <code class="shot-name">07-jdbc-drivers.png</code>
+        <span class="shot-desc">画面内容：设置 → JDBC 支持，已安装驱动列表（显示名称、坐标、Driver Class、占用大小）加「驱动原生支持」能力标识，右上角「安装驱动」「导入本地驱动」。</span>
+        <span class="shot-size">建议 1600 × 1000 · PNG · 浅色主题</span>
+      </div>
+      <img src="assets/help/07-jdbc-drivers.png" alt="设置页的 JDBC 驱动列表：每一行显示驱动显示名称、Maven 坐标、Driver Class 与大小，下面是只读限制与超时限制两个能力标识，右上角是安装驱动按钮" loading="lazy" decoding="async">
+    </div>
+    <figcaption><span class="shot-num"><span data-i18n="doc.shared.figure">图</span> 5-2</span><span data-i18n="doc.fig.jdbcDrivers">每个驱动一行：坐标、自动发现的 Driver Class，以及探测到的原生能力。</span></figcaption>
+  </figure>
+
+  <h3 class="doc-h3" id="jdbc-capability" data-i18n="doc.jdbc.capTitle">能力标识什么时候出现</h3>
+  <p data-i18n="doc.jdbc.capP1">每行驱动下方有「驱动原生支持」一栏，后面跟两枚标识：「只读限制」和「超时限制」。对勾表示驱动接受 <code>setReadOnly</code> 或 <code>setQueryTimeout</code>，叉号表示驱动拒绝，未探测时显示「测试连接后检测」。</p>
+  <p data-i18n="doc.jdbc.capP2">探测不是安装时做的，而是在真正用到驱动的时候：在连接页对这条 JDBC 连接执行一次「测试连接」，或者让 Agent 发起一次查询。结果写回 Bundle 清单，之后一直显示，不需要重复探测。驱动拒绝某项能力只会让查询继续跑，不会让查询失败，这也是为什么「叉号」不等于「不能用」。</p>
+
+  <div class="callout callout-note">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.2"/></svg>
+    <div class="callout-body"><span class="callout-title" data-i18n="doc.jdbc.capNoteTitle">叉号不是故障</span><span data-i18n="doc.jdbc.capNoteText">两枚标识只描述驱动的原生支持情况。即使两项都是叉号，DataNexa 仍会通过 SQL 策略与结果截断来限制读写和资源消耗，只是驱动侧少了一层保险。</span></div>
+  </div>
+
+  <h3 class="doc-h3" id="jdbc-connect" data-i18n="doc.jdbc.connectTitle">第三步：新建 JDBC 连接</h3>
+  <p data-i18n="doc.jdbc.connectP">在「数据库连接」页新建连接，类型选 <code>JDBC</code>，地址区域会变成四个字段。底部会提示一句：JDBC 技术预览支持通过 MCP 执行受控只读查询，未知方言或无法确认安全的语句会被拒绝。</p>
+
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.jdbc.thField">字段</th><th data-i18n="doc.jdbc.thRequired">必填</th><th data-i18n="doc.jdbc.thNote">说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td data-i18n="doc.jdbc.rUrl">JDBC URL</td><td data-i18n="doc.jdbc.reqYes">是</td><td data-i18n="doc.jdbc.rUrlNote">必须以 <code>jdbc:</code> 开头。主机、端口、库名、时区、字符集等参数全部写在这条 URL 里。</td></tr>
+          <tr><td data-i18n="doc.jdbc.rDriver">JDBC 驱动</td><td data-i18n="doc.jdbc.reqYes2">是</td><td data-i18n="doc.jdbc.rDriverNote">从已安装的 Bundle 中选。没装驱动时下拉框只有占位文字，保存按钮不可用。</td></tr>
+          <tr><td data-i18n="doc.jdbc.rUser">用户名</td><td data-i18n="doc.jdbc.reqNo">否</td><td data-i18n="doc.jdbc.rUserNote">部分驱动允许写在 URL 里，此时这里可以留空。</td></tr>
+          <tr><td data-i18n="doc.jdbc.rClass">Driver Class</td><td data-i18n="doc.jdbc.reqNo2">否</td><td data-i18n="doc.jdbc.rClassNote">通常留空，用 Bundle 里自动发现的类；自动发现失败时才手填完整类名。</td></tr>
+          <tr><td data-i18n="doc.jdbc.rPass">密码</td><td data-i18n="doc.jdbc.reqNo3">否</td><td data-i18n="doc.jdbc.rPassNote">与原生连接一样存进本机凭证库，配置文件里只留引用。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <p data-i18n="doc.jdbc.diffP">与原生连接相比，JDBC 连接少了主机、端口、数据库、SSL 模式四项——这些都在 URL 里——也少了「诊断连接」这个按钮，因为诊断依赖原生驱动才会有的本地信息。限额、启用状态、测试连接、审计记录的行为与原生连接一致。</p>
+
+  <h3 class="doc-h3" id="jdbc-limits" data-i18n="doc.jdbc.limitsTitle">只读与超时是怎么兜底的</h3>
+  <p data-i18n="doc.jdbc.limitsP1">JDBC 路径没有方言专用的解析器，用的是通用 SQL 解析。策略引擎会先尝试解析这条语句：解析不了就拒绝，能解析但不是单条语句也拒绝，解析出来又不是只读形态（DDL、DML、带副作用的函数等）同样拒绝。也就是说，宽松的方向不可选，只会在「能确认安全」时才放行。</p>
+  <p data-i18n="doc.jdbc.limitsP2">行数上限在 JDBC 路径下不是通过改写 SQL 加的 <code>LIMIT</code>，而是在读取结果集时逐行计数，达到上限就停止并标记为「截断」；结果大小超限时同样截断。查询本身可能已经在数据库侧执行完，行数限制并不会减少数据库的负载。</p>
+  <p data-i18n="doc.jdbc.limitsP3">超时是双份的：DataNexa 侧给整次操作设一个上限，驱动侧再尝试设置语句级超时。驱动不支持语句超时（例如某些只读文件型驱动）时，第一条仍然生效，只是粒度更粗。</p>
+
+  <div class="callout callout-warn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3l9-16z"/><path d="M12 10v4M12 17v.2"/></svg>
+    <div class="callout-body"><span class="callout-title" data-i18n="doc.jdbc.warnTitle">驱动是本地 Java 代码</span><span data-i18n="doc.jdbc.warnText">JDBC 驱动及其依赖会以本地进程身份运行，权限等同于你的账号。只安装来源可信、版本明确的驱动，不要把来路不明的 JAR 导进来；生产环境优先使用数据库侧只读账号，并在接入前用目标库和代表性 SQL 验证一遍。</span></div>
+  </div>
+
+  <h3 class="doc-h3" id="jdbc-trouble" data-i18n="doc.jdbc.troubleTitle">排错</h3>
+
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.jdbc.thSymptom">现象</th><th data-i18n="doc.jdbc.thCause">常见原因</th><th data-i18n="doc.jdbc.thFix">处理</th></tr>
+        </thead>
+        <tbody>
+          <tr><td data-i18n="doc.jdbc.tr1a">「安装驱动」「导入本地驱动」点不动</td><td data-i18n="doc.jdbc.tr1b">Java 运行时不可用</td><td data-i18n="doc.jdbc.tr1c">先把运行时卡片上的状态变成可用：下载托管运行时，或选一个外部运行时。</td></tr>
+          <tr><td data-i18n="doc.jdbc.tr2a">Maven 坐标被拒</td><td data-i18n="doc.jdbc.tr2b">不是 <code>groupId:artifactId:version</code> 三段式</td><td data-i18n="doc.jdbc.tr2c">补齐三段并确认版本号存在；自定义仓库必须是 HTTPS 地址（本机地址除外）。</td></tr>
+          <tr><td data-i18n="doc.jdbc.tr3a">安装时下载失败</td><td data-i18n="doc.jdbc.tr3b">网络访问不到仓库，或镜像缺少该构件</td><td data-i18n="doc.jdbc.tr3c">换一个镜像源再试；内网环境可改用本地导入。下载的 JAR 会逐个校验，校验不过会被拒绝。</td></tr>
+          <tr><td data-i18n="doc.jdbc.tr4a">导入时报「未提供任何 JDBC Driver 实现」</td><td data-i18n="doc.jdbc.tr4b">选中的 JAR 里没有 <code>Driver</code> 实现，通常是依赖 JAR 没一起导入</td><td data-i18n="doc.jdbc.tr4c">把驱动主 JAR 与它依赖的 JAR 一并选中，或放进同一目录后再导入。</td></tr>
+          <tr><td data-i18n="doc.jdbc.tr5a">测试连接报找不到驱动类</td><td data-i18n="doc.jdbc.tr5b">URL 与驱动不匹配，或多驱动共存导致选错</td><td data-i18n="doc.jdbc.tr5c">确认 URL 的协议段与驱动对应；仍失败时在连接里手填 Driver Class。</td></tr>
+          <tr><td data-i18n="doc.jdbc.tr6a">能连上但 SQL 一直被拒</td><td data-i18n="doc.jdbc.tr6b">通用解析器不认识这种方言语法</td><td data-i18n="doc.jdbc.tr6c">改用通用 SQL 重写查询；确实需要方言特性时，只能接受这条限制。</td></tr>
+          <tr><td data-i18n="doc.jdbc.tr7a">时间或中文显示异常</td><td data-i18n="doc.jdbc.tr7b">时区与字符集参数没写在 URL 里</td><td data-i18n="doc.jdbc.tr7c">在 JDBC URL 里显式补上 <code>serverTimezone</code>、<code>characterEncoding</code> 这类驱动参数。</td></tr>
+          <tr><td data-i18n="doc.jdbc.tr8a">驱动删不掉</td><td data-i18n="doc.jdbc.tr8b">还有已保存的 JDBC 连接在引用它</td><td data-i18n="doc.jdbc.tr8c">先删除或改用其他驱动的连接，再删除该驱动。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <p data-i18n="doc.jdbc.troubleP">JDBC 的失败原因通常只出现在提示条和调试日志里。开启调试日志后，驱动解析、超时、sidecar 意外退出等问题都会留下记录，反馈问题时一并附上。</p>
+</section>
+
+        <!-- 06 MCP 服务与接入 -->
+<section class="doc-section" id="service">
+  <div class="doc-chapter"><span>06</span><span data-i18n="doc.ch.service">MCP 服务与接入</span></div>
+  <h2><span data-i18n="doc.service.title">启动 MCP 服务并接入 Agent</span><a class="doc-anchor" href="#service" aria-label="链接到本节">#</a></h2>
+  <p class="doc-lead" data-i18n="doc.service.lead">这一章说明 MCP 服务怎么启动、端点长什么样、鉴权如何开启，以及「复制接入配置」到底生成了什么。照着走一遍，你的 Agent 就能通过本机地址访问已启用的只读连接。</p>
+
+  <div class="doc-tldr">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 4v5c0 4.4-3 8-7 9-4-1-7-4.6-7-9V7l7-4z"/><path d="M9.5 12l2 2 3.5-4"/></svg>
+    <div><b data-i18n="doc.service.tldrLabel">要点：</b><span data-i18n="doc.service.tldr">服务只监听本机，用一个固定的 <code>/mcp</code> 端点接收 JSON-RPC 请求；默认要求 Bearer 密钥，复制的接入配置是一份通用的 MCP 客户端配置。</span></div>
+  </div>
+
+  <h3 class="doc-h3" id="svc-lifecycle" data-i18n="doc.service.lifeTitle">服务生命周期</h3>
+  <p data-i18n="doc.service.lifeP1">入口在概览页顶部的状态卡。按钮在「启动服务」与「停止服务」之间切换，同一张卡片上还显示已启用的连接数、已启用的工具数和近 24 小时调用次数。侧边栏底部始终显示服务状态与端口，任何页面都能看到。</p>
+  <p data-i18n="doc.service.lifeP2">关闭窗口不会停止服务：窗口会被隐藏到托盘，MCP 服务继续在后台响应请求。只有从托盘菜单选择退出，进程才会真正结束。</p>
+
+  <div class="doc-steps">
+    <div class="doc-step">
+      <h4 data-i18n="doc.service.s1t">启动或停止</h4>
+      <p data-i18n="doc.service.s1p">在概览页点击状态卡按钮，或点侧边栏底部状态旁的按钮。两处调用的是同一个操作，任选其一。</p>
+    </div>
+    <div class="doc-step">
+      <h4 data-i18n="doc.service.s2t">确认状态</h4>
+      <p data-i18n="doc.service.s2p">正常时显示「运行中」。启动失败会显示「启动失败」，把鼠标停在状态卡上可以看到失败原因；每次启动失败也会写入一条审计记录。</p>
+    </div>
+    <div class="doc-step">
+      <h4 data-i18n="doc.service.s3t">让它在后台待命</h4>
+      <p data-i18n="doc.service.s3p">关闭窗口后服务继续运行。开启轻量模式时，窗口关闭 5 分钟后界面资源会被释放，服务不受影响；从托盘重新打开应用即可回到界面。</p>
+    </div>
+  </div>
+
+  <figure class="doc-shot">
+    <div class="shot-frame" style="--shot-ratio: 2038 / 354">
+      <div class="shot-placeholder" aria-hidden="true">
+        <span class="shot-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg></span>
+        <span class="shot-label">截图占位 · 09</span>
+        <code class="shot-name">09-service-card.png</code>
+        <span class="shot-desc">概览页服务状态卡：运行中、启停按钮、连接与工具计数、近 24 小时调用；下方快速开始第三步「复制接入配置」，左侧侧栏显示端口。</span>
+        <span class="shot-size">建议 1400 × 820 · PNG · 浅色主题 · 服务保持运行中</span>
+      </div>
+      <img src="assets/help/09-service-card.png" alt="DataNexa 概览页：服务运行中，状态卡显示连接数、工具数与近 24 小时调用次数，下方是快速开始三步" loading="lazy" decoding="async">
+    </div>
+    <figcaption><span class="shot-num"><span data-i18n="doc.shared.figure">图</span> 6-1</span><span data-i18n="doc.fig.serviceCard">服务状态、可用连接与工具、调用次数集中在一张卡上，启停按钮就在右侧。</span></figcaption>
+  </figure>
+
+  <h3 class="doc-h3" id="svc-endpoint" data-i18n="doc.service.endpointTitle">监听地址与端点</h3>
+  <p data-i18n="doc.service.endpointP1">端点由监听地址、端口和固定路径 <code>/mcp</code> 组成。默认是 <code>http://127.0.0.1:17321/mcp</code>；监听地址和端口在「设置 → 通用 → MCP 服务策略」中修改，服务运行中修改会重启监听，绑定失败会自动回滚到原设置。</p>
+
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.service.endpointTh1">项</th><th data-i18n="doc.service.endpointTh2">默认值</th><th data-i18n="doc.service.endpointTh3">说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td data-i18n="doc.service.endpointR1a">监听地址</td><td><code>127.0.0.1</code></td><td data-i18n="doc.service.endpointR1c">只接受 <code>127.0.0.1</code> 或 <code>localhost</code>，填局域网 IP 会被拒绝。</td></tr>
+          <tr><td data-i18n="doc.service.endpointR2a">端口</td><td><code>17321</code></td><td data-i18n="doc.service.endpointR2c">可改为 1–65535；被占用时启动失败，原因可在状态卡与审计中看到。</td></tr>
+          <tr><td data-i18n="doc.service.endpointR3a">端点路径</td><td><code>/mcp</code></td><td data-i18n="doc.service.endpointR3c">唯一路径，只有 POST 可用（GET 返回 405），请求体是 JSON-RPC 2.0。</td></tr>
+          <tr><td data-i18n="doc.service.endpointR4a">传输方式</td><td data-i18n="doc.service.endpointR4b">Streamable HTTP</td><td data-i18n="doc.service.endpointR4c">不提供 GET 流式响应；对 <code>/mcp</code> 发 GET 会返回 405。</td></tr>
+          <tr><td data-i18n="doc.service.endpointR5a">协议版本</td><td data-i18n="doc.service.endpointR5b">最新版</td><td data-i18n="doc.service.endpointR5c">客户端可在初始化时协商；也接受 <code>2025-03-26</code> 与 <code>2025-06-18</code>，其他值返回 400。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout callout-note">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.2"/></svg>
+    <div class="callout-body"><span class="callout-title" data-i18n="doc.service.transportTitle">这是一个「只收 POST」的端点</span><span data-i18n="doc.service.transportText">请求必须带 <code>Content-Type: application/json</code>，并且 <code>Accept</code> 同时包含 <code>application/json</code> 与 <code>text/event-stream</code>，否则会分别得到 415 与 406。如果你的客户端只能走旧的 SSE 长连接，它无法连上这个端点。</span></div>
+  </div>
+
+  <h3 class="doc-h3" id="svc-auth" data-i18n="doc.service.authTitle">Bearer 鉴权</h3>
+  <p data-i18n="doc.service.authP1">「要求 Bearer 密钥」默认开启，开关在「设置 → 通用 → MCP 服务策略 → 访问控制」。每个请求都要带 <code>Authorization: Bearer &lt;token&gt;</code>，密钥来自「访问控制」里创建的访问令牌；令牌同时决定这次连接能看到哪些数据库和工具。</p>
+  <p data-i18n="doc.service.authP2">关闭开关会先弹出确认框，说明失去密钥保护后的影响。确认后立即生效，不需要重启服务。</p>
+
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.service.headerTh1">请求头</th><th data-i18n="doc.service.headerTh2">要求</th><th data-i18n="doc.service.headerTh3">不满足时</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Host</code></td><td data-i18n="doc.service.headerR1b">必须是 <code>127.0.0.1</code> 或 <code>localhost</code></td><td data-i18n="doc.service.headerR1c">403，<code>Host is not allowed</code></td></tr>
+          <tr><td><code>Origin</code></td><td data-i18n="doc.service.headerR2b">可省略；发送时主机必须是本机</td><td data-i18n="doc.service.headerR2c">403，<code>Origin is not allowed</code></td></tr>
+          <tr><td><code>Authorization</code></td><td data-i18n="doc.service.headerR3b">开启 Bearer 时必填，且令牌处于启用状态</td><td data-i18n="doc.service.headerR3c">401，<code>Missing or invalid bearer token</code></td></tr>
+          <tr><td><code>Content-Type</code></td><td><code>application/json</code></td><td data-i18n="doc.service.headerR4c">415，<code>Unsupported Media Type</code></td></tr>
+          <tr><td><code>Accept</code></td><td data-i18n="doc.service.headerR5b">同时包含 <code>application/json</code> 与 <code>text/event-stream</code></td><td data-i18n="doc.service.headerR5c">406，<code>Not Acceptable</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout callout-warn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3l9-16z"/><path d="M12 10v4M12 17v.2"/></svg>
+    <div class="callout-body"><span class="callout-title" data-i18n="doc.service.bearerWarnTitle">关闭 Bearer 会同时关掉访问控制</span><span data-i18n="doc.service.bearerWarnText">关闭后，任何能访问该端口的本机程序都可以直接调用工具；现有访问令牌不再限制数据库与工具权限。只在排障时短暂关闭，完成后立刻重新开启。</span></div>
+  </div>
+
+  <h3 class="doc-h3" id="svc-config" data-i18n="doc.service.configTitle">复制接入配置</h3>
+  <p data-i18n="doc.service.configP1">在「概览 → 快速开始 → 接入 Agent」卡片上点「复制接入配置」。复制到剪贴板的内容由三段组成：一句说明、一行配置引导，以及下面这份 JSON。粘贴给 Agent，它就能据此写入你所用客户端的配置。</p>
+  <p data-i18n="doc.service.configP2">生成的 JSON 结构固定为 <code>mcpServers.datanexa</code>：<code>transport</code> 写 <code>streamable-http</code>，<code>url</code> 是当前端点，开启 Bearer 时再带上 <code>headers.Authorization</code>。它是一份通用配置，不针对某个客户端做字段转换。</p>
+
+  <div class="doc-code" data-lang="json">
+<pre><code>{
+  "mcpServers": {
+    "datanexa": {
+      "transport": "streamable-http",
+      "url": "http://127.0.0.1:17321/mcp",
+      "headers": {
+        "Authorization": "Bearer PASTE_YOUR_TOKEN_HERE"
+      }
+    }
+  }
+}</code></pre>
+  </div>
+
+  <ul>
+    <li data-i18n="doc.service.configLi1"><strong>关闭 Bearer 时：</strong>直接复制，JSON 里没有 <code>headers</code> 字段。</li>
+    <li data-i18n="doc.service.configLi2"><strong>只有一个启用的令牌时：</strong>直接复制，密钥已写入 <code>Authorization</code>。</li>
+    <li data-i18n="doc.service.configLi3"><strong>有多个启用的令牌时：</strong>先弹出「选择访问令牌」，选中后才复制，避免把别的 Agent 的密钥交出去。</li>
+    <li data-i18n="doc.service.configLi4"><strong>一个启用的令牌都没有时：</strong>不会复制任何内容，而是跳到「访问控制」页，先创建一个令牌。</li>
+  </ul>
+
+  <div class="callout callout-tip">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5.9 1.2.9 2.1h5.2c0-.9.3-1.6.9-2.1A6 6 0 0 0 12 3z"/></svg>
+    <div class="callout-body"><span class="callout-title" data-i18n="doc.service.configTipTitle">手动填写时保留完整 URL</span><span data-i18n="doc.service.configTipText">配置里没有 <code>command</code> 与 <code>args</code>，因为服务是一个 HTTP 端点而不是本地进程。手动抄写时不要漏掉 <code>/mcp</code>，也不要把 <code>127.0.0.1</code> 换成局域网地址或 <code>::1</code>。若客户端不识别 <code>transport</code> 字段，按该客户端文档确认远程 MCP 的写法，但 <code>url</code> 与 <code>Authorization</code> 的值保持不变。</span></div>
+  </div>
+
+  <div class="callout callout-danger">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3l9-16z"/><path d="M12 10v4M12 17v.2"/></svg>
+    <div class="callout-body"><span class="callout-title" data-i18n="doc.service.secretDangerTitle">复制出来的配置就是明文密钥</span><span data-i18n="doc.service.secretDangerText">这份配置等同于该令牌的全部权限。不要贴进公开仓库、聊天群或工单；一旦外泄，立刻到「访问控制」轮换该令牌，旧密钥会在同一刻失效。</span></div>
+  </div>
+
+  
+
+  <h3 class="doc-h3" id="svc-verify" data-i18n="doc.service.verifyTitle">首次验证</h3>
+  <p data-i18n="doc.service.verifyP1">配置写入客户端后，不要急着让它查业务数据，先按下面的顺序验证：</p>
+  <ol>
+    <li data-i18n="doc.service.verifyLi1">让 Agent 调用 <code>datanexa_list_connections</code>。返回的是已启用的连接清单，不含密码；看不到某个连接，说明它被暂停或该令牌无权访问。</li>
+    <li data-i18n="doc.service.verifyLi2">再调用 <code>datanexa_get_schema</code> 查看表与视图，确认 Agent 看到的结构范围符合预期。</li>
+    <li data-i18n="doc.service.verifyLi3">回到「审计日志」，确认刚才两次调用都有记录，并核对工具名、连接与状态。</li>
+  </ol>
+
+  <h3 class="doc-h3" id="svc-autostart" data-i18n="doc.service.autoTitle">开机自启动与后台策略</h3>
+  <p data-i18n="doc.service.autoP1">三项开关都在「设置 → 通用 → 启动与后台」，它们决定开机后服务能否自动恢复：</p>
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.service.autoTh1">开关</th><th data-i18n="doc.service.autoTh2">作用</th></tr>
+        </thead>
+        <tbody>
+          <tr><td data-i18n="doc.service.autoR1a">开机自启动</td><td data-i18n="doc.service.autoR1b">登录时启动 DataNexa。开启后 MCP 服务会随应用一起启动，「启动 DataNexa 时自动开启 MCP 服务」会被锁定为开启。</td></tr>
+          <tr><td data-i18n="doc.service.autoR2a">启动时自动运行 MCP</td><td data-i18n="doc.service.autoR2b">应用启动且审计存储就绪后自动启动服务。开机自启动开启时该项不可单独关闭。</td></tr>
+          <tr><td data-i18n="doc.service.autoR3a">轻量模式</td><td data-i18n="doc.service.autoR3b">窗口关闭 5 分钟后释放界面资源以减少占用；服务与托管进程继续运行，重新打开窗口即可恢复。</td></tr>
+          <tr><td data-i18n="doc.service.autoR4a">托盘状态</td><td data-i18n="doc.service.autoR4b">托盘图标与菜单同步服务状态，可直接启动或停止服务、切换轻量模式、退出应用。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h3 class="doc-h3" id="svc-troubleshoot" data-i18n="doc.service.troubleTitle">排错</h3>
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.service.troubleTh1">现象</th><th data-i18n="doc.service.troubleTh2">原因</th><th data-i18n="doc.service.troubleTh3">处理</th></tr>
+        </thead>
+        <tbody>
+          <tr><td data-i18n="doc.service.troubleR1a">启动按钮不可点</td><td data-i18n="doc.service.troubleR1b">审计日志迁移尚未完成</td><td data-i18n="doc.service.troubleR1c">侧栏会出现迁移提示，等它完成或按提示重试；迁移完成前工具调用无法留痕，所以不允许启动。</td></tr>
+          <tr><td data-i18n="doc.service.troubleR2a">启动失败</td><td data-i18n="doc.service.troubleR2b">端口被其他进程占用，或监听地址不合规</td><td data-i18n="doc.service.troubleR2c">换一个端口；失败原因可在状态卡悬停查看，也记录在审计日志里。</td></tr>
+          <tr><td data-i18n="doc.service.troubleR3a">401，<code>Unauthorized</code></td><td data-i18n="doc.service.troubleR3b">没带密钥、密钥已轮换，或令牌被停用、删除</td><td data-i18n="doc.service.troubleR3c">重新「复制接入配置」；在访问控制确认令牌状态为启用。</td></tr>
+          <tr><td data-i18n="doc.service.troubleR4a">403，<code>Host is not allowed</code></td><td data-i18n="doc.service.troubleR4b">用了局域网 IP、<code>::1</code> 或经由代理访问</td><td data-i18n="doc.service.troubleR4c">把 <code>url</code> 改为 <code>http://127.0.0.1:&lt;port&gt;/mcp</code> 或 <code>localhost</code>。</td></tr>
+          <tr><td data-i18n="doc.service.troubleR5a">405 / 406 / 415</td><td data-i18n="doc.service.troubleR5b">用 GET 访问，或请求头不满足要求</td><td data-i18n="doc.service.troubleR5c">改成 POST；补齐 <code>Content-Type</code> 与 <code>Accept</code>，见上面的请求头表。</td></tr>
+          <tr><td data-i18n="doc.service.troubleR6a">客户端不识别配置</td><td data-i18n="doc.service.troubleR6b">生成的是通用 HTTP 配置，不是某客户端专属格式</td><td data-i18n="doc.service.troubleR6c">按客户端文档确认远程 MCP 的字段写法，保留 <code>url</code> 与 <code>Authorization</code> 的值。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+        <!-- 07 访问控制 -->
+<section class="doc-section" id="access">
+  <div class="doc-chapter"><span>07</span><span data-i18n="doc.ch.access">访问控制</span></div>
+  <h2><span data-i18n="doc.access.title">创建和管理访问令牌</span><a class="doc-anchor" href="#access" aria-label="链接到本节">#</a></h2>
+  <p class="doc-lead" data-i18n="doc.access.lead">访问控制把同一个本地服务的权限拆成多个命名令牌：每个 Agent 用自己的密钥，只能看到被允许的连接与工具。这一章讲清楚令牌怎么建、密钥什么时候失效，以及熔断之后怎么恢复。</p>
+
+  <div class="doc-tldr">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 4v5c0 4.4-3 8-7 9-4-1-7-4.6-7-9V7l7-4z"/><path d="M9.5 12l2 2 3.5-4"/></svg>
+    <div><b data-i18n="doc.access.tldrLabel">要点：</b><span data-i18n="doc.access.tldr">令牌只做减法：新令牌默认能用所有已启用的连接和工具，你关掉哪一项，这个 Agent 就少哪一项；停用、轮换、删除都会让旧密钥立刻失效。</span></div>
+  </div>
+
+  <h3 class="doc-h3" id="acl-prereq" data-i18n="doc.access.preTitle">前提：先开启 Bearer</h3>
+  <p data-i18n="doc.access.preP1">访问控制依赖 Bearer 鉴权。开启 Bearer 时，请求先由密钥识别出令牌身份，再按令牌的权限过滤数据库和工具；关闭 Bearer 时，请求没有身份，令牌也就无从约束。</p>
+  <p data-i18n="doc.access.preP2">如果 Bearer 是关闭的，打开「访问控制」只会看到一块提示，而不是令牌列表。点提示里的「开启 Bearer 密钥」即可，它会同时改写服务配置。</p>
+
+  <div class="callout callout-warn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3l9-16z"/><path d="M12 10v4M12 17v.2"/></svg>
+    <div class="callout-body"><span class="callout-title" data-i18n="doc.access.preWarnTitle">关闭 Bearer 后，令牌不再生效</span><span data-i18n="doc.access.preWarnText">令牌记录不会删除，但在 Bearer 重新开启之前，任何能访问端点的本机程序都不需要密钥，也不再受数据库与工具权限限制。不要在关闭状态下发放接入配置。</span></div>
+  </div>
+
+  <h3 class="doc-h3" id="acl-list" data-i18n="doc.access.listTitle">令牌列表与操作</h3>
+  <p data-i18n="doc.access.listP1">访问控制页分左右两栏：左侧列表显示名称、启用状态、短 ID 与最近使用时间，右侧面板显示创建时间、权限与接入入口。行内四个按钮分别对应停用/启用、重命名、轮换与删除，危险操作都会先弹确认框。</p>
+
+  <figure class="doc-shot">
+    <div class="shot-frame" style="--shot-ratio: 2584 / 1744">
+      <div class="shot-placeholder" aria-hidden="true">
+        <span class="shot-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg></span>
+        <span class="shot-label">截图占位 · 11</span>
+        <code class="shot-name">11-access-tokens.png</code>
+        <span class="shot-desc">访问控制页：2–3 个访问令牌、启用状态、最近使用时间，右侧权限摘要与「复制 Agent Prompt」入口。</span>
+        <span class="shot-size">建议 1600 × 1000 · PNG · 浅色主题</span>
+      </div>
+      <img src="assets/help/11-access-tokens.png" alt="访问控制页，左侧是访问令牌列表与状态，右侧是选中令牌的数据库与工具权限摘要" loading="lazy" decoding="async">
+    </div>
+    <figcaption><span class="shot-num"><span data-i18n="doc.shared.figure">图</span> 7-1</span><span data-i18n="doc.fig.accessTokens">列表负责区分身份，右侧面板负责收紧权限。</span></figcaption>
+  </figure>
+
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.access.opTh1">操作</th><th data-i18n="doc.access.opTh2">作用</th><th data-i18n="doc.access.opTh3">注意</th></tr>
+        </thead>
+        <tbody>
+          <tr><td data-i18n="doc.access.opR1a">启用 / 停用</td><td data-i18n="doc.access.opR1b">切换令牌是否可用，密钥与权限保持不变。</td><td data-i18n="doc.access.opR1c">停用后该密钥立即失效，请求返回 401。</td></tr>
+          <tr><td data-i18n="doc.access.opR2a">重命名</td><td data-i18n="doc.access.opR2b">只改显示名称，用于区分请求来源。</td><td data-i18n="doc.access.opR2c">审计日志按令牌 ID 关联，历史记录也会显示新名称。</td></tr>
+          <tr><td data-i18n="doc.access.opR3a">轮换密钥</td><td data-i18n="doc.access.opR3b">生成新密钥并写入剪贴板。</td><td data-i18n="doc.access.opR3c">旧密钥在同一刻失效，正在使用它的 Agent 需要更新配置。</td></tr>
+          <tr><td data-i18n="doc.access.opR4a">删除</td><td data-i18n="doc.access.opR4b">令牌立即失效，权限记录一并清除。</td><td data-i18n="doc.access.opR4c">删除不可恢复；历史审计仍保留名称并标注「已删除」。</td></tr>
+          <tr><td data-i18n="doc.access.opR5a">复制 Agent Prompt</td><td data-i18n="doc.access.opR5b">取回密钥并生成完整接入配置。</td><td data-i18n="doc.access.opR5c">令牌停用时按钮不可用；这是界面里唯一能重新拿到密钥的入口。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h3 class="doc-h3" id="acl-create" data-i18n="doc.access.createTitle">创建令牌</h3>
+  <p data-i18n="doc.access.createP1">入口在「访问控制」页顶部右侧的「创建令牌」按钮。创建过程只有一步：给令牌起一个能区分用途的名字。</p>
+  <ol>
+    <li data-i18n="doc.access.createLi1">起名时写清使用者和用途，例如「笔记本 Cursor」「报表 Agent」。名称长度 1–80 个字符，之后还能改。</li>
+    <li data-i18n="doc.access.createLi2">确认后令牌立即创建，新密钥同时写入剪贴板，界面不会回显明文。</li>
+    <li data-i18n="doc.access.createLi3">在右侧权限面板按需关闭数据库与工具。新令牌默认允许所有「全局已启用」的连接和工具。</li>
+    <li data-i18n="doc.access.createLi4">点权限面板上方的「复制 Agent Prompt」，把带密钥的完整配置交给这个 Agent。</li>
+  </ol>
+
+  
+
+  <h3 class="doc-h3" id="acl-perm" data-i18n="doc.access.permTitle">权限粒度</h3>
+  <p data-i18n="doc.access.permP1">权限分两栏：数据库权限控制这个令牌能看到、能查哪些连接；工具权限控制它能调用哪些 MCP 工具。两栏都显示「已允许 / 全局已启用」的数量。</p>
+  <p data-i18n="doc.access.permP2">关闭某个连接后，它不会再出现在该令牌的 <code>datanexa_list_connections</code> 结果里；即使 Agent 拿着连接 ID 直接调用，也会被拒绝并记录为拦截。关闭某个工具后，它不会出现在 <code>tools/list</code> 中，直接调用同样会被拒绝。</p>
+
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.access.permTh1">权限</th><th data-i18n="doc.access.permTh2">默认</th><th data-i18n="doc.access.permTh3">说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td data-i18n="doc.access.permR1a">数据库</td><td data-i18n="doc.access.permR1b">全部允许</td><td data-i18n="doc.access.permR1c">只对启用中的连接生效；关闭后该连接对这个令牌不可见、不可查。</td></tr>
+          <tr><td data-i18n="doc.access.permR2a">工具</td><td data-i18n="doc.access.permR2b">全部允许</td><td data-i18n="doc.access.permR2c">只对启用中的工具生效；关闭后该工具不出现、也不能被调用。</td></tr>
+          <tr><td data-i18n="doc.access.permR3a">全局开关</td><td data-i18n="doc.access.permR3b">优先</td><td data-i18n="doc.access.permR3c">连接或工具已在全局关闭时，令牌侧开关会被禁用并标注「已在全局关闭」，无法单独打开。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h3 class="doc-h3" id="acl-secret" data-i18n="doc.access.secretTitle">密钥、轮换与失效</h3>
+  <p data-i18n="doc.access.secretP1">密钥不在页面上回显。创建或轮换后，新密钥会直接写入系统剪贴板；之后需要重新获取时，用该令牌的「复制 Agent Prompt」，它会取出密钥并拼成完整配置，同样只进剪贴板。</p>
+  <p data-i18n="doc.access.secretP2">所以「密钥只给你一次」并不准确：只要你还能复制 Prompt，就还能拿到密钥。真正的控制手段是停用、轮换与删除——三者都立即生效，不需要重启服务。</p>
+
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.access.secretTh1">令牌状态</th><th data-i18n="doc.access.secretTh2">密钥是否有效</th><th data-i18n="doc.access.secretTh3">请求结果</th></tr>
+        </thead>
+        <tbody>
+          <tr><td data-i18n="doc.access.secretR1a">启用</td><td data-i18n="doc.access.secretR1b">当前密钥有效</td><td data-i18n="doc.access.secretR1c">正常鉴权，按令牌权限过滤。</td></tr>
+          <tr><td data-i18n="doc.access.secretR2a">停用</td><td data-i18n="doc.access.secretR2b">全部失效</td><td data-i18n="doc.access.secretR2c">401，直到重新启用。</td></tr>
+          <tr><td data-i18n="doc.access.secretR3a">已轮换</td><td data-i18n="doc.access.secretR3b">旧密钥失效，新密钥有效</td><td data-i18n="doc.access.secretR3c">仍用旧密钥的请求返回 401。</td></tr>
+          <tr><td data-i18n="doc.access.secretR4a">已删除</td><td data-i18n="doc.access.secretR4b">全部失效且不可恢复</td><td data-i18n="doc.access.secretR4c">401；需要重新创建令牌。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout callout-warn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3l9-16z"/><path d="M12 10v4M12 17v.2"/></svg>
+    <div class="callout-body"><span class="callout-title" data-i18n="doc.access.rotateWarnTitle">轮换前先准备好替换</span><span data-i18n="doc.access.rotateWarnText">轮换是立即生效的：旧密钥没有过渡期。先确认能修改目标客户端的配置，再执行轮换，否则那个 Agent 会立刻开始报 401。</span></div>
+  </div>
+
+  <h3 class="doc-h3" id="acl-breaker" data-i18n="doc.access.breakerTitle">自动熔断</h3>
+  <p data-i18n="doc.access.breakerP1">自动熔断在「设置 → 安全 → 访问令牌自动熔断」。它统计单个令牌在窗口内的拦截次数，达到阈值就自动停用该令牌，避免一个配置错误的 Agent 反复越权。</p>
+  <p data-i18n="doc.access.breakerP2">开关默认关闭，且必须先开启 Bearer 才能打开；窗口与阈值也只在熔断开启后可调。</p>
+
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.access.breakerTh1">设置项</th><th data-i18n="doc.access.breakerTh2">默认</th><th data-i18n="doc.access.breakerTh3">可调范围</th></tr>
+        </thead>
+        <tbody>
+          <tr><td data-i18n="doc.access.breakerR1a">自动熔断</td><td data-i18n="doc.access.breakerR1b">关闭</td><td data-i18n="doc.access.breakerR1c">开启 / 关闭，需要 Bearer 已开启。</td></tr>
+          <tr><td data-i18n="doc.access.breakerR2a">统计窗口</td><td data-i18n="doc.access.breakerR2b">10 分钟</td><td data-i18n="doc.access.breakerR2c">1、5、10、30、60 分钟。</td></tr>
+          <tr><td data-i18n="doc.access.breakerR3a">拦截阈值</td><td data-i18n="doc.access.breakerR3b">5 次</td><td data-i18n="doc.access.breakerR3c">3、5、10、20、50 次。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <p data-i18n="doc.access.breakerP3">触发时发生的事情是确定的：</p>
+  <ol>
+    <li data-i18n="doc.access.breakerLi1">窗口内该令牌的拦截记录数达到阈值，熔断器立即把令牌置为停用。</li>
+    <li data-i18n="doc.access.breakerLi2">写入一条审计记录，工具名为「自动熔断」，状态为拦截，原因里写明窗口、次数与阈值。</li>
+    <li data-i18n="doc.access.breakerLi3">该令牌之后的所有请求返回 401，直到你手动重新启用。</li>
+    <li data-i18n="doc.access.breakerLi4">重新启用后计数从头开始，窗口内早于上次熔断的拦截不再累计。</li>
+  </ol>
+
+  <div class="callout callout-danger">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3l9-16z"/><path d="M12 10v4M12 17v.2"/></svg>
+    <div class="callout-body"><span class="callout-title" data-i18n="doc.access.breakerDangerTitle">熔断只止血，不解决问题</span><span data-i18n="doc.access.breakerDangerText">直接重新启用很可能再次触发。先到审计日志按该令牌筛选，看清被拦截的是什么工具、什么 SQL、是权限不足还是只读策略拒绝，改完权限或提示词后再启用。</span></div>
+  </div>
+
+  <h3 class="doc-h3" id="acl-audit" data-i18n="doc.access.auditTitle">审计里怎么认出令牌</h3>
+  <p data-i18n="doc.access.auditP1">审计记录按令牌归属，列表与详情显示「名称（短 ID）」，短 ID 是令牌 UUID 去掉连接符后的前 8 位。筛选项里也能直接按令牌过滤。</p>
+  <ul>
+    <li data-i18n="doc.access.auditLi1"><strong>没有令牌身份的记录：</strong>用来源标注区分——「系统」表示应用自身的动作，「未鉴权请求」表示 Bearer 关闭期间进来的调用，「旧版请求」表示历史遗留数据。</li>
+    <li data-i18n="doc.access.auditLi2"><strong>已删除的令牌：</strong>名称后追加「已删除」，用于把历史记录与现存令牌区分开。</li>
+    <li data-i18n="doc.access.auditLi3"><strong>熔断事件：</strong>工具列显示「自动熔断」，状态为拦截，可作为这条令牌的出问题起点。</li>
+  </ul>
+
+  <h3 class="doc-h3" id="acl-best" data-i18n="doc.access.bestTitle">最佳实践</h3>
+  <ul>
+    <li data-i18n="doc.access.bestLi1"><strong>一个 Agent 一个令牌。</strong>便于单独停用与追责，也能在审计里一眼看出是谁在查。</li>
+    <li data-i18n="doc.access.bestLi2"><strong>从最小权限开始。</strong>只留这个 Agent 真正需要的连接与工具；不确定时先关掉 <code>datanexa_execute_readonly_sql</code>，用结构发现类工具跑通流程。</li>
+    <li data-i18n="doc.access.bestLi3"><strong>定期轮换。</strong>把轮换当作换密码：怀疑泄露时立刻轮换，而不是只停用再启用。</li>
+    <li data-i18n="doc.access.bestLi4"><strong>换机或离职即处理。</strong>对应令牌直接删除；需要留档时先导出审计，再删。</li>
+    <li data-i18n="doc.access.bestLi5"><strong>不要把同一个令牌发给多个 Agent。</strong>共享密钥会让审计失去区分度，也无法单独收回某一方的权限。</li>
+  </ul>
+
+  <h3 class="doc-h3" id="acl-trouble" data-i18n="doc.access.troubleTitle">排错</h3>
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.access.troubleTh1">现象</th><th data-i18n="doc.access.troubleTh2">原因</th><th data-i18n="doc.access.troubleTh3">处理</th></tr>
+        </thead>
+        <tbody>
+          <tr><td data-i18n="doc.access.troubleR1a">页面只有一块提示</td><td data-i18n="doc.access.troubleR1b">Bearer 未开启</td><td data-i18n="doc.access.troubleR1c">点「开启 Bearer 密钥」，或到「设置 → 通用 → MCP 服务策略」打开开关。</td></tr>
+          <tr><td data-i18n="doc.access.troubleR2a">Agent 一直 401</td><td data-i18n="doc.access.troubleR2b">令牌被停用、密钥已轮换，或客户端仍用旧配置</td><td data-i18n="doc.access.troubleR2c">确认状态为启用，重新复制 Agent Prompt 并替换客户端里的密钥。</td></tr>
+          <tr><td data-i18n="doc.access.troubleR3a">权限开关是灰的</td><td data-i18n="doc.access.troubleR3b">该连接或工具在全局已关闭</td><td data-i18n="doc.access.troubleR3c">先在「数据库连接」或「工具」页启用，再回到令牌里分配。</td></tr>
+          <tr><td data-i18n="doc.access.troubleR4a">改了权限仍被拒</td><td data-i18n="doc.access.troubleR4b">Agent 缓存的工具列表未刷新，或另有策略层拒绝</td><td data-i18n="doc.access.troubleR4c">让 Agent 重新拉取工具列表；若工具已出现，去审计看拒绝原因属于权限还是只读策略。</td></tr>
+          <tr><td data-i18n="doc.access.troubleR5a">熔断后一直 401</td><td data-i18n="doc.access.troubleR5b">令牌处于自动停用状态</td><td data-i18n="doc.access.troubleR5c">先按审计里的原因修权限，再在访问控制重新启用。</td></tr>
+          <tr><td data-i18n="doc.access.troubleR6a">找不到密钥</td><td data-i18n="doc.access.troubleR6b">界面不回显明文</td><td data-i18n="doc.access.troubleR6c">用「复制 Agent Prompt」重新取回；令牌已删除时只能新建。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+        <!-- 08 MCP 工具参考 -->
+<section class="doc-section" id="tools">
+  <div class="doc-chapter"><span>08</span><span data-i18n="doc.ch.tools">MCP 工具参考</span></div>
+  <h2><span data-i18n="doc.tools.title">七个工具的参数与用法</span><a class="doc-anchor" href="#tools" aria-label="链接到本节">#</a></h2>
+  <p class="doc-lead" data-i18n="doc.tools.lead">Agent 能做什么，取决于你开放了哪些工具。这一章逐个说明七个工具的用途、参数、返回和限制，以及只读策略在它们背后如何生效。</p>
+
+  <div class="doc-tldr">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 4v5c0 4.4-3 8-7 9-4-1-7-4.6-7-9V7l7-4z"/><path d="M9.5 12l2 2 3.5-4"/></svg>
+    <div><b data-i18n="doc.tools.tldrLabel">要点：</b><span data-i18n="doc.tools.tldr">先用结构发现工具看清有什么，再用只读查询取数；所有语句在到达数据库前都要经过同一套只读策略。</span></div>
+  </div>
+
+  <h3 class="doc-h3" data-i18n="doc.tools.overviewTitle">工具总表</h3>
+  <p data-i18n="doc.tools.overviewP">七个工具分为三组，与「工具」页上的分组一致。关闭任意一个工具，Agent 的 <code>tools/list</code> 里就不会再出现它。</p>
+
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.tools.thTool">工具</th><th data-i18n="doc.tools.thGroup">分组</th><th data-i18n="doc.tools.thPurpose">作用</th><th data-i18n="doc.tools.thData">读取业务数据</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>datanexa_list_connections</code><br><span data-i18n="doc.tools.listName">列出连接</span></td><td data-i18n="doc.tools.gDiscovery">结构发现</td><td data-i18n="doc.tools.listP">返回当前启用且被授权的连接清单，不包含密码与完整 DSN。</td><td data-i18n="doc.tools.no">否</td></tr>
+          <tr><td><code>datanexa_get_schema</code><br><span data-i18n="doc.tools.schemaName">读取 Schema</span></td><td data-i18n="doc.tools.gDiscovery">结构发现</td><td data-i18n="doc.tools.schemaP">列出指定连接下的表与视图，让 Agent 先了解结构边界。</td><td data-i18n="doc.tools.no">否</td></tr>
+          <tr><td><code>datanexa_describe_table</code><br><span data-i18n="doc.tools.describeName">描述表结构</span></td><td data-i18n="doc.tools.gDiscovery">结构发现</td><td data-i18n="doc.tools.describeP">读取单张表的列名、类型、可空与主键信息。</td><td data-i18n="doc.tools.no">否</td></tr>
+          <tr><td><code>datanexa_sample_rows</code><br><span data-i18n="doc.tools.sampleName">采样行</span></td><td data-i18n="doc.tools.gAccess">数据访问</td><td data-i18n="doc.tools.sampleP">从指定表读取少量样本行，用于快速判断数据长什么样。</td><td data-i18n="doc.tools.yes">是</td></tr>
+          <tr><td><code>datanexa_execute_readonly_sql</code><br><span data-i18n="doc.tools.executeName">执行只读 SQL</span></td><td data-i18n="doc.tools.gAccess">数据访问</td><td data-i18n="doc.tools.executeP">执行一条经过策略校验的只读查询，能力最强，也最需要谨慎开放。</td><td data-i18n="doc.tools.yes">是</td></tr>
+          <tr><td><code>datanexa_explain_sql</code><br><span data-i18n="doc.tools.explainName">解释 SQL</span></td><td data-i18n="doc.tools.gAnalysis">分析与策略</td><td data-i18n="doc.tools.explainP">返回查询计划，帮助 Agent 分析 SQL，而不是读取业务数据。</td><td data-i18n="doc.tools.no">否</td></tr>
+          <tr><td><code>datanexa_policy_check</code><br><span data-i18n="doc.tools.policyName">策略检查</span></td><td data-i18n="doc.tools.gAnalysis">分析与策略</td><td data-i18n="doc.tools.policyP">只做静态策略预检，不连接数据库；适合在真正执行前验证一条 SQL。</td><td data-i18n="doc.tools.no">否</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <figure class="doc-shot">
+    <div class="shot-frame" style="--shot-ratio: 2584 / 1744">
+      <div class="shot-placeholder" aria-hidden="true">
+        <span class="shot-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg></span>
+        <span class="shot-label">截图占位 · 08</span>
+        <code class="shot-name">13-tools-grid.png</code>
+        <span class="shot-desc">工具页全貌：三个分组、七张工具卡与开关，顶部显示已启用数量。</span>
+        <span class="shot-size">建议 1600 × 1000 · PNG · 深色主题</span>
+      </div>
+      <img src="assets/help/13-tools-grid.png" alt="DataNexa 工具页，按结构发现、数据访问、分析与策略分组展示七个 MCP 工具" loading="lazy" decoding="async">
+    </div>
+    <figcaption><span class="shot-num"><span data-i18n="doc.shared.figure">图</span> 8-1</span><span data-i18n="doc.fig.toolsGrid">工具页是全局的能力开关入口，分组与这里的工具总表一一对应。</span></figcaption>
+  </figure>
+
+  <h3 class="doc-h3" data-i18n="doc.tools.discoveryTitle">结构发现：先看清有什么</h3>
+  <p data-i18n="doc.tools.discoveryLead">三个工具都不读业务行，只读元数据。建议在提示词里要求 Agent 先调用它们，再决定查哪张表。</p>
+
+  <div class="doc-tool">
+    <div class="doc-tool-head">
+      <span class="doc-tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg></span>
+      <span class="doc-tool-name">datanexa_list_connections</span>
+      <span class="doc-tool-label" data-i18n="doc.tools.listName">列出连接</span>
+      <span class="doc-badge doc-badge-blue" data-i18n="doc.tools.gDiscovery">结构发现</span>
+    </div>
+    <div class="doc-tool-body">
+      <p data-i18n="doc.tools.listP">返回当前启用且被授权的连接清单，不包含密码与完整 DSN。</p>
+      <p data-i18n="doc.tools.paramsNone">这个工具不接收参数。</p>
+      <p><strong data-i18n="doc.tools.returnsLabel">返回：</strong><span data-i18n="doc.tools.listReturns">包含 <code>connections</code> 数组；每项有 <code>id</code>、<code>name</code>、<code>type</code>、<code>enabled</code>、三项限额，以及描述该连接支持哪些工具的 <code>capabilities</code>。</span></p>
+    </div>
+  </div>
+
+  <div class="doc-tool">
+    <div class="doc-tool-head">
+      <span class="doc-tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5.5" rx="7.5" ry="2.8"/><path d="M4.5 5.5v13c0 1.55 3.36 2.8 7.5 2.8s7.5-1.25 7.5-2.8v-13"/></svg></span>
+      <span class="doc-tool-name">datanexa_get_schema</span>
+      <span class="doc-tool-label" data-i18n="doc.tools.schemaName">读取 Schema</span>
+      <span class="doc-badge doc-badge-blue" data-i18n="doc.tools.gDiscovery">结构发现</span>
+    </div>
+    <div class="doc-tool-body">
+      <p data-i18n="doc.tools.schemaP">列出指定连接下的表与视图，让 Agent 先了解结构边界。</p>
+      <div class="doc-table-wrap">
+        <div class="doc-table-scroll">
+          <table class="doc-table">
+            <thead><tr><th data-i18n="doc.tools.thParam">参数</th><th data-i18n="doc.tools.thRequired">必填</th><th data-i18n="doc.tools.thDesc">说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>connection_id</code></td><td><span class="is-req" data-i18n="doc.tools.req">必填</span></td><td data-i18n="doc.tools.pConnectionId">连接 ID，来自 <code>datanexa_list_connections</code> 返回的 <code>id</code>。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p><strong data-i18n="doc.tools.returnsLabel">返回：</strong><span data-i18n="doc.tools.schemaReturns">包含 <code>schema</code> 数组；每项有 <code>name</code>、<code>table_type</code>，部分数据库还会带 <code>schema</code> 名。</span></p>
+    </div>
+  </div>
+
+  <div class="doc-tool">
+    <div class="doc-tool-head">
+      <span class="doc-tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16M9 4v16"/></svg></span>
+      <span class="doc-tool-name">datanexa_describe_table</span>
+      <span class="doc-tool-label" data-i18n="doc.tools.describeName">描述表结构</span>
+      <span class="doc-badge doc-badge-blue" data-i18n="doc.tools.gDiscovery">结构发现</span>
+    </div>
+    <div class="doc-tool-body">
+      <p data-i18n="doc.tools.describeP">读取单张表的列名、类型、可空与主键信息。</p>
+      <div class="doc-table-wrap">
+        <div class="doc-table-scroll">
+          <table class="doc-table">
+            <thead><tr><th data-i18n="doc.tools.thParam">参数</th><th data-i18n="doc.tools.thRequired">必填</th><th data-i18n="doc.tools.thDesc">说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>connection_id</code></td><td><span class="is-req" data-i18n="doc.tools.req">必填</span></td><td data-i18n="doc.tools.pConnectionId">连接 ID，来自 <code>datanexa_list_connections</code> 返回的 <code>id</code>。</td></tr>
+              <tr><td><code>table</code></td><td><span class="is-req" data-i18n="doc.tools.req">必填</span></td><td data-i18n="doc.tools.pTable">表名，按结构化参数处理，不会拼接进 SQL。</td></tr>
+              <tr><td><code>schema</code></td><td><span class="is-opt" data-i18n="doc.tools.opt">可选</span></td><td data-i18n="doc.tools.pSchema">schema 或数据库名；SQLite 通常不需要。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p><strong data-i18n="doc.tools.returnsLabel">返回：</strong><span data-i18n="doc.tools.describeReturns">包含 <code>columns</code> 数组；每项有 <code>name</code>、<code>data_type</code>、<code>nullable</code>、<code>primary_key</code>。</span></p>
+    </div>
+  </div>
+
+  <h3 class="doc-h3" data-i18n="doc.tools.accessTitle">数据访问：读样本与执行查询</h3>
+  <p data-i18n="doc.tools.accessLead">这两个工具会真正读到业务数据。是否开放、开放给哪个令牌，需要单独决定。</p>
+
+  <div class="doc-tool">
+    <div class="doc-tool-head">
+      <span class="doc-tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16M9 9v11"/></svg></span>
+      <span class="doc-tool-name">datanexa_sample_rows</span>
+      <span class="doc-tool-label" data-i18n="doc.tools.sampleName">采样行</span>
+      <span class="doc-badge doc-badge-green" data-i18n="doc.tools.gAccess">数据访问</span>
+    </div>
+    <div class="doc-tool-body">
+      <p data-i18n="doc.tools.sampleP">从指定表读取少量样本行，用于快速判断数据长什么样。</p>
+      <div class="doc-table-wrap">
+        <div class="doc-table-scroll">
+          <table class="doc-table">
+            <thead><tr><th data-i18n="doc.tools.thParam">参数</th><th data-i18n="doc.tools.thRequired">必填</th><th data-i18n="doc.tools.thDesc">说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>connection_id</code></td><td><span class="is-req" data-i18n="doc.tools.req">必填</span></td><td data-i18n="doc.tools.pConnectionId">连接 ID，来自 <code>datanexa_list_connections</code> 返回的 <code>id</code>。</td></tr>
+              <tr><td><code>table</code></td><td><span class="is-req" data-i18n="doc.tools.req">必填</span></td><td data-i18n="doc.tools.pTable">表名，按结构化参数处理，不会拼接进 SQL。</td></tr>
+              <tr><td><code>schema</code></td><td><span class="is-opt" data-i18n="doc.tools.opt">可选</span></td><td data-i18n="doc.tools.pSchema">schema 或数据库名；SQLite 通常不需要。</td></tr>
+              <tr><td><code>limit</code></td><td><span class="is-opt" data-i18n="doc.tools.opt">可选</span></td><td data-i18n="doc.tools.pLimit">返回行数上限，1–5000，默认跟随连接的最大返回行数。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p><strong data-i18n="doc.tools.returnsLabel">返回：</strong><span data-i18n="doc.tools.sampleReturns">与只读查询相同的结果对象：列、行、<code>row_count</code>、<code>truncated</code>、<code>returned_bytes</code>、<code>elapsed_ms</code> 与实际执行的 <code>rewritten_sql</code>。</span></p>
+      <p data-i18n="doc.tools.sampleJdbc">通过 JDBC 接入的连接不支持这个工具，调用会返回 <code>unsupported</code> 说明，而不是假装成功。</p>
+    </div>
+  </div>
+
+  <div class="doc-tool">
+    <div class="doc-tool-head">
+      <span class="doc-tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="8 6 3 12 8 18"/><polyline points="16 6 21 12 16 18"/></svg></span>
+      <span class="doc-tool-name">datanexa_execute_readonly_sql</span>
+      <span class="doc-tool-label" data-i18n="doc.tools.executeName">执行只读 SQL</span>
+      <span class="doc-badge doc-badge-green" data-i18n="doc.tools.gAccess">数据访问</span>
+    </div>
+    <div class="doc-tool-body">
+      <p data-i18n="doc.tools.executeP">执行一条经过策略校验的只读查询，能力最强，也最需要谨慎开放。</p>
+      <div class="doc-table-wrap">
+        <div class="doc-table-scroll">
+          <table class="doc-table">
+            <thead><tr><th data-i18n="doc.tools.thParam">参数</th><th data-i18n="doc.tools.thRequired">必填</th><th data-i18n="doc.tools.thDesc">说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>connection_id</code></td><td><span class="is-req" data-i18n="doc.tools.req">必填</span></td><td data-i18n="doc.tools.pConnectionId">连接 ID，来自 <code>datanexa_list_connections</code> 返回的 <code>id</code>。</td></tr>
+              <tr><td><code>sql</code></td><td><span class="is-req" data-i18n="doc.tools.req">必填</span></td><td data-i18n="doc.tools.pSql">单条只读 SQL，按连接对应的方言解析与校验。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p data-i18n="doc.tools.executeReturns">返回 <code>policy</code> 与 <code>result</code>：策略放行时，<code>result</code> 是查询结果；策略拒绝时，<code>result</code> 为 <code>null</code>，原因写在 <code>policy.reason</code> 里。</p>
+      <p data-i18n="doc.tools.executeDenied">注意：被策略拒绝时，MCP 调用本身仍是成功的（<code>isError</code> 为 <code>false</code>），Agent 必须读取 <code>policy.allowed</code> 才能知道语句没有执行。</p>
+    </div>
+  </div>
+
+  <h3 class="doc-h3" data-i18n="doc.tools.exampleRequest">一次只读查询的请求</h3>
+  <div class="doc-code" data-lang="json">
+<pre><code>{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "datanexa_execute_readonly_sql",
+    "arguments": {
+      "connection_id": "demo-mysql",
+      "sql": "SELECT id, total FROM orders ORDER BY created_at DESC LIMIT 5"
+    }
+  }
+}</code></pre>
+  </div>
+
+  <p data-i18n="doc.tools.exampleResponse">返回的 <code>structuredContent</code>（<code>content</code> 里是同一份 JSON 文本，此处省略）。策略引擎会把最外层行数收紧到 <code>max_rows + 1</code>，用一行额外数据判断是否被截断：</p>
+  <div class="doc-code" data-lang="json">
+<pre><code>{
+  "policy": {
+    "allowed": true,
+    "reason": "只读 SQL 策略已允许该语句。",
+    "rewritten_sql": "SELECT id, total FROM orders ORDER BY created_at DESC LIMIT 6"
+  },
+  "result": {
+    "columns": ["id", "total"],
+    "rows": [
+      { "id": 42, "total": 128.5 },
+      { "id": 41, "total": 76.0 }
+    ],
+    "row_count": 2,
+    "truncated": false,
+    "returned_bytes": 63,
+    "elapsed_ms": 12,
+    "rewritten_sql": "SELECT id, total FROM orders ORDER BY created_at DESC LIMIT 6"
+  }
+}</code></pre>
+  </div>
+
+  <h3 class="doc-h3" data-i18n="doc.tools.exampleDeniedTitle">一次被拒绝的写操作</h3>
+  <div class="doc-code" data-lang="json">
+<pre><code>{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "method": "tools/call",
+  "params": {
+    "name": "datanexa_execute_readonly_sql",
+    "arguments": {
+      "connection_id": "demo-mysql",
+      "sql": "DELETE FROM orders WHERE id = 42"
+    }
+  }
+}</code></pre>
+  </div>
+
+  <div class="doc-code" data-lang="json">
+<pre><code>{
+  "policy": {
+    "allowed": false,
+    "reason": "只读策略已阻止 DDL、DML、破坏性语句和可能产生副作用的 SQL。",
+    "rewritten_sql": null
+  },
+  "result": null
+}</code></pre>
+  </div>
+
+  <h3 class="doc-h3" data-i18n="doc.tools.analysisTitle">分析与策略：不读业务数据</h3>
+  <p data-i18n="doc.tools.analysisLead">这两个工具适合在开放查询能力之前先给 Agent 用：一个看执行计划，一个只做静态预检。</p>
+
+  <div class="doc-tool">
+    <div class="doc-tool-head">
+      <span class="doc-tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/></svg></span>
+      <span class="doc-tool-name">datanexa_explain_sql</span>
+      <span class="doc-tool-label" data-i18n="doc.tools.explainName">解释 SQL</span>
+      <span class="doc-badge doc-badge-amber" data-i18n="doc.tools.gAnalysis">分析与策略</span>
+    </div>
+    <div class="doc-tool-body">
+      <p data-i18n="doc.tools.explainP">返回查询计划，帮助 Agent 分析 SQL，而不是读取业务数据。</p>
+      <div class="doc-table-wrap">
+        <div class="doc-table-scroll">
+          <table class="doc-table">
+            <thead><tr><th data-i18n="doc.tools.thParam">参数</th><th data-i18n="doc.tools.thRequired">必填</th><th data-i18n="doc.tools.thDesc">说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>connection_id</code></td><td><span class="is-req" data-i18n="doc.tools.req">必填</span></td><td data-i18n="doc.tools.pConnectionId">连接 ID，来自 <code>datanexa_list_connections</code> 返回的 <code>id</code>。</td></tr>
+              <tr><td><code>sql</code></td><td><span class="is-req" data-i18n="doc.tools.req">必填</span></td><td data-i18n="doc.tools.pSql">单条只读 SQL，按连接对应的方言解析与校验。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p data-i18n="doc.tools.explainReturns">返回同样的 <code>policy</code> / <code>result</code> 结构，<code>result</code> 中是执行计划而不是业务行。只接受 <code>EXPLAIN</code>，带 <code>ANALYZE</code> 的写法会被拒绝。</p>
+      <p data-i18n="doc.tools.explainJdbc">JDBC 连接不支持解释查询，会返回 <code>unsupported</code> 说明。</p>
+    </div>
+  </div>
+
+  <div class="doc-tool">
+    <div class="doc-tool-head">
+      <span class="doc-tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 4v5c0 4.4-3 8-7 9-4-1-7-4.6-7-9V7l7-4z"/><path d="M9.5 12l2 2 3.5-4"/></svg></span>
+      <span class="doc-tool-name">datanexa_policy_check</span>
+      <span class="doc-tool-label" data-i18n="doc.tools.policyName">策略检查</span>
+      <span class="doc-badge doc-badge-amber" data-i18n="doc.tools.gAnalysis">分析与策略</span>
+    </div>
+    <div class="doc-tool-body">
+      <p data-i18n="doc.tools.policyP">只做静态策略预检，不连接数据库；适合在真正执行前验证一条 SQL。</p>
+      <div class="doc-table-wrap">
+        <div class="doc-table-scroll">
+          <table class="doc-table">
+            <thead><tr><th data-i18n="doc.tools.thParam">参数</th><th data-i18n="doc.tools.thRequired">必填</th><th data-i18n="doc.tools.thDesc">说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>sql</code></td><td><span class="is-req" data-i18n="doc.tools.req">必填</span></td><td data-i18n="doc.tools.pSql">单条只读 SQL，按连接对应的方言解析与校验。</td></tr>
+              <tr><td><code>connection_id</code></td><td><span class="is-opt" data-i18n="doc.tools.opt">可选</span></td><td data-i18n="doc.tools.pConnectionOpt">提供后沿用该连接的方言与行数上限；与 <code>kind</code> 二选一。</td></tr>
+              <tr><td><code>kind</code></td><td><span class="is-opt" data-i18n="doc.tools.opt">可选</span></td><td data-i18n="doc.tools.pKind">SQL 方言：<code>sqlite</code>、<code>mysql</code> 或 <code>postgres</code>。</td></tr>
+              <tr><td><code>max_rows</code></td><td><span class="is-opt" data-i18n="doc.tools.opt">可选</span></td><td data-i18n="doc.tools.pMaxRows">预检使用的行数上限，1–5000，默认 500。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p data-i18n="doc.tools.policyReturns">返回 <code>policy</code>：<code>allowed</code>、<code>reason</code>，以及会被实际执行的 <code>rewritten_sql</code>。</p>
+      <p data-i18n="doc.tools.policyAudit">这个工具不会连接数据库，但同样会留下一条审计记录；用它可以放心地试错，不会碰到真实数据。</p>
+    </div>
+  </div>
+
+  <h3 class="doc-h3" data-i18n="doc.tools.policyTitle">只读策略会拦下什么</h3>
+  <p data-i18n="doc.tools.policyP1">五个工具共享同一套策略引擎：先按方言解析成语法树，再逐条检查。判断依据是语句结构，不是字符串匹配，所以注释、字符串字面量里的关键词不会造成误判。</p>
+
+  <div class="doc-split">
+    <div class="doc-panel doc-panel-good">
+      <h4 data-i18n="doc.tools.allowedTitle">允许</h4>
+      <ul>
+        <li data-i18n="doc.tools.allow1">单条 <code>SELECT</code>，包括聚合、排序、分组与子查询。</li>
+        <li data-i18n="doc.tools.allow2">安全的 <code>WITH ... SELECT</code>（CTE 内部不能出现写操作）。</li>
+        <li data-i18n="doc.tools.allow3"><code>EXPLAIN</code> 查询计划，且不带 <code>ANALYZE</code>。</li>
+        <li data-i18n="doc.tools.allow4">带 <code>LIMIT</code> 的查询；策略会校验并收紧最外层行数。</li>
+      </ul>
+    </div>
+    <div class="doc-panel doc-panel-bad">
+      <h4 data-i18n="doc.tools.deniedTitle">拒绝</h4>
+      <ul>
+        <li data-i18n="doc.tools.deny1"><code>INSERT</code>、<code>UPDATE</code>、<code>DELETE</code>、<code>MERGE</code> 与任何 DDL。</li>
+        <li data-i18n="doc.tools.deny2">一次提交多条语句，或 <code>SELECT INTO</code> 写入新表。</li>
+        <li data-i18n="doc.tools.deny3">加锁读取，例如 <code>FOR UPDATE</code> 与 <code>FOR SHARE</code>。</li>
+        <li data-i18n="doc.tools.deny4">可能产生副作用的函数，例如 <code>sleep</code>、<code>load_file</code>、<code>pg_read_file</code>。</li>
+        <li data-i18n="doc.tools.deny5"><code>EXPLAIN ANALYZE</code>：它会真正执行语句。</li>
+        <li data-i18n="doc.tools.deny6">解析失败或方言不明确的语句，策略宁可拒绝。</li>
+      </ul>
+    </div>
+  </div>
+
+  <p data-i18n="doc.tools.limitP">放行之后还有三层限制：最外层行数会被收紧到 <code>max_rows + 1</code>，多取的一行只用于判断是否截断；结果超过连接允许的字节数时同样标记 <code>truncated</code>，并可能返回被截断的单元格；查询超过时限会中止并记为「超时」。这些都在结果对象里如实反映，Agent 不应该拿截断结果推断总量。</p>
+
+  
+
+  <h3 class="doc-h3" data-i18n="doc.tools.switchTitle">工具开关、令牌权限与 JDBC 差异</h3>
+  <p data-i18n="doc.tools.switchP1">工具开关是全局的：关闭后，<code>tools/list</code> 不再返回该工具，直接调用会收到「工具已关闭」的错误。它适合长期限制 Agent 能做什么。</p>
+  <p data-i18n="doc.tools.tokenP">如果开了 Bearer 鉴权，还可以在「访问控制」里为每个令牌单独勾选数据库与工具。令牌没被授权的工具，调用会返回「未授权给该访问令牌」，与全局关闭的报错不同，便于在审计里区分。</p>
+  <p data-i18n="doc.tools.jdbcP">JDBC 连接的能力取决于驱动：<code>datanexa_list_connections</code> 返回的 <code>capabilities</code> 会列出该连接支持与不支持的工具。不要假设所有连接都能采样行或解释查询。</p>
+  <p data-i18n="doc.tools.adviceP">实践建议：始终保留 <code>datanexa_list_connections</code> 与 <code>datanexa_get_schema</code>；<code>datanexa_sample_rows</code> 按需开放；<code>datanexa_execute_readonly_sql</code> 只给确实需要自由查询的 Agent，并配合最小权限令牌。</p>
+</section>
+
+        <!-- 09 审计日志 -->
+<section class="doc-section" id="audit">
+  <div class="doc-chapter"><span>09</span><span data-i18n="doc.ch.audit">审计日志</span></div>
+  <h2><span data-i18n="doc.audit.title">查看审计日志</span><a class="doc-anchor" href="#audit" aria-label="链接到本节">#</a></h2>
+  <p class="doc-lead" data-i18n="doc.audit.lead">把数据库交给 Agent 之后，最想知道的是它到底做了什么。审计日志按时间记录每一次工具调用：谁发起的、查了哪个库、执行了什么 SQL、结果如何。</p>
+
+  <div class="doc-tldr">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 4v5c0 4.4-3 8-7 9-4-1-7-4.6-7-9V7l7-4z"/><path d="M9.5 12l2 2 3.5-4"/></svg>
+    <div><b data-i18n="doc.audit.tldrLabel">要点：</b><span data-i18n="doc.audit.tldr">审计日志回答三个问题——哪个令牌、在什么时候、通过哪个工具对哪个连接做了什么，结果是被允许、拒绝、超时还是被截断。</span></div>
+  </div>
+
+  <h3 class="doc-h3" data-i18n="doc.audit.recordTitle">记录了什么</h3>
+  <p data-i18n="doc.audit.recordP">每次工具调用都会写入本地 SQLite，包括成功、被策略拒绝、超时、结果被截断与执行出错。服务启动等系统动作也会记录，来源显示为「系统」。审计写入失败会直接让调用失败，不会出现「执行了但没有记录」的情况。</p>
+  <p data-i18n="doc.audit.fieldsP">一条记录包含：时间、令牌、工具、连接、状态、原因、耗时、返回行数与 SQL 文本。SQL 会保存实际执行的版本（策略改写后的 SQL），因此你能看到行数限制是怎么加上去的。</p>
+
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.audit.thStatus">状态</th><th data-i18n="doc.audit.thMeaning">含义</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="doc-badge doc-badge-green" data-i18n="doc.audit.statusAllowed">允许</span></td><td data-i18n="doc.audit.statusAllowedDesc">策略放行，查询成功返回。</td></tr>
+          <tr><td><span class="doc-badge doc-badge-amber" data-i18n="doc.audit.statusTruncated">截断</span></td><td data-i18n="doc.audit.statusTruncatedDesc">查询成功，但结果超过行数或字节上限，返回的是不完整数据。</td></tr>
+          <tr><td><span class="doc-badge doc-badge-red" data-i18n="doc.audit.statusDenied">拒绝</span></td><td data-i18n="doc.audit.statusDeniedDesc">被只读策略、令牌权限或自动熔断拦下，语句没有执行。</td></tr>
+          <tr><td><span class="doc-badge doc-badge-amber" data-i18n="doc.audit.statusTimeout">超时</span></td><td data-i18n="doc.audit.statusTimeoutDesc">超过连接的查询时限，连接被丢弃。</td></tr>
+          <tr><td><span class="doc-badge doc-badge-red" data-i18n="doc.audit.statusError">错误</span></td><td data-i18n="doc.audit.statusErrorDesc">连接、SQL、驱动或数据库返回错误，原因里保留原始信息。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h3 class="doc-h3" data-i18n="doc.audit.listTitle">列表与筛选</h3>
+  <p data-i18n="doc.audit.listP1">列表按时间倒序展示「时间、令牌、工具、连接、状态、详情」六列。详情列显示简短原因或「{rows} 行 / {elapsed}ms」，一眼能看出哪些调用没有返回数据。</p>
+  <p data-i18n="doc.audit.listP2">右上角「筛选」支持开始日期、结束日期、工具、连接、状态与令牌六个条件，可组合使用；「清除筛选」恢复全量。列表每页 50 条，单次最多加载 5000 条，超出后请用筛选或时间范围缩小范围。</p>
+
+  <figure class="doc-shot">
+    <div class="shot-frame" style="--shot-ratio: 2584 / 1744">
+      <div class="shot-placeholder" aria-hidden="true">
+        <span class="shot-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg></span>
+        <span class="shot-label">截图占位 · 09</span>
+        <code class="shot-name">15-audit-list.png</code>
+        <span class="shot-desc">审计列表：多行记录、状态徽标、时间/工具/连接列与「筛选」入口。</span>
+        <span class="shot-size">建议 1600 × 1000 · PNG · 浅色主题</span>
+      </div>
+      <img src="assets/help/15-audit-list.png" alt="DataNexa 审计日志列表，展示时间、令牌、工具、连接、状态和详情列" loading="lazy" decoding="async">
+    </div>
+    <figcaption><span class="shot-num"><span data-i18n="doc.shared.figure">图</span> 9-1</span><span data-i18n="doc.fig.auditList">审计列表把每次调用压成一行，失败与截断会直接用状态色标出来。</span></figcaption>
+  </figure>
+
+  <h3 class="doc-h3" data-i18n="doc.audit.detailTitle">详情：一次调用到底发生了什么</h3>
+  <p data-i18n="doc.audit.detailP1">点击任意一行打开「日志详情」，可以看到完整令牌、工具、连接、状态、耗时与行数；被拒绝或出错时还有「原因」，SQL 区域保留可复制的原始语句。</p>
+  <p data-i18n="doc.audit.detailP2">SQL 文本最多保存 20000 个字符，超出会被截断并标注；原因最多保留 500 个字符。需要完整 SQL 时，应在调用方或调试日志里另行留存。</p>
+
+  <figure class="doc-shot">
+    <div class="shot-frame" style="--shot-ratio: 2584 / 1744">
+      <div class="shot-placeholder" aria-hidden="true">
+        <span class="shot-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg></span>
+        <span class="shot-label">截图占位 · 09</span>
+        <code class="shot-name">16-audit-detail.png</code>
+        <span class="shot-desc">日志详情弹窗：令牌、工具、连接、状态、耗时/行数、原因与 SQL。</span>
+        <span class="shot-size">建议 1200 × 900 · PNG · 浅色主题</span>
+      </div>
+      <img src="assets/help/16-audit-detail.png" alt="DataNexa 审计日志详情弹窗，展示状态、耗时、行数、原因和 SQL 文本" loading="lazy" decoding="async">
+    </div>
+    <figcaption><span class="shot-num"><span data-i18n="doc.shared.figure">图</span> 9-2</span><span data-i18n="doc.fig.auditDetail">详情里的 SQL 是实际执行的版本，可以直接复制到客户端里复现。</span></figcaption>
+  </figure>
+
+  <h3 class="doc-h3" data-i18n="doc.audit.redactTitle">脱敏与保留</h3>
+  <p data-i18n="doc.audit.redactP1">SQL 字面量脱敏默认关闭，日志会按原样保存语句。开启后，字符串、数字等字面量会被统一替换为 <code>REDACTED</code>，结构、表名与函数名保留，仍然可以判断语句类型。</p>
+  <p data-i18n="doc.audit.redactP2">开启脱敏后，解析失败的语句记为 <code>[SQL REDACTED: PARSE FAILED]</code>，方言无法识别的记为 <code>[SQL REDACTED: DIALECT UNKNOWN]</code>，不会退回到明文保存。</p>
+  <div class="callout callout-warn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3l9-16z"/><path d="M12 10v4M12 17v.2"/></svg>
+    <div class="callout-body"><span class="callout-title" data-i18n="doc.audit.redactWarnTitle">日志里可能有业务数据</span><span data-i18n="doc.audit.redactWarnText">未开启脱敏时，SQL 里的字符串常量、身份证号、手机号等都会原样写入 <code>audit.db</code>。处理生产数据时建议开启「脱敏 SQL 字面量」，并避免把审计文件上传到公共位置。</span></div>
+  </div>
+
+  <p data-i18n="doc.audit.retentionP1">保留天数默认 7 天，可选 3、7、15、30 天。每次写入新记录时，应用会顺手删除早于截止时间的记录，所以日志不会无限增长；修改保留天数不会找回已删除的历史。</p>
+  <p data-i18n="doc.audit.retentionP2">审计页的「清理日志」用于手动清空全部记录，通常在交接或排障后使用，操作前请确认不再需要这些证据。审计库与配置在同一目录，备份时不要只拷 <code>config.toml</code>。</p>
+
+  <h3 class="doc-h3" data-i18n="doc.audit.sourcesTitle">三种拦截来源</h3>
+  <p data-i18n="doc.audit.sourcesP">「拒绝」状态可能来自三个完全不同的地方。看原因文案就能区分，处理方式也不同。</p>
+
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.audit.thSource">来源</th><th data-i18n="doc.audit.thReason">原因特征</th><th data-i18n="doc.audit.thWhere">去哪里处理</th></tr>
+        </thead>
+        <tbody>
+          <tr><td data-i18n="doc.audit.sourcePolicy">只读策略</td><td data-i18n="doc.audit.sourcePolicyReason">DDL、DML、多语句、副作用函数、解析失败等策略文案。</td><td data-i18n="doc.audit.sourcePolicyWhere">改写 SQL；先到「设置 → 通用 → 策略检查台」预检。</td></tr>
+          <tr><td data-i18n="doc.audit.sourceToken">令牌权限</td><td data-i18n="doc.audit.sourceTokenReason">「未授权给该访问令牌」或「工具已关闭」。</td><td data-i18n="doc.audit.sourceTokenWhere">「访问控制」调整令牌权限，或到「工具」页打开开关。</td></tr>
+          <tr><td data-i18n="doc.audit.sourceBreaker">自动熔断</td><td data-i18n="doc.audit.sourceBreakerReason">令牌在统计窗口内拦截次数达到阈值，被自动停用。</td><td data-i18n="doc.audit.sourceBreakerWhere">「访问控制」重新启用令牌，或调整熔断窗口与阈值。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p data-i18n="doc.audit.sourcesP2">启动服务、自动启动 MCP 与熔断动作本身也会留下系统记录，令牌列显示「系统」。排查「令牌为什么突然失效」时，先找那条自动熔断记录，再回看它之前的拒绝记录。</p>
+
+  <h3 class="doc-h3" data-i18n="doc.audit.debugTitle">用审计排查问题</h3>
+  <div class="doc-steps">
+    <div class="doc-step">
+      <h4 data-i18n="doc.audit.step1t">先筛状态</h4>
+      <p data-i18n="doc.audit.step1p">选「拒绝」「超时」或「错误」，把范围缩到失败调用；再按时间范围定位到出问题的那次会话。</p>
+    </div>
+    <div class="doc-step">
+      <h4 data-i18n="doc.audit.step2t">读原因</h4>
+      <p data-i18n="doc.audit.step2p">原因文案已经区分策略、权限、连接与数据库错误。先按原因去对应章节处理，不要急着重装或改限额。</p>
+    </div>
+    <div class="doc-step">
+      <h4 data-i18n="doc.audit.step3t">看 SQL 与策略</h4>
+      <p data-i18n="doc.audit.step3p">打开详情复制 SQL，在「策略检查台」用相同方言重放；能看到被改写后的行数限制，也能确认是否有多语句或副作用函数。</p>
+    </div>
+    <div class="doc-step">
+      <h4 data-i18n="doc.audit.step4t">对照令牌与连接</h4>
+      <p data-i18n="doc.audit.step4p">同一个错误只出现在某个令牌或某个连接上，问题就在权限或连接配置；所有令牌都失败，再查服务与网络。</p>
+    </div>
+  </div>
+</section>
+
+        <!-- 10 设置 -->
+<section class="doc-section" id="settings">
+  <div class="doc-chapter"><span>10</span><span data-i18n="doc.ch.settings">设置</span></div>
+  <h2><span data-i18n="doc.settings.title">设置项说明</span><a class="doc-anchor" href="#settings" aria-label="链接到本节">#</a></h2>
+  <p class="doc-lead" data-i18n="doc.settings.lead">设置页决定 DataNexa 怎样运行：服务开不开、Agent 手里有多少权限、日志留多久、驱动与运行时放在哪里。下面按 5 个标签页说明每组选项改的是什么、会影响哪些地方，以及什么时候需要改。</p>
+
+  <div class="doc-tldr">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3.5v2M12 18.5v2M3.5 12h2M18.5 12h2M6 6l1.4 1.4M16.6 16.6L18 18M18 6l-1.4 1.4M7.4 16.6L6 18"/></svg>
+    <div><b data-i18n="doc.settings.tldrLabel">要点：</b><span data-i18n="doc.settings.tldr">设置改动即时保存，没有「保存」按钮；凡是牵涉服务与鉴权的选项，改完就对你所有的 Agent 生效。</span></div>
+  </div>
+
+  <div class="callout callout-note">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.2"/></svg>
+    <div class="callout-body"><span class="callout-title" data-i18n="doc.settings.saveTitle">改完就写入配置</span><span data-i18n="doc.settings.saveText">开关与下拉框在点击后立即写入配置文件；「监听地址」「端口」在输入框失焦后保存，端口会被限制在 1–65535。保存失败时会回退到上一次的取值，并弹出错误提示。</span></div>
+  </div>
+
+  <h3 class="doc-h3" id="set-general" data-i18n="doc.settings.generalTitle">通用：服务策略、显示、启动、审计、导入导出</h3>
+  <p data-i18n="doc.settings.generalP">通用分 5 组。第一组直接影响 MCP 服务本身，后面几组影响本机体验与数据留存；每组的改动范围各不相同，改之前先对照下表。</p>
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.settings.thGroup">分组</th><th data-i18n="doc.settings.thChange">改什么</th><th data-i18n="doc.settings.thImpact">会影响什么</th><th data-i18n="doc.settings.thWhen">什么时候改</th></tr>
+        </thead>
+        <tbody>
+          <tr><td data-i18n="doc.settings.r1a">MCP 服务策略</td><td data-i18n="doc.settings.r1b">监听地址、端口、要求 Bearer 密钥</td><td data-i18n="doc.settings.r1c">服务端点与鉴权方式。服务运行中改地址会重新绑定监听，绑定失败会自动回滚。</td><td data-i18n="doc.settings.r1d">端口被占用、需要与其他服务共存，或要收紧/放宽鉴权时。</td></tr>
+          <tr><td data-i18n="doc.settings.r2a">显示</td><td data-i18n="doc.settings.r2b">界面语言、界面动效、主题</td><td data-i18n="doc.settings.r2c">只影响本机界面，不改变 Agent 能做什么。</td><td data-i18n="doc.settings.r2d">换语言、夜间使用，或觉得「能量脉冲」光效干扰时。</td></tr>
+          <tr><td data-i18n="doc.settings.r3a">启动与后台</td><td data-i18n="doc.settings.r3b">登录时启动 DataNexa、启动时自动开启 MCP 服务、自动激活轻量模式</td><td data-i18n="doc.settings.r3c">决定重启或重新登录后 Agent 是否还连得上，以及关闭窗口后是否释放界面资源。</td><td data-i18n="doc.settings.r3d">希望开机后 Agent 直接可用，或想让常驻进程更省资源时。</td></tr>
+          <tr><td data-i18n="doc.settings.r4a">审计日志</td><td data-i18n="doc.settings.r4b">日志保留天数、脱敏 SQL 字面量</td><td data-i18n="doc.settings.r4c">历史记录能回溯多久，以及 SQL 里的字面量是否原样落盘。</td><td data-i18n="doc.settings.r4d">排查周期长于默认保留期，或要把日志交给别人看时。</td></tr>
+          <tr><td data-i18n="doc.settings.r5a">导入/导出</td><td data-i18n="doc.settings.r5b">导入连接、导出连接</td><td data-i18n="doc.settings.r5c">导入只追加、不覆盖现有连接；导出默认要求加密密码，也可以选择明文导出。</td><td data-i18n="doc.settings.r5d">换机、备份，或要把一套连接交给同事时。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <ul>
+    <li data-i18n="doc.settings.general1"><strong>监听地址与端口：</strong>服务运行中修改会自动重新绑定监听；端口输入框接受 1–65535，越界的取值会被夹回范围。</li>
+    <li data-i18n="doc.settings.general2"><strong>启动与后台：</strong>勾选「登录时启动 DataNexa」后，「启动 DataNexa 时自动开启 MCP 服务」会自动打开并锁定，因为开机自启动后，服务会随登录一起常驻。</li>
+    <li data-i18n="doc.settings.general3"><strong>轻量模式：</strong>开启后，窗口关闭 5 分钟会自动释放窗口界面资源，后台 MCP 服务与已建连接不受影响。</li>
+    <li data-i18n="doc.settings.general4"><strong>审计日志：</strong>保留天数可选 3 / 7 / 15 / 30 天；「脱敏 SQL 字面量」默认关闭，关闭时 SQL 里的字符串与数字原样写入，打开后字面量统一替换为占位符；解析失败或方言未知时，整条 SQL 会被替换为对应的 REDACTED 标记，不会回退到明文。</li>
+  </ul>
+
+  <div class="callout callout-warn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3l9-16z"/><path d="M12 10v4M12 17v.2"/></svg>
+    <div class="callout-body"><span class="callout-title" data-i18n="doc.settings.generalWarnTitle">两处改动要先看清影响</span><span data-i18n="doc.settings.generalWarnText">关闭「要求 Bearer 密钥」前会弹确认框：服务端点将失去令牌保护，访问控制与自动熔断同时失效。监听地址只接受 127.0.0.1 或 localhost，填其他值保存会失败并回退。</span></div>
+  </div>
+
+  <figure class="doc-shot">
+    <div class="shot-frame" style="--shot-ratio: 2584 / 1744">
+      <div class="shot-placeholder" aria-hidden="true">
+        <span class="shot-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg></span>
+        <span class="shot-label">截图占位 · 10</span>
+        <code class="shot-name">17-settings-general.png</code>
+        <span class="shot-desc">画面内容：设置 → 通用，可见 MCP 服务策略、显示、启动与后台、审计日志四个分组。</span>
+        <span class="shot-size">建议 1600 × 1000 · PNG · 浅色主题</span>
+      </div>
+      <img src="assets/help/17-settings-general.png" alt="设置通用标签页：MCP 服务策略的监听地址与端口、界面语言与主题、启动与后台开关、审计日志保留天数与脱敏开关" loading="lazy" decoding="async">
+    </div>
+    <figcaption><span class="shot-num"><span data-i18n="doc.shared.figure">图</span> 10-1</span><span data-i18n="doc.fig.settingsGeneral">设置 → 通用：服务策略、显示、启动与后台、审计日志按组排列，改完即时生效。</span></figcaption>
+  </figure>
+
+  <h3 class="doc-h3" id="set-security" data-i18n="doc.settings.securityTitle">安全：拦截统计、六层防护、自动熔断</h3>
+  <p data-i18n="doc.settings.securityP">安全标签页是一块仪表盘，不是开关面板：顶部数字是过去 24 小时内被拒绝的数据库操作数，取自界面已加载的审计记录（最多 5000 条，达到上限会显示加号提示实际次数可能更多）。两个按钮分别打开「策略检查台」和「审计日志」。这一页只有熔断参数可以改，其余各层由程序固定。</p>
+  <ul>
+    <li data-i18n="doc.settings.sec1"><strong>六层防护：</strong>L1 网络、L2 认证、L3 语法、L4 数据库、L5 资源、L6 审计。只有 L2 会随 Bearer 开关变化，关闭时标题变成「全链路数据安全防护未完全启用」，并标出「未启用」。</li>
+    <li data-i18n="doc.settings.sec2"><strong>自动熔断：</strong>同一令牌在统计窗口（1/5/10/30/60 分钟，默认 10）内被拒次数达到阈值（3/5/10/20/50 次，默认 5）就自动停用并写一条审计。调用量大、Agent 常写错 SQL 时可以把阈值调高；Bearer 未开启时整组不可用。</li>
+    <li data-i18n="doc.settings.sec3"><strong>策略检查台：</strong>只做静态预检，选 MySQL / PostgreSQL / SQLite 方言，得到「允许执行」或「已拒绝」、原因，必要时还有改写后的 SQL。它不连接真实数据库，也不写审计日志。</li>
+  </ul>
+  <p data-i18n="doc.settings.securityMore">六层防护各自的机制、能挡什么、挡不住什么，见<a href="#security">安全模型</a>；令牌被熔断后如何恢复，见<a href="#access">访问控制</a>；拦截记录怎么筛，见<a href="#audit">审计日志</a>。</p>
+
+  <figure class="doc-shot">
+    <div class="shot-frame" style="--shot-ratio: 2584 / 1744">
+      <div class="shot-placeholder" aria-hidden="true">
+        <span class="shot-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg></span>
+        <span class="shot-label">截图占位 · 10</span>
+        <code class="shot-name">18-settings-security.png</code>
+        <span class="shot-desc">画面内容：设置 → 安全，24 小时拦截统计、六层防护列表与熔断设置。</span>
+        <span class="shot-size">建议 1600 × 1000 · PNG · 深色主题</span>
+      </div>
+      <img src="assets/help/18-settings-security.png" alt="设置安全标签页：过去 24 小时拦截次数、L1 到 L6 六层防护说明、令牌自动熔断的窗口与阈值" loading="lazy" decoding="async">
+    </div>
+    <figcaption><span class="shot-num"><span data-i18n="doc.shared.figure">图</span> 10-2</span><span data-i18n="doc.fig.settingsSecurity">设置 → 安全：顶部是拦截统计，中间是六层防护状态，底部是熔断参数。</span></figcaption>
+  </figure>
+
+  <h3 class="doc-h3" id="set-jdbc" data-i18n="doc.settings.jdbcTitle">JDBC 支持：只在这里管运行时与驱动</h3>
+  <p data-i18n="doc.settings.jdbcP">这个标签页带「预览」徽标，负责 Java 运行时与驱动 Bundle 两件事。新建 JDBC 连接、填 Driver Class、拼 JDBC URL 以及排错都在<a href="#jdbc">JDBC 支持</a>一章，这里只说它与设置的关系；只有在需要连接原生不支持的数据库时，才需要进这一页。</p>
+  <ul>
+    <li data-i18n="doc.settings.jdbc1"><strong>Java 运行时：</strong>显示是否可用、版本与来源（DataNexa 下载或外部）。可以下载托管运行时、检查更新、选择外部运行时、切回托管或卸载托管运行时；卸载只删除 DataNexa 下载的那一份，外部运行时不受影响。</li>
+    <li data-i18n="doc.settings.jdbc2"><strong>JDBC 驱动：</strong>按 Maven 坐标安装，或导入本地 JAR。列表显示 Driver Class、体积与两项「驱动原生支持」标识（只读限制、超时限制）；未探测时显示「测试连接后检测」，执行一次测试连接或 MCP 查询后才会记录结果。</li>
+    <li data-i18n="doc.settings.jdbc3"><strong>保证与风险：</strong>底部固定写明「无论驱动原生能力如何，DataNexa 的只读保护与超时兜底始终生效」，旁边可展开风险详情，列出方言解析与资源消耗方面的限制。</li>
+  </ul>
+  <div class="callout callout-warn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3l9-16z"/><path d="M12 10v4M12 17v.2"/></svg>
+    <div class="callout-body"><span class="callout-title" data-i18n="doc.settings.jdbcWarnTitle">驱动是本地代码</span><span data-i18n="doc.settings.jdbcWarnText">第三方 JDBC 驱动会作为本地 Java 代码运行，与你同权限。只安装可信来源、版本明确的驱动，并且优先使用数据库侧的只读账号。</span></div>
+  </div>
+
+  <h3 class="doc-h3" id="set-storage" data-i18n="doc.settings.storageTitle">存储与性能：磁盘、缓存与资源</h3>
+  <p data-i18n="doc.settings.storageP">顶部两张卡片切换视图：空间占用看磁盘，资源监控看 CPU 与内存。数据每 5 秒自动刷新一次，不需要手动点刷新。磁盘吃紧、或怀疑某次查询把内存吃满时，先来这里看。</p>
+  <ul>
+    <li data-i18n="doc.settings.storage1"><strong>空间占用：</strong>给出总大小、占比条与逐项明细（Java 运行时、JDBC 驱动、Maven 仓库、审计与日志、访问控制、配置文件、调试日志、其他文件），每项都标出真实路径。</li>
+    <li data-i18n="doc.settings.storage2"><strong>释放空间：</strong>只清理 Maven 下载缓存和调试日志；已安装驱动、审计日志与配置不受影响。没有可清理项时，弹窗会直接说明。</li>
+    <li data-i18n="doc.settings.storage3"><strong>资源监控：</strong>总 CPU 与内存按 DataNexa、JDBC 驱动、系统其他占用拆分；下面按进程列出 PID、CPU 与内存，驱动运行时状态异常或卡住时可以「停止运行时」。</li>
+    <li data-i18n="doc.settings.storage4"><strong>打开数据目录：</strong>在文件管理器里打开 DataNexa 的数据目录，明细里的路径可以在这里逐一核对。</li>
+  </ul>
+
+  <h3 class="doc-h3" id="set-about" data-i18n="doc.settings.aboutTitle">关于：版本、更新与调试入口</h3>
+  <p data-i18n="doc.settings.aboutP">版本号、更新通道与应用入口都集中在这个面板，页脚放官方主页与 GitHub 项目页。版本对不上、或要反馈问题时，从这里取信息。</p>
+  <ul>
+    <li data-i18n="doc.settings.about1"><strong>更新：</strong>可手动检查；有新版本时能看更新说明或立即更新。本地编译版本不显示更新日志链接，只提供 Releases 入口。</li>
+    <li data-i18n="doc.settings.about2"><strong>更新偏好：</strong>「每天自动检查更新」默认开启；「更新下载加速」由 GH-Proxy 提供，开启后检查更新、下载安装包与 Java 运行时都经该服务访问 GitHub，只转发公开的 Release 文件，安装包与运行时仍会校验签名与 SHA-256。</li>
+    <li data-i18n="doc.settings.about3"><strong>调试日志：</strong>默认隐藏，连续点 5 次版本号才会出现。开启前会弹出确认框（仅用于排查问题、有轻微性能开销、内容已脱敏），开启后可按旁边的按钮直接打开日志文件夹。</li>
+  </ul>
+
+  <div class="callout callout-tip">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5.9 1.2.9 2.1h5.2c0-.9.3-1.6.9-2.1A6 6 0 0 0 12 3z"/></svg>
+    <div class="callout-body"><span class="callout-title" data-i18n="doc.settings.tipTitle">改服务策略不用重启应用</span><span data-i18n="doc.settings.tipText">监听地址或端口保存后会自动重新绑定；如果新端口已被占用，界面会报错并保留原来的监听，处理掉冲突后再改一次即可。</span></div>
+  </div>
+</section>
+
+        <!-- 11 安全模型 -->
+<section class="doc-section" id="security">
+  <div class="doc-chapter"><span>11</span><span data-i18n="doc.ch.security">安全模型</span></div>
+  <h2><span data-i18n="doc.security.title">它防什么，不防什么</span><a class="doc-anchor" href="#security" aria-label="链接到本节">#</a></h2>
+  <p class="doc-lead" data-i18n="doc.security.lead">这一章把 DataNexa 的防护拆成可以逐条核对的清单：假设了什么前提、每一道防护各挡什么、哪些风险留在防护之外，以及凭据到底放在哪里。看完你应该能判断自己的部署还差哪一层。</p>
+
+  <div class="doc-tldr">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 4v5c0 4.4-3 8-7 9-4-1-7-4.6-7-9V7l7-4z"/><path d="M9.5 12l2 2 3.5-4"/></svg>
+    <div><b data-i18n="doc.security.tldrLabel">要点：</b><span data-i18n="doc.security.tldr">DataNexa 防的是 Agent 的误操作与越权读取，不防本机被攻破，也不替代数据库自己的只读账号。</span></div>
+  </div>
+
+  <h3 class="doc-h3" id="sec-threat" data-i18n="doc.security.threatTitle">威胁模型：三个前提</h3>
+  <p data-i18n="doc.security.threatP1">DataNexa 的假设很具体：本机的操作系统与登录账户可信，安装包没有被替换，数据库账号由你在连接里配置。在这些前提下，它要保证的是「Agent 提议的操作在到达数据库之前被检查」。</p>
+  <p data-i18n="doc.security.threatP2">它不假设 Agent 一定有恶意，但即使 Agent 有 bug 或被诱导，也只能拿到你授权的那些数据库与工具。</p>
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.security.threatTh1">威胁</th><th data-i18n="doc.security.threatTh2">DataNexa 的做法</th><th data-i18n="doc.security.threatTh3">剩下的风险</th></tr>
+        </thead>
+        <tbody>
+          <tr><td data-i18n="doc.security.threatR1a">Agent 写出 DDL、DML 或多条语句</td><td data-i18n="doc.security.threatR1b">AST 只读校验直接拒绝，并给查询补上外层行数上限。</td><td data-i18n="doc.security.threatR1c">解析器不认识的方言可能漏判，JDBC 路径最明显。</td></tr>
+          <tr><td data-i18n="doc.security.threatR2a">Agent 读到不该读的数据库</td><td data-i18n="doc.security.threatR2b">令牌按数据库连接与工具分别授权。</td><td data-i18n="doc.security.threatR2c">令牌泄露，等于把这份权限交给别人。</td></tr>
+          <tr><td data-i18n="doc.security.threatR3a">一次查询把整张表拖回来</td><td data-i18n="doc.security.threatR3b">行数、超时、连接池、结果大小与调用速率限额。</td><td data-i18n="doc.security.threatR3c">复杂查询即使结果被截断，也可能已在数据库侧消耗资源。</td></tr>
+          <tr><td data-i18n="doc.security.threatR4a">远端或网页调用本机端口</td><td data-i18n="doc.security.threatR4b">只监听回环地址，逐个请求校验 Host 与 Origin，界面启用严格 CSP。</td><td data-i18n="doc.security.threatR4c">本机其他进程仍可访问这个端口。</td></tr>
+          <tr><td data-i18n="doc.security.threatR5a">出事后查不出 Agent 做过什么</td><td data-i18n="doc.security.threatR5b">每次工具调用写本地审计，可按令牌追溯。</td><td data-i18n="doc.security.threatR5c">日志放在本机，本机用户可以直接改动。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h3 class="doc-h3" id="sec-layers" data-i18n="doc.security.layersTitle">六层防护，再加两道令牌闸门</h3>
+  <p data-i18n="doc.security.layersP">下面的顺序就是一次调用的实际经历：先过网络与认证，再过语法与数据库，最后被资源限额和审计收尾。前六行与设置页「安全」标签里的 L1–L6 一一对应，最后两行是令牌自带的两道闸门。任何一层拒绝，调用都不会继续往下走。</p>
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.security.layerTh1">防护层</th><th data-i18n="doc.security.layerTh2">实现方式</th><th data-i18n="doc.security.layerTh3">主要挡住什么</th></tr>
+        </thead>
+        <tbody>
+          <tr><td data-i18n="doc.security.L1a">L1 网络</td><td data-i18n="doc.security.L1b">只绑定 127.0.0.1 或 localhost；每个 MCP 请求校验 Host 与 Origin；界面使用严格 CSP。</td><td data-i18n="doc.security.L1c">其他机器与网页发起的请求。</td></tr>
+          <tr><td data-i18n="doc.security.L2a">L2 认证</td><td data-i18n="doc.security.L2b">默认要求 Bearer 密钥；令牌可免重启轮换，停用或轮换后旧密钥立即失效。</td><td data-i18n="doc.security.L2c">本机其他程序随手调用你的服务。</td></tr>
+          <tr><td data-i18n="doc.security.L3a">L3 语法</td><td data-i18n="doc.security.L3b">基于 SQL 语法树的校验：只放行单条 SELECT、安全的 WITH SELECT 与只读 EXPLAIN，拒绝 DDL、DML、SELECT INTO、锁、文件读写、dblink 与 sleep 类函数。</td><td data-i18n="doc.security.L3c">Agent 写错语句，或借函数产生副作用。</td></tr>
+          <tr><td data-i18n="doc.security.L4a">L4 数据库</td><td data-i18n="doc.security.L4b">SQLite 以只读方式打开；MySQL 会话设为只读并下发语句超时；PostgreSQL 设 default_transaction_read_only。</td><td data-i18n="doc.security.L4c">语法层漏过的写入意图，在数据库侧再拦一次。</td></tr>
+          <tr><td data-i18n="doc.security.L5a">L5 资源</td><td data-i18n="doc.security.L5b">最大行数、查询超时、连接池、结果字节上限；工具调用限速 2 次/秒（突发 20），并发上限 8。</td><td data-i18n="doc.security.L5c">一次调用拖垮数据库或本机。</td></tr>
+          <tr><td data-i18n="doc.security.L6a">L6 审计</td><td data-i18n="doc.security.L6b">每次工具调用写本地审计库：工具、连接、状态、耗时、行数、SQL；可脱敏字面量，按天裁剪。</td><td data-i18n="doc.security.L6c">事后无法还原 Agent 做过什么。</td></tr>
+          <tr><td data-i18n="doc.security.tokenA">令牌权限</td><td data-i18n="doc.security.tokenB">每个令牌可以单独禁用某些数据库连接与工具，改动即时生效。</td><td data-i18n="doc.security.tokenC">一个 Agent 越权到别的库，或调用它用不到的工具。</td></tr>
+          <tr><td data-i18n="doc.security.breakerA">自动熔断</td><td data-i18n="doc.security.breakerB">同一令牌在统计窗口内被拒次数达到阈值，自动停用并写一条审计。</td><td data-i18n="doc.security.breakerC">失控的令牌持续重试。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h3 class="doc-h3" id="sec-split" data-i18n="doc.security.splitTitle">能防与不能防</h3>
+  <div class="doc-split">
+    <div class="doc-panel doc-panel-good">
+      <h4 data-i18n="doc.security.goodTitle">这些情况会被挡住</h4>
+      <ul>
+        <li data-i18n="doc.security.good1">在只读工具里提交 DDL、DML、多语句或 SELECT INTO：AST 层直接拒绝，请求不会到达数据库。</li>
+        <li data-i18n="doc.security.good2">没带正确 Bearer 密钥的请求返回 401；Host 或 Origin 不是本机回环的请求返回 403。</li>
+        <li data-i18n="doc.security.good3">SQLite、MySQL、PostgreSQL 上的写入意图：数据库层的只读设置会再拦一次。</li>
+        <li data-i18n="doc.security.good4">查询跑太久、返回行数或结果过大：被超时、行数上限或截断收住。</li>
+        <li data-i18n="doc.security.good5">同一个令牌反复被拒：达到阈值后自动停用。</li>
+        <li data-i18n="doc.security.good6">事后追查：审计日志按令牌、连接与工具记录每一次调用。</li>
+      </ul>
+    </div>
+    <div class="doc-panel doc-panel-bad">
+      <h4 data-i18n="doc.security.badTitle">这些情况它管不了</h4>
+      <ul>
+        <li data-i18n="doc.security.bad1">本机被攻破、DataNexa 被替换或进程被注入：应用自身已不可信。</li>
+        <li data-i18n="doc.security.bad2">恶意 JDBC 驱动：它以你的权限运行本地 Java 代码。</li>
+        <li data-i18n="doc.security.bad3">数据库账号本身带写权限时的人为越权：真正的最后一道闸是只读账号。</li>
+        <li data-i18n="doc.security.bad4">未知方言的隐蔽副作用：JDBC 路径只能做有限的语法与词法判断。</li>
+        <li data-i18n="doc.security.bad5">数据本身敏感：只读不等于不泄露，读到的内容仍然会交给 Agent。</li>
+        <li data-i18n="doc.security.bad6">审计日志被本机用户修改或删除：日志是本地文件，没有远端副本。</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="doc-h3" id="sec-cred" data-i18n="doc.security.credTitle">凭据与数据放在哪里</h3>
+  <p data-i18n="doc.security.credP">「设置 → 存储与性能」会为每个存储项列出实际路径。下表说明各自存了什么、靠什么保护。</p>
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.security.credTh1">内容</th><th data-i18n="doc.security.credTh2">位置</th><th data-i18n="doc.security.credTh3">保护方式</th></tr>
+        </thead>
+        <tbody>
+          <tr><td data-i18n="doc.security.credR1a">连接与策略配置</td><td data-i18n="doc.security.credR1b">应用配置目录的 config.toml</td><td data-i18n="doc.security.credR1c">只保存 Vault 引用，不含数据库密码。</td></tr>
+          <tr><td data-i18n="doc.security.credR2a">数据库密码</td><td data-i18n="doc.security.credR2b">操作系统凭证库</td><td data-i18n="doc.security.credR2c">由系统钥匙串或凭据管理器保护。</td></tr>
+          <tr><td data-i18n="doc.security.credR3a">访问令牌</td><td data-i18n="doc.security.credR3b">应用配置目录的 access-control.db</td><td data-i18n="doc.security.credR3c">Unix 下文件权限 0600；Unix 下文件权限 0600；密钥以明文保存在库中用于比对，请把该目录当作凭据保护。</td></tr>
+          <tr><td data-i18n="doc.security.credR4a">审计记录</td><td data-i18n="doc.security.credR4b">应用配置目录的 audit.db</td><td data-i18n="doc.security.credR4c">本地 SQLite；SQL 字面量可选脱敏。</td></tr>
+          <tr><td data-i18n="doc.security.credR5a">调试日志</td><td data-i18n="doc.security.credR5b">数据目录的 logs 文件夹</td><td data-i18n="doc.security.credR5c">仅在你手动开启后写入，4 MiB 轮转保留 3 份。</td></tr>
+          <tr><td data-i18n="doc.security.credR6a">JDBC 驱动与运行时</td><td data-i18n="doc.security.credR6b">数据目录</td><td data-i18n="doc.security.credR6c">驱动为不可变 Bundle；运行时来自托管下载或你选择的外部路径。</td></tr>
+          <tr><td data-i18n="doc.security.credR7a">导出的连接文件</td><td data-i18n="doc.security.credR7b">你选择的位置</td><td data-i18n="doc.security.credR7c">默认用 Argon2id 加密；选明文导出时密码不再受凭证库保护。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p data-i18n="doc.security.credMore">导出连接与紧急断连的操作见<a href="#connections">数据库连接</a>；令牌的权限勾选、轮换与恢复见<a href="#access">访问控制</a>。</p>
+
+  <h3 class="doc-h3" id="sec-jdbc" data-i18n="doc.security.jdbcTitle">JDBC 的额外风险</h3>
+  <p data-i18n="doc.security.jdbcP">JDBC 是唯一能连接 DataNexa 没有原生支持的数据库的通道，代价是防护从结构化的语法规则退化为有限判断。</p>
+  <ul>
+    <li data-i18n="doc.security.jdbc1">驱动及其依赖以本地 Java 代码运行，与你同权限，安装即等于信任。</li>
+    <li data-i18n="doc.security.jdbc2">未知方言下，只读策略可能只能做有限的检查，无法保证识别所有写入或其他副作用。</li>
+    <li data-i18n="doc.security.jdbc3">部分数据库能力不可用；复杂查询即使结果被截断，也可能已在数据库侧消耗资源。</li>
+  </ul>
+  <div class="callout callout-warn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3l9-16z"/><path d="M12 10v4M12 17v.2"/></svg>
+    <div class="callout-body"><span class="callout-title" data-i18n="doc.security.jdbcWarnTitle">只在需要时用 JDBC</span><span data-i18n="doc.security.jdbcWarnText">优先用原生连接；必须用时只安装官方、版本明确的驱动，并配合数据库只读账号。驱动安装与排错见<a href="#jdbc">JDBC 支持</a>。</span></div>
+  </div>
+
+  <h3 class="doc-h3" id="sec-checklist" data-i18n="doc.security.checklistTitle">建议这样配置</h3>
+  <ol>
+    <li data-i18n="doc.security.checklist1">给 DataNexa 单独建只读账号，只授 SELECT 与读取元数据所需的权限。</li>
+    <li data-i18n="doc.security.checklist2">保持「要求 Bearer 密钥」开启，一个 Agent 一个令牌。</li>
+    <li data-i18n="doc.security.checklist3">只勾选该 Agent 真正需要的数据库连接与工具，不要一律全开。</li>
+    <li data-i18n="doc.security.checklist4">开启自动熔断，并按调用量调整统计窗口与阈值。</li>
+    <li data-i18n="doc.security.checklist5">审计保留期选得比排查周期长；需要把日志交给别人看时，打开 SQL 字面量脱敏。</li>
+    <li data-i18n="doc.security.checklist6">能走原生连接就不走 JDBC；确实要用时，只用可信来源、版本明确的驱动。</li>
+    <li data-i18n="doc.security.checklist7">不再需要 MCP 服务时，在概览页停止它，不要让端口长期可用。</li>
+  </ol>
+
+  <h3 class="doc-h3" id="sec-limit" data-i18n="doc.security.limitTitle">边界声明</h3>
+  <div class="callout callout-danger">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3l9-16z"/><path d="M12 10v4M12 17v.2"/></svg>
+    <div class="callout-body"><span class="callout-title" data-i18n="doc.security.limitCalloutTitle">不能保证的事</span><span data-i18n="doc.security.limitText">这些防护只是风险缓解措施，不能保证所有危险操作都被拦截。你仍然需要约束 Agent，不要要求或允许它执行危险行为。</span></div>
+  </div>
+  <p data-i18n="doc.security.limitP1">换个说法：DataNexa 把「Agent 直接连数据库」变成「Agent 通过一个会检查、会限流、会记账的网关连数据库」，但它不改变数据库账号本身的权限。</p>
+  <p data-i18n="doc.security.limitP2">需要更强保证时，请在数据库侧收紧权限与网络访问，而不是只依赖 DataNexa。发现可疑记录，先从<a href="#audit">审计日志</a>找到那次调用，再到<a href="#access">访问控制</a>核对该令牌的权限是否合理。</p>
+</section>
+
+        <!-- 12 常见问题 -->
+<section class="doc-section" id="faq">
+  <div class="doc-chapter"><span>12</span><span data-i18n="doc.ch.faq">常见问题</span></div>
+  <h2><span data-i18n="doc.faq.title">常见问题</span><a class="doc-anchor" href="#faq" aria-label="链接到本节">#</a></h2>
+  <p class="doc-lead" data-i18n="doc.faq.lead">这一章按「症状 → 原因 → 处理」整理排错路径。多数问题在概览页状态、审计日志和调试日志里就能定位，不需要重装。</p>
+
+  <div class="callout callout-note">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.2"/></svg>
+    <div class="callout-body"><span class="callout-title" data-i18n="doc.faq.noteTitle">先看这三处</span><span data-i18n="doc.faq.noteText">概览页的服务状态与原始错误、审计日志里状态为「拒绝」或「超时」的那条记录、以及开启调试日志后写下的日志文件。错误提示里的英文原文通常已经指明了方向，它来自数据库或驱动，不是 DataNexa 自己的错误码。</span></div>
+  </div>
+
+  <h3 class="doc-h3" data-i18n="doc.faq.startTitle">应用打不开，或 MCP 服务起不来</h3>
+  <p data-i18n="doc.faq.startSymptom"><strong>症状：</strong>双击图标没有窗口；或窗口打开了，但概览页服务状态一直是「启动失败」，托盘菜单提醒「MCP 服务启动失败」。</p>
+  <p data-i18n="doc.faq.startCause"><strong>原因：</strong>通常是端口被其他程序占用，或者 <code>config.toml</code> 被手工改坏、无法通过配置校验。</p>
+  <ol>
+    <li data-i18n="doc.faq.startFix1">把指针停在概览页服务状态上读取原始错误；端口冲突一般带有 <code>Address already in use</code>。</li>
+    <li data-i18n="doc.faq.startFix2">换一个端口：<strong>设置 → 通用 → MCP 服务策略 → 端口</strong>，保存后回到概览页点「启动服务」。端口范围 1–65535，监听地址只能是 <code>127.0.0.1</code> 或 <code>localhost</code>。</li>
+    <li data-i18n="doc.faq.startFix3">仍然打不开时，退出应用，把 <code>config.toml</code> 改名备份后重新启动，应用会写回默认配置；连接需要重新添加，数据库密码仍保存在系统凭证库中。</li>
+    <li data-i18n="doc.faq.startFix4">如果开启开机自启动时提示登录项注册失败，macOS 需要应用已签名并从 <code>.app</code> 中运行；签名与系统权限问题只能由安装方式解决。</li>
+  </ol>
+
+  <h3 class="doc-h3" data-i18n="doc.faq.agentTitle">Agent 连不上，或收到 401 / 403</h3>
+  <p data-i18n="doc.faq.agentSymptom"><strong>症状：</strong>Agent 报连接被拒绝、请求超时，或返回 <code>401</code>、<code>403</code>。</p>
+  <p data-i18n="doc.faq.agentCause"><strong>原因：</strong>服务没有运行；客户端填的端口与实际监听端口不一致；Bearer 鉴权开启但请求没带密钥，或密钥在「手动轮换」后已失效；访问令牌被停用或自动熔断；请求的 Host / Origin 不是本机地址。</p>
+  <ol>
+    <li data-i18n="doc.faq.agentFix1">在概览页确认状态是「运行中」，端点形如 <code>http://127.0.0.1:17321/mcp</code>，用「复制端点」避免手抄出错。</li>
+    <li data-i18n="doc.faq.agentFix2"><code>401</code> 表示缺少或无效的 Bearer 密钥：在客户端配置 <code>Authorization: Bearer &lt;token&gt;</code>，密钥从概览页「访问密钥」复制；轮换后所有客户端都要同步更新。</li>
+    <li data-i18n="doc.faq.agentFix3"><code>403</code> 表示 Host 或 Origin 不被允许：请求必须使用 <code>127.0.0.1</code> / <code>localhost</code>，经反向代理或局域网地址访问会被拒绝。</li>
+    <li data-i18n="doc.faq.agentFix4">客户端需要 POST JSON-RPC，<code>Content-Type: application/json</code>，<code>Accept</code> 同时包含 <code>application/json</code> 与 <code>text/event-stream</code>；GET 返回 <code>405</code> 属正常，说明该端点不提供流式 GET。</li>
+  </ol>
+
+  <h3 class="doc-h3" data-i18n="doc.faq.deniedTitle">查询被拒绝</h3>
+  <p data-i18n="doc.faq.deniedSymptom"><strong>症状：</strong>Agent 报告语句被拒绝，例如「只读策略已阻止 DDL、DML、破坏性语句和可能产生副作用的 SQL。」或「每次工具调用只允许一条 SQL 语句。」</p>
+  <p data-i18n="doc.faq.deniedCause"><strong>原因：</strong>语句不是单条只读查询；工具或数据库连接不在该令牌的权限内；工具在工具页被关闭；紧急断连正在生效。</p>
+  <ol>
+    <li data-i18n="doc.faq.deniedFix1">改成单条 <code>SELECT</code>、安全的 <code>WITH ... SELECT</code> 或 <code>EXPLAIN</code>；不要拼接多条语句，<code>SELECT INTO</code>、文件导入导出和明显有副作用的函数都会被拦。</li>
+    <li data-i18n="doc.faq.deniedFix2">先用「设置 → 通用 → 策略检查台」以相同方言预检，确认是策略问题还是权限问题。</li>
+    <li data-i18n="doc.faq.deniedFix3">到「访问控制」核对该令牌的数据库与工具权限；提示会区分「工具未授权」与「连接未授权」。</li>
+    <li data-i18n="doc.faq.deniedFix4">到「MCP 工具」页确认工具开关；被关闭的工具不会出现在 Agent 的工具列表里。</li>
+    <li data-i18n="doc.faq.deniedFix5">若提示紧急断连生效，先在概览页退出紧急断连，再让 Agent 重试。</li>
+  </ol>
+
+  <h3 class="doc-h3" data-i18n="doc.faq.timeoutTitle">查询超时，或结果被截断</h3>
+  <p data-i18n="doc.faq.timeoutSymptom"><strong>症状：</strong>审计记录状态为「超时」或「截断」；提示「查询超过 8000ms 超时上限。该连接已丢弃，下次调用会重新建立连接。」</p>
+  <p data-i18n="doc.faq.timeoutCause"><strong>原因：</strong>连接默认限制为查询超时 8000ms、最大返回行数 500、单次结果上限 1 MiB。扫描大表或返回大字段时，会先撞上其中一个上限。</p>
+  <ol>
+    <li data-i18n="doc.faq.timeoutFix1">缩小范围：加过滤条件、只取需要的列、先聚合再取数，比直接放宽限额更有效。</li>
+    <li data-i18n="doc.faq.timeoutFix2">在连接编辑里调整「查询超时毫秒」与「最大返回行数」（上限 60000ms、5000 行），需要时再放宽「最大结果大小」。</li>
+    <li data-i18n="doc.faq.timeoutFix3">返回结果里 <code>truncated</code> 为 <code>true</code> 时不完整，不要用它推断总行数或做全量统计。</li>
+    <li data-i18n="doc.faq.timeoutFix4">超时后连接会被丢弃，下一次调用会自动重连，不需要重启服务或重新保存连接。</li>
+  </ol>
+
+  <h3 class="doc-h3" data-i18n="doc.faq.sqliteTitle">SQLite 数据库打不开</h3>
+  <p data-i18n="doc.faq.sqliteSymptom"><strong>症状：</strong>「测试连接」失败，提示无法打开数据库或只读打开失败。</p>
+  <p data-i18n="doc.faq.sqliteCause"><strong>原因：</strong>SQLite 连接以只读方式打开文件。路径不对、文件不存在、当前系统账号没有读权限，或文件被其他程序独占时都会失败。</p>
+  <ol>
+    <li data-i18n="doc.faq.sqliteFix1">在连接编辑里确认「数据库文件」是完整路径，包含文件名与后缀，不要只填目录。</li>
+    <li data-i18n="doc.faq.sqliteFix2">确认运行 DataNexa 的系统账号对文件有读权限，对文件所在目录有读写权限。</li>
+    <li data-i18n="doc.faq.sqliteFix3">关闭可能持有写锁的客户端或同步工具后重试；把库文件放在同步盘、网络盘上也容易出现锁冲突。</li>
+    <li data-i18n="doc.faq.sqliteFix4">加密或专有格式的库文件不能直接连接，需要先在原工具里导出为普通 SQLite 文件。</li>
+  </ol>
+
+  <h3 class="doc-h3" data-i18n="doc.faq.mysqlTimeTitle">MySQL 时间显示不对</h3>
+  <p data-i18n="doc.faq.mysqlTimeSymptom"><strong>症状：</strong>时间字段的值与在 MySQL 客户端里看到的结果差几个小时。</p>
+  <p data-i18n="doc.faq.mysqlTimeCause"><strong>原因：</strong>DataNexa 把时间类型的值统一按 UTC 返回。MySQL 的 <code>TIMESTAMP</code> 会按会话时区转换，<code>DATETIME</code> 不转换，服务器时区、会话时区与读取端理解不一致时就会产生偏移。</p>
+  <ol>
+    <li data-i18n="doc.faq.mysqlTimeFix1">在 Agent 侧按 UTC 解读返回值，再在展示层转成本地时区，不要直接当成本地时间使用。</li>
+    <li data-i18n="doc.faq.mysqlTimeFix2">需要本地时间时在 SQL 里显式转换（例如 <code>CONVERT_TZ</code>），不要依赖连接默认时区。</li>
+    <li data-i18n="doc.faq.mysqlTimeFix3">对照服务器的 <code>time_zone</code> 与会话时区，确认写入时用的是哪一套规则，再判断是读取问题还是存储问题。</li>
+  </ol>
+
+  <h3 class="doc-h3" data-i18n="doc.faq.driverTitle">JDBC 驱动装不上</h3>
+  <p data-i18n="doc.faq.driverSymptom"><strong>症状：</strong>安装驱动失败，提示「Maven 坐标必须使用 groupId:artifactId:version 格式」「Maven 完成后没有生成 JDBC 驱动 JAR 文件」或「已安装的 Bundle 未提供任何 JDBC Driver 实现」。</p>
+  <p data-i18n="doc.faq.driverCause"><strong>原因：</strong>坐标写错或版本不存在；镜像源不可达、不是 HTTPS；驱动 JAR 里没有 <code>java.sql.Driver</code> 实现；本地导入时只选了驱动 JAR，没有带上运行时依赖。</p>
+  <ol>
+    <li data-i18n="doc.faq.driverFix1">按 <code>groupId:artifactId:version</code> 填写坐标，先在 Maven Central 确认该版本存在。</li>
+    <li data-i18n="doc.faq.driverFix2">换一个可访问的 HTTPS 镜像源，或改用「导入本地驱动」。</li>
+    <li data-i18n="doc.faq.driverFix3">本地导入时把驱动 JAR 及其依赖一起选中；安装后仍未发现 Driver Class 的，在连接里手工填写 Driver Class。</li>
+    <li data-i18n="doc.faq.driverFix4">删除驱动前先删除或改用引用它的连接，仍被连接引用的驱动无法删除。</li>
+  </ol>
+
+  <h3 class="doc-h3" data-i18n="doc.faq.javaTitle">缺少 Java 运行时</h3>
+  <p data-i18n="doc.faq.javaSymptom"><strong>症状：</strong>使用 JDBC 连接时报「DataNexa Java 运行时尚未安装。请下载或选择外部 Java 运行时。」或「选定的外部 Java 运行时不可用。」</p>
+  <p data-i18n="doc.faq.javaCause"><strong>原因：</strong>安装包不内置 Java 运行时；选择的外部运行时被移动或删除；托管运行时下载后校验失败。</p>
+  <ol>
+    <li data-i18n="doc.faq.javaFix1">打开 <strong>设置 → JDBC 支持</strong>，点「下载 DataNexa Java 运行时」，完成后重试 JDBC 连接。</li>
+    <li data-i18n="doc.faq.javaFix2">本机已有 JDK 时，用「选择外部 Java 运行时」指向它的主目录；更换后原连接不需要重建。</li>
+    <li data-i18n="doc.faq.javaFix3">下载慢或中断时，可开启「设置 → 通用 → 更新下载加速」重试；仍失败时手动安装 JDK 再选择外部运行时。</li>
+    <li data-i18n="doc.faq.javaFix4">JDBC 会话运行期间不能卸载运行时，先停止相关会话再卸载。</li>
+  </ol>
+
+  <h3 class="doc-h3" data-i18n="doc.faq.auditTitle">审计日志没有记录</h3>
+  <p data-i18n="doc.faq.auditSymptom"><strong>症状：</strong>审计页一直显示「暂无访问记录。」</p>
+  <p data-i18n="doc.faq.auditCause"><strong>原因：</strong>没有发生真正的工具调用；筛选条件把已有记录过滤掉了；记录已超过保留天数被自动清理；审计存储迁移未完成时 MCP 服务不会启动。</p>
+  <ol>
+    <li data-i18n="doc.faq.auditFix1">先清除筛选条件：时间范围、工具、连接、状态或令牌都可能把记录过滤掉。</li>
+    <li data-i18n="doc.faq.auditFix2">让 Agent 调用一次 <code>datanexa_list_connections</code> 或执行一条只读查询，再刷新审计页。</li>
+    <li data-i18n="doc.faq.auditFix3">确认「设置 → 通用 → 审计日志 → 日志保留天数」；默认 7 天，可选 3、7、15、30 天。</li>
+    <li data-i18n="doc.faq.auditFix4">若提示审计日志迁移失败，按提示重试；旧日志确认不再需要时，可选择隔离旧日志并继续。</li>
+    <li data-i18n="doc.faq.auditFix5"><code>datanexa_policy_check</code> 也会留下审计记录；如果连它都没有，说明请求没有到达服务端，先检查服务状态与鉴权。</li>
+  </ol>
+
+  <h3 class="doc-h3" data-i18n="doc.faq.languageTitle">语言或主题没有生效</h3>
+  <p data-i18n="doc.faq.languageSymptom"><strong>症状：</strong>切换界面语言或主题后界面没有变化，重启后又变回原样。</p>
+  <p data-i18n="doc.faq.languageCause"><strong>原因：</strong>语言默认跟随系统，只有主动选择才会写入配置；主题不写入 <code>config.toml</code>，由界面本地保存；语言只接受 <code>zh-CN</code> 与 <code>en</code> 两个值。</p>
+  <ol>
+    <li data-i18n="doc.faq.languageFix1">语言有两个入口：概览页顶部的语言按钮，或「设置 → 通用 → 显示 → 界面语言」。</li>
+    <li data-i18n="doc.faq.languageFix2">中文系统默认中文，其他语言默认英文；修改系统语言后需要重启应用才会跟随。</li>
+    <li data-i18n="doc.faq.languageFix3">主题在「设置 → 通用 → 显示 → 主题」里切换「跟随系统 / 浅色 / 深色」，保存后立即生效；未生效时重启应用再看。</li>
+    <li data-i18n="doc.faq.languageFix4">手工编辑配置时，<code>language</code> 只能写 <code>zh-CN</code> 或 <code>en</code>，其他值会被清空并回退到系统语言。</li>
+  </ol>
+
+  <h3 class="doc-h3" data-i18n="doc.faq.dataDirTitle">数据目录、重置与卸载残留</h3>
+  <p data-i18n="doc.faq.dataDirSymptom"><strong>症状：</strong>想备份或彻底重置配置；或卸载重装后，旧连接、旧审计记录仍然存在。</p>
+  <p data-i18n="doc.faq.dataDirCause"><strong>原因：</strong>配置、审计与访问控制数据库在配置目录，驱动、Maven 缓存、Java 运行时与调试日志在数据目录。卸载程序不会删除这些目录，也不会清理系统凭证库。</p>
+  <ol>
+    <li data-i18n="doc.faq.dataDirFix1">打开目录：<strong>设置 → 存储与性能 → 打开数据目录</strong>；具体路径见第 13 章，macOS 与 Windows 上配置目录和数据目录是同一个文件夹，Linux 上分开。</li>
+    <li data-i18n="doc.faq.dataDirFix2">备份优先用「导入/导出 → 导出连接」；导出文件包含明文密码，用完及时删除。</li>
+    <li data-i18n="doc.faq.dataDirFix3">彻底重置：退出应用后重命名或删除 <code>config.toml</code>、<code>audit.db</code>、<code>access-control.db</code> 再启动，应用会重建默认配置；连接和审计记录会丢失，密码仍留在系统凭证库。</li>
+    <li data-i18n="doc.faq.dataDirFix4">卸载后要清理干净，删除上述目录，并在系统「钥匙串访问」或「凭据管理器」中删除 <code>com.mingo.datanexa</code> 条目。</li>
+  </ol>
+
+  <h3 class="doc-h3" data-i18n="doc.faq.feedbackTitle">如何反馈问题</h3>
+  <p data-i18n="doc.faq.feedbackSymptom"><strong>症状：</strong>以上路径都试过仍然失败，或界面给出的错误无法判断原因。这时请带上可复现的信息一起反馈。</p>
+  <ol>
+    <li data-i18n="doc.faq.feedbackFix1">在 <a href="https://github.com/MingoZacwu/DataNexa/issues">GitHub Issues</a> 提交，写清复现步骤、期望结果和实际结果。</li>
+    <li data-i18n="doc.faq.feedbackFix2">附上环境信息：操作系统、数据库类型与版本；涉及 JDBC 时补充驱动名称与版本。</li>
+    <li data-i18n="doc.faq.feedbackFix3">附调试日志：<strong>设置 → 关于</strong>连续点按版本号区域 5 次开启「启用调试日志」，复现问题后在设置中打开日志文件夹取文件。</li>
+    <li data-i18n="doc.faq.feedbackFix4">提交前移除连接字符串、数据库名、账号、Token、SQL 字面量和业务数据；安全问题不要发公开 Issue。</li>
+  </ol>
+</section>
+
+        <!-- 13 附录 -->
+<section class="doc-section" id="appendix">
+  <div class="doc-chapter"><span>13</span><span data-i18n="doc.ch.appendix">附录</span></div>
+  <h2><span data-i18n="doc.appendix.title">附录</span><a class="doc-anchor" href="#appendix" aria-label="链接到本节">#</a></h2>
+  <p class="doc-lead" data-i18n="doc.appendix.lead">这一章把散落在各章的查表信息集中起来：文件位置、配置示例、默认值、工具名、术语与链接。排错时可以把它当作对照表使用。</p>
+
+  <h3 class="doc-h3" data-i18n="doc.appendix.pathsTitle">文件与目录位置</h3>
+  <p data-i18n="doc.appendix.pathsP">配置、审计与访问控制数据库放在配置目录，驱动、Maven 缓存、Java 运行时与调试日志放在数据目录。macOS 与 Windows 上两者是同一个文件夹，Linux 上分开。应用内的「设置 → 存储与性能 → 打开数据目录」直接打开数据目录。</p>
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.appendix.thItem">内容</th><th data-i18n="doc.appendix.thMac">macOS</th><th data-i18n="doc.appendix.thWin">Windows</th><th data-i18n="doc.appendix.thLinux">Linux</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span data-i18n="doc.appendix.rowConfigDir">配置目录</span></td><td><code>~/Library/Application Support/com.mingo.datanexa/</code></td><td><code>%APPDATA%\com.mingo.datanexa\</code></td><td><code>~/.config/com.mingo.datanexa/</code></td></tr>
+          <tr><td><span data-i18n="doc.appendix.rowDataDir">数据目录</span></td><td><code>~/Library/Application Support/com.mingo.datanexa/</code></td><td><code>%APPDATA%\com.mingo.datanexa\</code></td><td><code>~/.local/share/com.mingo.datanexa/</code></td></tr>
+          <tr><td><span data-i18n="doc.appendix.rowConfigFile">配置文件</span></td><td><code>config.toml</code></td><td><code>config.toml</code></td><td><code>config.toml</code></td></tr>
+          <tr><td><span data-i18n="doc.appendix.rowAudit">审计数据库</span></td><td><code>audit.db</code></td><td><code>audit.db</code></td><td><code>audit.db</code></td></tr>
+          <tr><td><span data-i18n="doc.appendix.rowAccess">访问控制数据库</span></td><td><code>access-control.db</code></td><td><code>access-control.db</code></td><td><code>access-control.db</code></td></tr>
+          <tr><td><span data-i18n="doc.appendix.rowDrivers">JDBC 驱动</span></td><td><code>jdbc-drivers/</code></td><td><code>jdbc-drivers/</code></td><td><code>jdbc-drivers/</code></td></tr>
+          <tr><td><span data-i18n="doc.appendix.rowMaven">Maven 缓存</span></td><td><code>maven-repository/</code></td><td><code>maven-repository/</code></td><td><code>maven-repository/</code></td></tr>
+          <tr><td><span data-i18n="doc.appendix.rowRuntime">Java 运行时</span></td><td><code>jdbc-runtime/</code></td><td><code>jdbc-runtime/</code></td><td><code>jdbc-runtime/</code></td></tr>
+          <tr><td><span data-i18n="doc.appendix.rowLogs">调试日志</span></td><td><code>logs/</code></td><td><code>logs/</code></td><td><code>logs/</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="callout callout-note">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.2"/></svg>
+    <div class="callout-body"><span class="callout-title" data-i18n="doc.appendix.pathsNoteTitle">目录名来自应用标识</span><span data-i18n="doc.appendix.pathsNoteText">文件夹名就是应用标识 <code>com.mingo.datanexa</code>，它不随界面语言变化。数据库密码不在这些文件里，而是存放在系统钥匙串中，服务名为同一个标识。</span></div>
+  </div>
+
+  <h3 class="doc-h3" data-i18n="doc.appendix.configTitle">配置文件示例</h3>
+  <p data-i18n="doc.appendix.configP">下面是 <code>config.toml</code> 的等价示例，字段与默认值来自应用本身。密码不会写入该文件，连接只保存一个指向系统凭证库的引用。修改前请先退出应用，改坏后应用可能无法启动。</p>
+  <div class="doc-code" data-lang="toml">
+<pre><code>version = 1
+
+[server]
+host = "127.0.0.1"
+port = 17321
+require_token = true
+
+[settings]
+audit_retention_days = 7
+audit_redact_sql_literals = false
+auto_check_updates = true
+github_acceleration = false
+auto_start_mcp = false
+auto_run_mcp = false
+auto_lightweight_mode = false
+mcp_activity_effects = true
+language = ""
+auto_circuit_breaker = false
+auto_circuit_breaker_window_minutes = 10
+auto_circuit_breaker_threshold = 5
+debug_logging_enabled = false
+
+[[connections]]
+id = "local_data"
+name = "Local Data"
+type = "sqlite"
+enabled = true
+database = "/Users/you/data/local.db"
+max_rows = 500
+query_timeout_ms = 8000
+max_connections = 1
+max_result_bytes = 1048576</code></pre>
+  </div>
+  <div class="callout callout-warn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3l9-16z"/><path d="M12 10v4M12 17v.2"/></svg>
+    <div class="callout-body"><span class="callout-title" data-i18n="doc.appendix.configNoteTitle">只改自己看得懂的字段</span><span data-i18n="doc.appendix.configNoteText"><code>token</code> 这类由应用维护的字段不要手写；<code>id</code> 必须以字母或下划线开头，只能包含字母、数字、下划线与短横线。<code>language</code> 只接受 <code>zh-CN</code> 或 <code>en</code>，留空表示跟随系统。数值超出范围时会被自动夹到最近的合法值。</span></div>
+  </div>
+
+  <h3 class="doc-h3" data-i18n="doc.appendix.defaultsTitle">默认值速查</h3>
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.appendix.dThItem">项目</th><th data-i18n="doc.appendix.dThDefault">默认值</th><th data-i18n="doc.appendix.dThRange">可调范围</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span data-i18n="doc.appendix.dPort">监听端口</span></td><td><code>17321</code></td><td data-i18n="doc.appendix.dPortRange">1–65535</td></tr>
+          <tr><td><span data-i18n="doc.appendix.dHost">监听地址</span></td><td><code>127.0.0.1</code></td><td data-i18n="doc.appendix.dHostRange">仅 <code>127.0.0.1</code> 或 <code>localhost</code></td></tr>
+          <tr><td><span data-i18n="doc.appendix.dBearer">Bearer 鉴权</span></td><td><span data-i18n="doc.appendix.dOn">开启</span></td><td data-i18n="doc.appendix.dBearerRange">可关闭</td></tr>
+          <tr><td><span data-i18n="doc.appendix.dRows">最大返回行数</span></td><td><code>500</code></td><td data-i18n="doc.appendix.dRowsRange">1–5000</td></tr>
+          <tr><td><span data-i18n="doc.appendix.dTimeout">查询超时</span></td><td><code>8000</code> ms</td><td data-i18n="doc.appendix.dTimeoutRange">500–60000 ms</td></tr>
+          <tr><td><span data-i18n="doc.appendix.dPool">最大连接数</span></td><td><code>1</code></td><td data-i18n="doc.appendix.dPoolRange">1–3</td></tr>
+          <tr><td><span data-i18n="doc.appendix.dBytes">结果大小上限</span></td><td><code>1 MiB</code></td><td data-i18n="doc.appendix.dBytesRange">64 KiB–8 MiB</td></tr>
+          <tr><td><span data-i18n="doc.appendix.dAudit">审计保留天数</span></td><td data-i18n="doc.appendix.dAuditValue"><code>7</code> 天</td><td data-i18n="doc.appendix.dAuditRange">3 / 7 / 15 / 30 天</td></tr>
+          <tr><td><span data-i18n="doc.appendix.dBreaker">自动熔断窗口</span></td><td><code>10</code> <span data-i18n="doc.appendix.minutes">分钟</span></td><td data-i18n="doc.appendix.dBreakerRange">1–60 分钟</td></tr>
+          <tr><td><span data-i18n="doc.appendix.dThreshold">熔断拦截阈值</span></td><td><code>5</code> <span data-i18n="doc.appendix.times">次</span></td><td data-i18n="doc.appendix.dThresholdRange">1–50 次</td></tr>
+          <tr><td><span data-i18n="doc.appendix.dConcurrency">工具并发上限</span></td><td><code>8</code></td><td data-i18n="doc.appendix.dFixed">固定</td></tr>
+          <tr><td><span data-i18n="doc.appendix.dRate">工具调用速率</span></td><td data-i18n="doc.appendix.dRateValue">约 2 次/秒，突发 20</td><td data-i18n="doc.appendix.dFixed2">固定</td></tr>
+          <tr><td><span data-i18n="doc.appendix.dAuditList">审计列表上限</span></td><td><code>5000</code> <span data-i18n="doc.appendix.entries">条</span></td><td data-i18n="doc.appendix.dFixed3">固定</td></tr>
+          <tr><td><span data-i18n="doc.appendix.dSqlChars">审计记录 SQL 上限</span></td><td><code>20000</code> <span data-i18n="doc.appendix.chars">字符</span></td><td data-i18n="doc.appendix.dFixed4">固定</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h3 class="doc-h3" data-i18n="doc.appendix.toolsTitle">工具名速查</h3>
+  <p data-i18n="doc.appendix.toolsP">七个工具分三组；工具名需要在客户端或提示词里精确引用，区分大小写。关闭的工具不会出现在 Agent 的工具列表里，详细参数见第 08 章。</p>
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.appendix.tThName">工具名</th><th data-i18n="doc.appendix.tThGroup">分组</th><th data-i18n="doc.appendix.tThUse">作用</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>datanexa_list_connections</code></td><td data-i18n="doc.appendix.gDiscovery">结构发现</td><td data-i18n="doc.appendix.t1">列出已启用的连接。</td></tr>
+          <tr><td><code>datanexa_get_schema</code></td><td data-i18n="doc.appendix.gDiscovery2">结构发现</td><td data-i18n="doc.appendix.t2">读取表与视图列表。</td></tr>
+          <tr><td><code>datanexa_describe_table</code></td><td data-i18n="doc.appendix.gDiscovery3">结构发现</td><td data-i18n="doc.appendix.t3">读取单张表的列信息。</td></tr>
+          <tr><td><code>datanexa_sample_rows</code></td><td data-i18n="doc.appendix.gAccess">数据访问</td><td data-i18n="doc.appendix.t4">读取受限的样本行。</td></tr>
+          <tr><td><code>datanexa_execute_readonly_sql</code></td><td data-i18n="doc.appendix.gAccess2">数据访问</td><td data-i18n="doc.appendix.t5">执行单条只读查询。</td></tr>
+          <tr><td><code>datanexa_explain_sql</code></td><td data-i18n="doc.appendix.gAnalysis">分析与策略</td><td data-i18n="doc.appendix.t6">返回查询计划。</td></tr>
+          <tr><td><code>datanexa_policy_check</code></td><td data-i18n="doc.appendix.gAnalysis2">分析与策略</td><td data-i18n="doc.appendix.t7">静态策略检查，不连库、不写审计。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h3 class="doc-h3" data-i18n="doc.appendix.glossaryTitle">术语表</h3>
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.appendix.glThTerm">术语</th><th data-i18n="doc.appendix.glThDesc">说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span data-i18n="doc.appendix.glMcp">MCP</span></td><td data-i18n="doc.appendix.glMcpDesc">Model Context Protocol，Agent 调用外部工具的协议；DataNexa 是它的服务端。</td></tr>
+          <tr><td><span data-i18n="doc.appendix.glHttp">Streamable HTTP</span></td><td data-i18n="doc.appendix.glHttpDesc">MCP 的 HTTP 传输方式，用 POST 发送 JSON-RPC 请求。</td></tr>
+          <tr><td><span data-i18n="doc.appendix.glRpc">JSON-RPC</span></td><td data-i18n="doc.appendix.glRpcDesc">请求与响应都带 <code>jsonrpc</code>、<code>id</code>、<code>method</code> 或 <code>error</code> 的轻量协议。</td></tr>
+          <tr><td><span data-i18n="doc.appendix.glBearer">Bearer</span></td><td data-i18n="doc.appendix.glBearerDesc">放在 <code>Authorization</code> 头里的令牌方案；访问控制依赖它。</td></tr>
+          <tr><td><span data-i18n="doc.appendix.glAst">AST</span></td><td data-i18n="doc.appendix.glAstDesc">抽象语法树。只读策略解析 SQL 后按语句类型判断，而不是匹配字符串。</td></tr>
+          <tr><td><span data-i18n="doc.appendix.glTx">只读事务</span></td><td data-i18n="doc.appendix.glTxDesc">数据库层的第二道防线；MySQL / PostgreSQL 连接以只读事务执行查询。</td></tr>
+          <tr><td><span data-i18n="doc.appendix.glToken">访问令牌</span></td><td data-i18n="doc.appendix.glTokenDesc">带数据库与工具权限的 Bearer 密钥，一 Agent 一枚。</td></tr>
+          <tr><td><span data-i18n="doc.appendix.glBreaker">熔断</span></td><td data-i18n="doc.appendix.glBreakerDesc">同一令牌在窗口内被拒次数达到阈值后自动停用，避免持续误用。</td></tr>
+          <tr><td><span data-i18n="doc.appendix.glBundle">Bundle</span></td><td data-i18n="doc.appendix.glBundleDesc">JDBC 驱动包：驱动 JAR、依赖与清单，安装后不可变。</td></tr>
+          <tr><td><span data-i18n="doc.appendix.glJdbc">JDBC</span></td><td data-i18n="doc.appendix.glJdbcDesc">Java 的数据库访问接口；DataNexa 通过它连接原生支持之外的数据库。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h3 class="doc-h3" data-i18n="doc.appendix.compatTitle">MCP 协议支持</h3>
+  <p data-i18n="doc.appendix.c3">支持 <code>2025-03-26</code>、<code>2025-06-18</code>、<code>2025-11-25</code> 三个协议版本；客户端不发送版本头时，按 <code>2025-03-26</code> 处理。</p>
+
+  <h3 class="doc-h3" data-i18n="doc.appendix.linksTitle">相关链接</h3>
+  <div class="doc-table-wrap">
+    <div class="doc-table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th data-i18n="doc.appendix.lThName">链接</th><th data-i18n="doc.appendix.lThAddr">地址</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span data-i18n="doc.appendix.lRepo">源码仓库</span></td><td><a href="https://github.com/MingoZacwu/DataNexa">github.com/MingoZacwu/DataNexa</a></td></tr>
+          <tr><td><span data-i18n="doc.appendix.lReleases">下载与更新日志</span></td><td><a href="https://github.com/MingoZacwu/DataNexa/releases">github.com/MingoZacwu/DataNexa/releases</a></td></tr>
+          <tr><td><span data-i18n="doc.appendix.lIssues">问题反馈</span></td><td><a href="https://github.com/MingoZacwu/DataNexa/issues">github.com/MingoZacwu/DataNexa/issues</a></td></tr>
+          <tr><td><span data-i18n="doc.appendix.lLicense">开源许可</span></td><td><a href="https://github.com/MingoZacwu/DataNexa/blob/main/LICENSE">MIT License</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+        <!-- 文末帮助卡 -->
+        <div class="doc-help-card reveal">
+          <div>
+            <h3 data-i18n="doc.help.title">没有找到你要的答案？</h3>
+            <p data-i18n="doc.help.text">把系统版本、数据库类型、错误提示和脱敏后的日志一起提交，能更快定位问题。</p>
+          </div>
+          <a class="btn btn-ghost" href="https://github.com/MingoZacwu/DataNexa/issues" target="_blank" rel="noopener" data-i18n="doc.help.cta">提交 Issue</a>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <img src="assets/logo.png" alt="DataNexa">
+          <div>
+            <strong>DataNexa</strong>
+            <span data-i18n="footer.tag">MCP Database Gateway</span>
+          </div>
+        </div>
+        <div class="footer-links">
+          <a href="https://github.com/MingoZacwu/DataNexa" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://github.com/MingoZacwu/DataNexa/releases" target="_blank" rel="noopener">Releases</a>
+          <a href="https://github.com/MingoZacwu/DataNexa/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>
+          <a href="help.html" data-i18n="nav.help" aria-current="page">帮助文档</a>
+          <a href="changelog.html" data-i18n="footer.changelog">更新日志</a>
+          <a href="credits.html" data-i18n="footer.friends">友链与致谢</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span data-i18n="footer.copy1">Copyright © 2026 Zachary Wu All Rights Reserved.</span>
+        <span data-i18n="footer.copy2">MySQL、PostgreSQL、SQLite 及其他名称和商标归其各自权利人所有</span>
+      </div>
+    </div>
+  </footer>
+
+  <button class="docs-top" type="button" aria-label="回到顶部">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+
+  <script src="assets/main.js"></script>
+  <script src="assets/help-en.js"></script>
+  <script src="assets/help.js"></script>
+</body>
+</html>

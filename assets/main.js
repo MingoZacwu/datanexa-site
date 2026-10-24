@@ -82,6 +82,7 @@
       "nav.defense": "Defense",
       "nav.preview": "Preview",
       "nav.quickstart": "Quick Start",
+      "nav.help": "Documentation",
       "nav.home": "Home",
       "hero.badge": "Local read-only MCP gateway",
       "hero.title1": "Connect AI Agents to",
@@ -291,6 +292,8 @@
     if (lang === "en") {
       nodes.forEach(function (node) {
         var key = node.getAttribute("data-i18n");
+        /* Help-page copy is handled by help.js so it can keep the scroll anchor. */
+        if (key.indexOf("doc.") === 0) return;
         if (!(key in zhCache)) zhCache[key] = node.innerHTML;
         if (i18n.en[key]) node.innerHTML = i18n.en[key];
       });
@@ -300,6 +303,7 @@
     } else {
       nodes.forEach(function (node) {
         var key = node.getAttribute("data-i18n");
+        if (key.indexOf("doc.") === 0) return;
         if (key in zhCache) node.innerHTML = zhCache[key];
       });
       root.setAttribute("lang", "zh-CN");

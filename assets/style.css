@@ -44,14 +44,14 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; overflow-x: hidden; }
+html { scroll-behavior: smooth; overflow-x: clip; }
 
 body {
   font-family: "Segoe UI Variable", "Aptos", "Microsoft YaHei UI", "PingFang SC", "Noto Sans CJK SC", sans-serif;
   color: var(--ink);
   background: var(--bg);
   line-height: 1.65;
-  overflow-x: hidden;
+  overflow-x: clip;
   transition: background 0.35s ease, color 0.35s ease;
 }
 
