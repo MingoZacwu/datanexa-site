@@ -304,6 +304,7 @@ body.docs-page { background: var(--bg); }
   grid-template-columns: var(--doc-side) minmax(0, 1fr);
   gap: var(--doc-gap);
   align-items: start;
+  position: relative;
   padding-top: 18px;
   padding-bottom: 72px;
 }
@@ -393,6 +394,13 @@ body.docs-page { background: var(--bg); }
 
 /* ---------- 05 正文排版 ---------- */
 .docs-main { min-width: 0; }
+
+/* 桌面端：随视口高度给正文底部留白，滚到底时右侧帮助卡与左侧提示卡底部齐平 */
+@media screen and (min-width: 901px) and (min-height: 761px) {
+  .docs-main {
+    padding-bottom: max(4px, calc(100vh - 969px));
+  }
+}
 
 .doc-section {
   position: relative;
@@ -962,6 +970,17 @@ kbd {
 .doc-tool-body .doc-table-wrap { margin-top: 12px; }
 
 /* 文末帮助卡 */
+.doc-disclaimer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 24px;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.doc-disclaimer b { font-weight: 650; color: var(--doc-ink-soft); }
 .doc-help-card {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
   gap: 18px;
@@ -1005,7 +1024,7 @@ kbd {
   .docs-hero { padding-top: 122px; }
   .docs-hero-grid { grid-template-columns: 1fr; gap: 24px; }
   .docs-quick { display: none; }
-  .docs-wrap { grid-template-columns: 1fr; gap: 0; }
+  .docs-wrap { grid-template-columns: 1fr; gap: 0; padding-bottom: 24px; }
   .docs-side {
     position: static;
     max-height: none;
@@ -1036,6 +1055,7 @@ kbd {
   }
   .docs-nav.is-open { display: block; }
   .docs-side-card { display: none; }
+  .doc-disclaimer { position: static; margin-top: 12px; }
   .doc-section { padding-top: 28px; }
   .doc-section > h2 { scroll-margin-top: 76px; }
 }
@@ -1075,6 +1095,7 @@ kbd {
   .docs-hero { padding: 0 0 12px; }
   .docs-wrap { display: block; padding: 0; }
   .doc-section { break-inside: avoid-page; }
+  .doc-disclaimer { position: static; margin-top: 12px; }
   body { background: #fff; }
 }
 

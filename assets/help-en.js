@@ -516,6 +516,7 @@ window.DataNexaHelpEn = {
   "doc.fig.sidebar": "The sidebar is the only global entry point, and the service status stays visible at the bottom.",
   "doc.fig.toolsGrid": "The Tools page is the global capability switch; its groups mirror the tool overview above.",
   "doc.help.cta": "Open an Issue",
+  "doc.help.disclaimer": "<b>Note:</b> Screenshots, feature descriptions, and steps in this documentation may change as the software is updated. Please refer to the current version for the actual interface and behavior. This documentation is updated periodically without prior notice.",
   "doc.help.text": "Include your OS version, database type, the exact error and sanitized logs — that is what makes a report fast to diagnose.",
   "doc.help.title": "Did not find your answer?",
   "doc.hero.sub": "Explains what each screen and setting does and how to use it, in the order you will meet them. For error messages, see the FAQ or search for a keyword.",
