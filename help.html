@@ -259,7 +259,7 @@
                 </thead>
                 <tbody>
                   <tr><td data-i18n="doc.start.dataR1a">连接元数据</td><td data-i18n="doc.start.dataR1b">本地 TOML 配置文件</td><td data-i18n="doc.start.dataR1c">名称、类型、主机、端口、数据库、限额等；不含密码。</td></tr>
-                  <tr><td data-i18n="doc.start.dataR2a">数据库密码</td><td data-i18n="doc.start.dataR2b">操作系统凭证库</td><td data-i18n="doc.start.dataR2c">macOS 钥匙串、Windows 凭据管理器、Linux Secret Service。</td></tr>
+                  <tr><td data-i18n="doc.start.dataR2a">数据库密码</td><td data-i18n="doc.start.dataR2b">操作系统凭证库</td><td data-i18n="doc.start.dataR2c">macOS 钥匙串、Windows 凭据管理器。</td></tr>
                   <tr><td data-i18n="doc.start.dataR3a">审计日志</td><td data-i18n="doc.start.dataR3b">本地 SQLite（WAL）</td><td data-i18n="doc.start.dataR3c">按保留天数自动清理，可在审计日志页查看。</td></tr>
                   <tr><td data-i18n="doc.start.dataR4a">JDBC 驱动与运行时</td><td data-i18n="doc.start.dataR4b">应用数据目录</td><td data-i18n="doc.start.dataR4c">可在「设置 → 存储与性能」查看占用并打开目录。</td></tr>
                 </tbody>
@@ -1855,7 +1855,7 @@
   <p data-i18n="doc.faq.dataDirSymptom"><strong>症状：</strong>想备份或彻底重置配置；或卸载重装后，旧连接、旧审计记录仍然存在。</p>
   <p data-i18n="doc.faq.dataDirCause"><strong>原因：</strong>配置、审计与访问控制数据库在配置目录，驱动、Maven 缓存、Java 运行时与调试日志在数据目录。卸载程序不会删除这些目录，也不会清理系统凭证库。</p>
   <ol>
-    <li data-i18n="doc.faq.dataDirFix1">打开目录：<strong>设置 → 存储与性能 → 打开数据目录</strong>；具体路径见第 13 章，macOS 与 Windows 上配置目录和数据目录是同一个文件夹，Linux 上分开。</li>
+    <li data-i18n="doc.faq.dataDirFix1">打开目录：<strong>设置 → 存储与性能 → 打开数据目录</strong>；具体路径见第 13 章，macOS 与 Windows 上配置目录和数据目录是同一个文件夹。</li>
     <li data-i18n="doc.faq.dataDirFix2">备份优先用「导入/导出 → 导出连接」；导出文件包含明文密码，用完及时删除。</li>
     <li data-i18n="doc.faq.dataDirFix3">彻底重置：退出应用后重命名或删除 <code>config.toml</code>、<code>audit.db</code>、<code>access-control.db</code> 再启动，应用会重建默认配置；连接和审计记录会丢失，密码仍留在系统凭证库。</li>
     <li data-i18n="doc.faq.dataDirFix4">卸载后要清理干净，删除上述目录，并在系统「钥匙串访问」或「凭据管理器」中删除 <code>com.mingo.datanexa</code> 条目。</li>
@@ -1878,23 +1878,23 @@
   <p class="doc-lead" data-i18n="doc.appendix.lead">这一章把散落在各章的查表信息集中起来：文件位置、配置示例、默认值、工具名、术语与链接。排错时可以把它当作对照表使用。</p>
 
   <h3 class="doc-h3" data-i18n="doc.appendix.pathsTitle">文件与目录位置</h3>
-  <p data-i18n="doc.appendix.pathsP">配置、审计与访问控制数据库放在配置目录，驱动、Maven 缓存、Java 运行时与调试日志放在数据目录。macOS 与 Windows 上两者是同一个文件夹，Linux 上分开。应用内的「设置 → 存储与性能 → 打开数据目录」直接打开数据目录。</p>
+  <p data-i18n="doc.appendix.pathsP">配置、审计与访问控制数据库放在配置目录，驱动、Maven 缓存、Java 运行时与调试日志放在数据目录。macOS 与 Windows 上两者是同一个文件夹。应用内的「设置 → 存储与性能 → 打开数据目录」直接打开数据目录。</p>
   <div class="doc-table-wrap">
     <div class="doc-table-scroll">
       <table class="doc-table">
         <thead>
-          <tr><th data-i18n="doc.appendix.thItem">内容</th><th data-i18n="doc.appendix.thMac">macOS</th><th data-i18n="doc.appendix.thWin">Windows</th><th data-i18n="doc.appendix.thLinux">Linux</th></tr>
+          <tr><th data-i18n="doc.appendix.thItem">内容</th><th data-i18n="doc.appendix.thMac">macOS</th><th data-i18n="doc.appendix.thWin">Windows</th></tr>
         </thead>
         <tbody>
-          <tr><td><span data-i18n="doc.appendix.rowConfigDir">配置目录</span></td><td><code>~/Library/Application Support/com.mingo.datanexa/</code></td><td><code>%APPDATA%\com.mingo.datanexa\</code></td><td><code>~/.config/com.mingo.datanexa/</code></td></tr>
-          <tr><td><span data-i18n="doc.appendix.rowDataDir">数据目录</span></td><td><code>~/Library/Application Support/com.mingo.datanexa/</code></td><td><code>%APPDATA%\com.mingo.datanexa\</code></td><td><code>~/.local/share/com.mingo.datanexa/</code></td></tr>
-          <tr><td><span data-i18n="doc.appendix.rowConfigFile">配置文件</span></td><td><code>config.toml</code></td><td><code>config.toml</code></td><td><code>config.toml</code></td></tr>
-          <tr><td><span data-i18n="doc.appendix.rowAudit">审计数据库</span></td><td><code>audit.db</code></td><td><code>audit.db</code></td><td><code>audit.db</code></td></tr>
-          <tr><td><span data-i18n="doc.appendix.rowAccess">访问控制数据库</span></td><td><code>access-control.db</code></td><td><code>access-control.db</code></td><td><code>access-control.db</code></td></tr>
-          <tr><td><span data-i18n="doc.appendix.rowDrivers">JDBC 驱动</span></td><td><code>jdbc-drivers/</code></td><td><code>jdbc-drivers/</code></td><td><code>jdbc-drivers/</code></td></tr>
-          <tr><td><span data-i18n="doc.appendix.rowMaven">Maven 缓存</span></td><td><code>maven-repository/</code></td><td><code>maven-repository/</code></td><td><code>maven-repository/</code></td></tr>
-          <tr><td><span data-i18n="doc.appendix.rowRuntime">Java 运行时</span></td><td><code>jdbc-runtime/</code></td><td><code>jdbc-runtime/</code></td><td><code>jdbc-runtime/</code></td></tr>
-          <tr><td><span data-i18n="doc.appendix.rowLogs">调试日志</span></td><td><code>logs/</code></td><td><code>logs/</code></td><td><code>logs/</code></td></tr>
+          <tr><td><span data-i18n="doc.appendix.rowConfigDir">配置目录</span></td><td><code>~/Library/Application Support/com.mingo.datanexa/</code></td><td><code>%APPDATA%\com.mingo.datanexa\</code></td></tr>
+          <tr><td><span data-i18n="doc.appendix.rowDataDir">数据目录</span></td><td><code>~/Library/Application Support/com.mingo.datanexa/</code></td><td><code>%APPDATA%\com.mingo.datanexa\</code></td></tr>
+          <tr><td><span data-i18n="doc.appendix.rowConfigFile">配置文件</span></td><td><code>config.toml</code></td><td><code>config.toml</code></td></tr>
+          <tr><td><span data-i18n="doc.appendix.rowAudit">审计数据库</span></td><td><code>audit.db</code></td><td><code>audit.db</code></td></tr>
+          <tr><td><span data-i18n="doc.appendix.rowAccess">访问控制数据库</span></td><td><code>access-control.db</code></td><td><code>access-control.db</code></td></tr>
+          <tr><td><span data-i18n="doc.appendix.rowDrivers">JDBC 驱动</span></td><td><code>jdbc-drivers/</code></td><td><code>jdbc-drivers/</code></td></tr>
+          <tr><td><span data-i18n="doc.appendix.rowMaven">Maven 缓存</span></td><td><code>maven-repository/</code></td><td><code>maven-repository/</code></td></tr>
+          <tr><td><span data-i18n="doc.appendix.rowRuntime">Java 运行时</span></td><td><code>jdbc-runtime/</code></td><td><code>jdbc-runtime/</code></td></tr>
+          <tr><td><span data-i18n="doc.appendix.rowLogs">调试日志</span></td><td><code>logs/</code></td><td><code>logs/</code></td></tr>
         </tbody>
       </table>
     </div>
