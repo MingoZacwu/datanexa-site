@@ -2,7 +2,7 @@
    DataNexa Official Site — Help Center behaviors
    ------------------------------------------------------------
    1. 侧边目录（移动端折叠）+ 滚动高亮 + 阅读进度
-   2. 全站内搜索（标题 / 正文 / FAQ），⌘K 聚焦
+   2. 全站内搜索（标题 / 正文 / FAQ），快捷键按平台显示，阅读中唤起悬浮搜索
    3. 代码块复制
    4. 截图位：图片存在则自动替换占位，支持点击放大
    5. 语言切换：与 main.js 的「中 / EN」按钮联动
@@ -58,6 +58,7 @@
       progressFill.style.width = (ratio * 100).toFixed(2) + "%";
     }
     if (backTop) backTop.classList.toggle("is-visible", scrollY > 720);
+    updateSearchFab();
 
     /* 以视口上方 120px 处为判定线，取最后一个越线的章节 */
     var current = sections.length ? sections[0].id : null;
@@ -81,18 +82,19 @@
   onScroll();
 
   /* ---------- 2. 搜索 ---------- */
-  var searchInput = doc.getElementById("docSearch");
-  var searchResults = doc.getElementById("docSearchResults");
-  var searchWrap = searchInput ? searchInput.closest(".docs-search") : null;
   var searchHero = doc.querySelector(".docs-hero");
+  var searchIsMac = (function () {
+    var platform = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || "";
+    return /mac|iphone|ipad|ipod/i.test(platform);
+  })();
+  var searchShortcut = searchIsMac ? "⌘ K" : "Ctrl K";
 
-  function setSearchOpen(open) {
-    if (searchHero) searchHero.classList.toggle("is-search-open", !!open);
-  }
+  Array.prototype.forEach.call(doc.querySelectorAll("[data-search-shortcut]"), function (node) {
+    node.textContent = searchShortcut;
+  });
 
+  var searchPanels = [];
   var searchIndex = [];
-  var activeResult = -1;
-  var resultNodes = [];
 
   function normalize(text) {
     return (text || "").replace(/\s+/g, " ").trim().toLowerCase();
@@ -181,25 +183,94 @@
     return scored.slice(0, 10).map(function (item) { return item.entry; });
   }
 
-  function closeResults() {
-    if (!searchResults) return;
-    searchResults.hidden = true;
-    setSearchOpen(false);
-    activeResult = -1;
-    resultNodes = [];
+  function createSearchPanel(config) {
+    var input = doc.getElementById(config.inputId);
+    var results = doc.getElementById(config.resultsId);
+    if (!input || !results) return null;
+
+    var panel = {
+      input: input,
+      results: results,
+      wrap: config.wrap || input.closest(".docs-search"),
+      activeResult: -1,
+      nodes: [],
+      onOpen: config.onOpen,
+      onClose: config.onClose,
+      onClear: config.onClear
+    };
+    searchPanels.push(panel);
+
+    var timer = null;
+    input.addEventListener("input", function () {
+      window.clearTimeout(timer);
+      var value = input.value;
+      timer = window.setTimeout(function () {
+        /* 关键词不足两个字符时只收起结果，不关闭所在的搜索层 */
+        if (normalize(value).length < 2) {
+          if (hideResults(panel) && panel.onClear) panel.onClear();
+          return;
+        }
+        renderResults(panel, search(value), value);
+      }, 110);
+    });
+
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowDown") { e.preventDefault(); moveActive(panel, 1); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); moveActive(panel, -1); }
+      else if (e.key === "Enter") {
+        if (panel.activeResult > -1 && panel.nodes[panel.activeResult]) {
+          e.preventDefault();
+          goToResult(panel.nodes[panel.activeResult].getAttribute("data-target"));
+        }
+      } else if (e.key === "Escape") {
+        closePanel(panel);
+        input.blur();
+      }
+    });
+
+    return panel;
   }
 
-  function renderResults(entries, query) {
-    if (!searchResults) return;
-    setSearchOpen(true);
-    activeResult = -1;
-    resultNodes = [];
+  function hideResults(panel) {
+    if (!panel) return false;
+    var wasOpen = !panel.results.hidden;
+    panel.results.hidden = true;
+    panel.activeResult = -1;
+    panel.nodes = [];
+    return wasOpen;
+  }
+
+  function closePanel(panel, opts) {
+    if (!panel) return;
+    var wasOpen = hideResults(panel);
+    if (panel.onClose) panel.onClose(wasOpen, opts || {});
+  }
+
+  function closeResults(opts) {
+    searchPanels.forEach(function (panel) { closePanel(panel, opts); });
+  }
+
+  function emptyResultsText() {
+    return root.getAttribute("lang") === "en"
+      ? "No matches. Try a different keyword."
+      : "没有找到相关内容，换个关键词试试。";
+  }
+
+  function renderResults(panel, entries, query) {
+    var results = panel.results;
+    if (!results) return;
+    searchPanels.forEach(function (other) {
+      if (other !== panel) closePanel(other);
+    });
+    panel.activeResult = -1;
+    panel.nodes = [];
+    if (panel.onOpen) panel.onOpen();
     if (!entries.length) {
-      searchResults.innerHTML = '<div class="docs-search-empty">没有找到相关内容，换个关键词试试。</div>';
-      searchResults.hidden = false;
+      results.innerHTML = '<div class="docs-search-empty">' + emptyResultsText() + "</div>";
+      results.hidden = false;
       return;
     }
-    searchResults.innerHTML = "";
+    results.innerHTML = "";
     entries.forEach(function (entry) {
       var button = doc.createElement("button");
       button.type = "button";
@@ -211,10 +282,10 @@
         "<em>" + escapeHtml(entry.section) + "</em></span>" +
         (entry.isHeading ? "" : '<span class="docs-search-item-snippet">' + highlight(snippet(entry.text, query), query) + "</span>");
       button.addEventListener("click", function () { goToResult(entry.id); });
-      searchResults.appendChild(button);
-      resultNodes.push(button);
+      results.appendChild(button);
+      panel.nodes.push(button);
     });
-    searchResults.hidden = false;
+    results.hidden = false;
   }
 
   var searchToast = null;
@@ -239,8 +310,8 @@
   function goToResult(id) {
     var target = doc.getElementById(id);
     if (!target) return;
-    closeResults();
-    if (searchInput) searchInput.blur();
+    closeResults({ restoreFocus: false });
+    if (doc.activeElement && doc.activeElement.blur) doc.activeElement.blur();
 
     /* 目标停在视口中上部：既避开固定顶栏，也避免落在章节末尾时
        屏幕里只剩下一章的大标题。 */
@@ -265,53 +336,174 @@
     window.setTimeout(function () { target.classList.remove("is-search-hit"); }, 3000);
   }
 
-  function moveActive(delta) {
-    if (!resultNodes.length) return;
-    activeResult = (activeResult + delta + resultNodes.length) % resultNodes.length;
-    resultNodes.forEach(function (node, index) {
-      node.classList.toggle("is-active", index === activeResult);
+  function moveActive(panel, delta) {
+    if (!panel.nodes.length) return;
+    panel.activeResult = (panel.activeResult + delta + panel.nodes.length) % panel.nodes.length;
+    panel.nodes.forEach(function (node, index) {
+      node.classList.toggle("is-active", index === panel.activeResult);
     });
-    resultNodes[activeResult].scrollIntoView({ block: "nearest" });
+    panel.nodes[panel.activeResult].scrollIntoView({ block: "nearest" });
   }
 
-  if (searchInput && searchResults) {
-    var searchTimer = null;
-    searchInput.addEventListener("input", function () {
-      window.clearTimeout(searchTimer);
-      var value = searchInput.value;
-      searchTimer = window.setTimeout(function () {
-        if (normalize(value).length < 2) { closeResults(); return; }
-        renderResults(search(value), value);
-      }, 110);
-    });
+  var heroPanel = createSearchPanel({
+    inputId: "docSearch",
+    resultsId: "docSearchResults",
+    onOpen: function () { if (searchHero) searchHero.classList.add("is-search-open"); },
+    onClose: function () { if (searchHero) searchHero.classList.remove("is-search-open"); },
+    onClear: function () { if (searchHero) searchHero.classList.remove("is-search-open"); }
+  });
 
-    searchInput.addEventListener("keydown", function (e) {
-      if (e.key === "ArrowDown") { e.preventDefault(); moveActive(1); }
-      else if (e.key === "ArrowUp") { e.preventDefault(); moveActive(-1); }
-      else if (e.key === "Enter") {
-        if (activeResult > -1 && resultNodes[activeResult]) {
-          e.preventDefault();
-          goToResult(resultNodes[activeResult].getAttribute("data-target"));
-        }
-      } else if (e.key === "Escape") {
-        closeResults();
-        searchInput.blur();
-      }
-    });
+  var searchModal = doc.getElementById("docSearchModal");
+  var searchModalPanel = doc.querySelector(".docs-search-modal-panel");
+  var searchFab = doc.getElementById("docSearchFab");
+  var searchModalLastFocus = null;
 
-    doc.addEventListener("click", function (e) {
-      if (searchWrap && !searchWrap.contains(e.target)) closeResults();
-    });
-
-    doc.addEventListener("keydown", function (e) {
-      var isMac = /Mac|iPhone|iPad/.test(navigator.platform || "");
-      if ((isMac ? e.metaKey : e.ctrlKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault();
-        searchInput.focus();
-        searchInput.select();
-      }
-    });
+  function focusPanel(panel) {
+    if (!panel) return;
+    panel.input.focus({ preventScroll: true });
+    panel.input.select();
   }
+
+  function openSearchModal() {
+    if (!searchModal || !searchModal.hidden) return;
+    searchModalLastFocus = doc.activeElement;
+    searchModal.hidden = false;
+  }
+
+  function closeSearchModal(opts) {
+    if (!searchModal || searchModal.hidden) return;
+    searchModal.hidden = true;
+    hideResults(modalPanel);
+    if (!opts || opts.restoreFocus !== false) {
+      var previous = searchModalLastFocus;
+      searchModalLastFocus = null;
+      if (previous && previous.focus && doc.contains(previous)) previous.focus({ preventScroll: true });
+    }
+  }
+
+  var modalPanel = createSearchPanel({
+    inputId: "docSearchFloat",
+    resultsId: "docSearchFloatResults",
+    wrap: searchModalPanel,
+    onOpen: function () { openSearchModal(); },
+    onClose: function (wasOpen, opts) { closeSearchModal(opts); }
+  });
+
+  function isHeroSearchVisible() {
+    if (!heroPanel) return false;
+    var rect = heroPanel.input.getBoundingClientRect();
+    var height = window.innerHeight || doc.documentElement.clientHeight;
+    return rect.top >= 0 && rect.bottom <= height;
+  }
+
+  /* 「回到顶部」上方的小入口：头图搜索框滚出视口后出现 */
+  function updateSearchFab() {
+    if (!searchFab) return;
+    var scrollY = window.scrollY || window.pageYOffset;
+    searchFab.classList.toggle("is-visible", scrollY > 720 && !isHeroSearchVisible());
+  }
+
+  if (searchFab) {
+    searchFab.addEventListener("click", openFloatingSearch);
+    updateSearchFab();
+  }
+
+  function openFloatingSearch() {
+    searchPanels.forEach(function (panel) {
+      if (panel !== modalPanel) closePanel(panel);
+    });
+    openSearchModal();
+    if (!modalPanel) return;
+    var value = modalPanel.input.value;
+    if (normalize(value).length >= 2) renderResults(modalPanel, search(value), value);
+    focusPanel(modalPanel);
+  }
+
+  function openSearch() {
+    if (modalPanel && searchModal && !searchModal.hidden) {
+      focusPanel(modalPanel);
+      return;
+    }
+    /* 头图里的搜索框仍然可见时就地聚焦，不做任何滚动；已滚出视口则唤起悬浮搜索 */
+    if (heroPanel && isHeroSearchVisible()) {
+      focusPanel(heroPanel);
+      return;
+    }
+    openFloatingSearch();
+  }
+
+  if (searchModal) {
+    searchModal.addEventListener("click", function (e) {
+      if (e.target === searchModal) closeSearchModal();
+    });
+
+    /* 不用 overflow 锁滚动（会让 sticky 的侧边目录失效），
+       改为在遮罩上吃掉滚轮与触摸手势；结果列表内部仍可滚动 */
+    function allowInnerScroll(e) {
+      var scroller = e.target.closest ? e.target.closest(".docs-search-results") : null;
+      if (!scroller) return false;
+      if (scroller.scrollHeight <= scroller.clientHeight) return false;
+      var delta = e.deltaY;
+      if (!delta && e.touches && e.touches.length) delta = 1;
+      if (delta < 0) return scroller.scrollTop > 0;
+      if (delta > 0) return scroller.scrollTop + scroller.clientHeight < scroller.scrollHeight - 1;
+      return true;
+    }
+
+    searchModal.addEventListener("wheel", function (e) {
+      if (!allowInnerScroll(e)) e.preventDefault();
+    }, { passive: false });
+
+    searchModal.addEventListener("touchmove", function (e) {
+      if (!allowInnerScroll(e)) e.preventDefault();
+    }, { passive: false });
+  }
+
+  /* 悬浮层没有用 overflow 锁滚动，按键滚动同样要挡掉；
+     空格不挡，输入框里要能打空格 */
+  doc.addEventListener("keydown", function (e) {
+    if (!searchModal || searchModal.hidden) return;
+    if (e.key === "PageUp" || e.key === "PageDown" || e.key === "Home" || e.key === "End") {
+      e.preventDefault();
+    }
+  });
+
+  doc.addEventListener("click", function (e) {
+    searchPanels.forEach(function (panel) {
+      if (!panel.results.hidden && panel.wrap && !panel.wrap.contains(e.target)) closePanel(panel);
+    });
+  });
+
+  doc.addEventListener("keydown", function (e) {
+    if (e.altKey || e.shiftKey) return;
+    var modifier = searchIsMac ? e.metaKey : e.ctrlKey;
+    if (!modifier || e.key.toLowerCase() !== "k") return;
+    e.preventDefault();
+    openSearch();
+  });
+
+  doc.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && searchModal && !searchModal.hidden) closeSearchModal();
+  });
+
+  /* 悬浮层是 aria-modal 对话框：Tab 在输入框与结果之间循环，不跑到背景正文 */
+  doc.addEventListener("keydown", function (e) {
+    if (e.key !== "Tab" || !searchModal || searchModal.hidden || !modalPanel) return;
+    var focusables = [modalPanel.input].concat(modalPanel.nodes);
+    if (!focusables.length) return;
+    var first = focusables[0];
+    var last = focusables[focusables.length - 1];
+    if (!searchModalPanel.contains(doc.activeElement)) {
+      e.preventDefault();
+      first.focus();
+    } else if (e.shiftKey && doc.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && doc.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  });
 
   /* ---------- 3. 代码块复制 ---------- */
   function copyText(text) {
@@ -466,7 +658,7 @@
   function applyHelpLanguage(lang) {
     var isEn = lang === "en";
     var anchor = captureScrollAnchor();
-    if (searchInput) closeResults();
+    closeResults();
 
     helpNodes.forEach(function (node) {
       var key = node.getAttribute("data-i18n");

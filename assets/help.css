@@ -262,6 +262,55 @@ body.docs-page { background: var(--bg); }
 }
 :root.dark .docs-search-item mark { background: rgba(96, 165, 250, 0.22); }
 
+/* 阅读中的悬浮搜索：快捷键唤起，覆盖在正文上方，不改变页面滚动位置 */
+.docs-search-modal {
+  position: fixed; inset: 0;
+  z-index: 200;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: max(9vh, 56px) 16px 24px;
+  background: rgba(9, 14, 24, 0.46);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+.docs-search-modal[hidden] { display: none; }
+.docs-search-modal-panel {
+  position: relative;
+  width: min(620px, 100%);
+  animation: docs-search-in 0.18s ease;
+}
+@keyframes docs-search-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: none; }
+}
+.docs-search.docs-search-floating {
+  margin-top: 0;
+  max-width: none;
+}
+.docs-search-floating input[type="search"] {
+  height: 54px; font-size: 15.5px;
+  border-radius: 15px;
+  box-shadow: 0 22px 60px rgba(20, 32, 56, 0.22), var(--soft-shadow);
+}
+:root.dark .docs-search-floating input[type="search"] {
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.42), var(--soft-shadow);
+}
+.docs-search-floating .docs-search-results {
+  /* 悬浮层内改写为文档流：结果列表把下方快捷键提示顶开，而不是盖住它 */
+  position: static;
+  margin-top: 8px;
+  max-height: min(52vh, 460px);
+  box-shadow: 0 24px 60px rgba(20, 32, 56, 0.18), var(--shadow);
+}
+.docs-search-modal-hint {
+  width: fit-content;
+  margin: 12px auto 0;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(9, 14, 24, 0.55);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 11.5px; letter-spacing: 0.02em;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+
 /* 头图右侧的“快速入口” */
 .docs-hero-grid {
   display: grid;
@@ -1014,6 +1063,23 @@ kbd {
 .docs-top:hover { color: var(--blue); border-color: var(--doc-accent-line); }
 .docs-top svg { width: 16px; height: 16px; }
 
+/* 阅读中的悬浮搜索入口：与「回到顶部」同一列，头图搜索框滚出视口后出现 */
+.docs-search-fab {
+  position: fixed; right: 24px; bottom: 78px; z-index: 45;
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  border: 1px solid var(--line); border-radius: 11px;
+  color: var(--muted); background: var(--surface-strong);
+  box-shadow: var(--soft-shadow);
+  cursor: pointer;
+  opacity: 0; visibility: hidden; transform: translateY(8px);
+  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s, color 0.18s ease;
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+}
+.docs-search-fab.is-visible { opacity: 1; visibility: visible; transform: none; }
+.docs-search-fab:hover { color: var(--blue); border-color: var(--doc-accent-line); }
+.docs-search-fab svg { width: 16px; height: 16px; }
+
 /* ---------- 10 响应式 ---------- */
 @media (max-width: 1040px) {
   :root { --doc-side: 210px; --doc-gap: 30px; }
@@ -1076,6 +1142,7 @@ kbd {
   .doc-code pre { font-size: 12px; }
   .doc-help-card { padding: 20px; }
   .docs-top { right: 16px; bottom: 18px; }
+  .docs-search-fab { right: 16px; bottom: 66px; }
   .doc-step { padding: 14px 15px 14px 52px; }
   .doc-step::before { left: 13px; top: 13px; }
 }
@@ -1084,14 +1151,17 @@ kbd {
   .docs-progress i,
   .doc-section,
   .shot-frame,
-  .docs-top { transition: none; }
+  .docs-top,
+  .docs-search-fab { transition: none; }
+  .docs-search-modal-panel { animation: none; }
   html { scroll-behavior: auto; }
 }
 
 /* 打印：保留正文与截图位，隐藏导航 */
 @media print {
   .nav, .docs-side, .docs-hero::before, .docs-hero::after,
-  .docs-search, .docs-quick, .docs-top, .docs-progress, .footer { display: none !important; }
+  .docs-search, .docs-quick, .docs-top, .docs-progress, .footer,
+  .docs-search-fab, .docs-search-modal { display: none !important; }
   .docs-hero { padding: 0 0 12px; }
   .docs-wrap { display: block; padding: 0; }
   .doc-section { break-inside: avoid-page; }

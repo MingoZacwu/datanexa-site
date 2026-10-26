@@ -140,7 +140,7 @@
               <div class="docs-search-field">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
                 <input type="search" id="docSearch" data-i18n-attr="placeholder:doc.search.placeholder;aria-label:doc.search.placeholder" placeholder="搜索功能、设置或错误提示…" aria-label="搜索文档" autocomplete="off" spellcheck="false">
-                <kbd>⌘ K</kbd>
+                <kbd data-search-shortcut>Ctrl K</kbd>
               </div>
               <div class="docs-search-results" id="docSearchResults" role="listbox" aria-label="搜索结果" hidden></div>
             </div>
@@ -603,7 +603,7 @@
   </figure>
 
   <h3 class="doc-h3" id="jdbc-drivers" data-i18n="doc.jdbc.driversTitle">第二步：安装驱动 Bundle</h3>
-  <p data-i18n="doc.jdbc.driversP1">驱动卡片上有两个动作：「安装驱动」从 Maven 仓库拉取，「导入本地驱动」直接选本地 JAR 或目录。两者都要求 Java 运行时可用，否则按钮是灰的。安装完成后生成一个<strong>不可变 Bundle</strong>：目录里是 JAR 与一份清单，清单记录每个文件的大小与 SHA-256，每次使用前都会校验，文件被改动或缺失会直接报「驱动 Bundle 不完整或已损坏」。</p>
+  <p data-i18n="doc.jdbc.driversP1">驱动卡片上有两个动作：「安装驱动」从 Maven 仓库拉取，「导入本地驱动」直接选本地 JAR 或目录。两者都要求 Java 运行时可用，否则按钮是灰的。安装完成后生成一个 Bundle：目录里是 JAR 与一份清单，清单记录每个 JAR 的大小与 SHA-256，每次使用前都会校验，文件被改动或缺失会直接报「驱动 Bundle 不完整或已损坏」。清单里另有一块能力探测结果，见下一节。</p>
   <p data-i18n="doc.jdbc.driversP2">从 Maven 安装时需要填「显示名称」和「Maven 坐标」，坐标格式是 <code>groupId:artifactId:version</code>，例如 <code>org.postgresql:postgresql:42.7.4</code>。「Maven 镜像源」可选 Maven Central、Aliyun、Huawei Cloud、Tencent Cloud，或选「自定义仓库」后填自己的 HTTPS 地址。过程中依次显示：准备安装、下载运行时依赖、校验文件完整性、检测 JDBC Driver、创建驱动 Bundle。</p>
   <p data-i18n="doc.jdbc.driversP3">导入本地驱动时填「显示名称」，再用「选择 JAR 文件」挑文件；也可以直接在路径框里写多条路径，用分号分隔，路径可以是 JAR 也可以是包含 JAR 的目录。安装时要能从 JAR 里找到至少一个 JDBC <code>Driver</code> 实现，否则会失败；成功后被发现的类就记在 Bundle 里，新建连接时不必再填。</p>
 
@@ -623,7 +623,7 @@
 
   <h3 class="doc-h3" id="jdbc-capability" data-i18n="doc.jdbc.capTitle">能力标识什么时候出现</h3>
   <p data-i18n="doc.jdbc.capP1">每行驱动下方有「驱动原生支持」一栏，后面跟两枚标识：「只读限制」和「超时限制」。对勾表示驱动接受 <code>setReadOnly</code> 或 <code>setQueryTimeout</code>，叉号表示驱动拒绝，未探测时显示「测试连接后检测」。</p>
-  <p data-i18n="doc.jdbc.capP2">探测不是安装时做的，而是在真正用到驱动的时候：在连接页对这条 JDBC 连接执行一次「测试连接」，或者让 Agent 发起一次查询。结果写回 Bundle 清单，之后一直显示，不需要重复探测。驱动拒绝某项能力只会让查询继续跑，不会让查询失败，这也是为什么「叉号」不等于「不能用」。</p>
+  <p data-i18n="doc.jdbc.capP2">探测不是安装时做的，而是在真正用到驱动的时候：在连接页对这条 JDBC 连接执行一次「测试连接」，或者让 Agent 发起一次查询。结果写回 Bundle 清单里的能力字段，之后一直显示，不需要重复探测（只改写这一块，JAR 文件本身不动，SHA-256 校验也就不会失效）。驱动拒绝某项能力只会让查询继续跑，不会让查询失败，这也是为什么「叉号」不等于「不能用」。</p>
 
   <div class="callout callout-note">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.2"/></svg>
@@ -684,7 +684,7 @@
     </div>
   </div>
 
-  <p data-i18n="doc.jdbc.troubleP">JDBC 的失败原因通常只出现在提示条和调试日志里。开启调试日志后，驱动解析、超时、sidecar 意外退出等问题都会留下记录，反馈问题时一并附上。</p>
+  <p data-i18n="doc.jdbc.troubleP">JDBC 的失败原因通常只出现在提示条和调试日志里。开启调试日志后，驱动解析、超时、JDBC 辅助进程（sidecar）意外退出等问题都会留下记录，反馈问题时一并附上。</p>
 </section>
 
         <!-- 06 MCP 服务与接入 -->
@@ -745,7 +745,7 @@
           <tr><td data-i18n="doc.service.endpointR2a">端口</td><td><code>17321</code></td><td data-i18n="doc.service.endpointR2c">可改为 1–65535；被占用时启动失败，原因可在状态卡与审计中看到。</td></tr>
           <tr><td data-i18n="doc.service.endpointR3a">端点路径</td><td><code>/mcp</code></td><td data-i18n="doc.service.endpointR3c">唯一路径，只有 POST 可用（GET 返回 405），请求体是 JSON-RPC 2.0。</td></tr>
           <tr><td data-i18n="doc.service.endpointR4a">传输方式</td><td data-i18n="doc.service.endpointR4b">Streamable HTTP</td><td data-i18n="doc.service.endpointR4c">不提供 GET 流式响应；对 <code>/mcp</code> 发 GET 会返回 405。</td></tr>
-          <tr><td data-i18n="doc.service.endpointR5a">协议版本</td><td data-i18n="doc.service.endpointR5b">最新版</td><td data-i18n="doc.service.endpointR5c">客户端可在初始化时协商；也接受 <code>2025-03-26</code> 与 <code>2025-06-18</code>，其他值返回 400。</td></tr>
+          <tr><td data-i18n="doc.service.endpointR5a">协议版本</td><td data-i18n="doc.service.endpointR5b">最新版</td><td data-i18n="doc.service.endpointR5c">客户端在初始化时协商；接受 <code>2025-03-26</code>、<code>2025-06-18</code> 与 <code>2025-11-25</code>，其他值返回 400。请求不带版本头时，按 <code>2025-03-26</code> 的传输方式兼容处理。</td></tr>
         </tbody>
       </table>
     </div>
@@ -836,8 +836,8 @@
           <tr><th data-i18n="doc.service.autoTh1">开关</th><th data-i18n="doc.service.autoTh2">作用</th></tr>
         </thead>
         <tbody>
-          <tr><td data-i18n="doc.service.autoR1a">开机自启动</td><td data-i18n="doc.service.autoR1b">登录时启动 DataNexa。开启后 MCP 服务会随应用一起启动，「启动 DataNexa 时自动开启 MCP 服务」会被锁定为开启。</td></tr>
-          <tr><td data-i18n="doc.service.autoR2a">启动时自动运行 MCP</td><td data-i18n="doc.service.autoR2b">应用启动且审计存储就绪后自动启动服务。开机自启动开启时该项不可单独关闭。</td></tr>
+          <tr><td data-i18n="doc.service.autoR1a">「登录时启动 DataNexa」</td><td data-i18n="doc.service.autoR1b">登录时启动 DataNexa。开启后 MCP 服务会随应用一起启动，「启动 DataNexa 时自动开启 MCP 服务」会被锁定为开启。</td></tr>
+          <tr><td data-i18n="doc.service.autoR2a">「启动 DataNexa 时自动开启 MCP 服务」</td><td data-i18n="doc.service.autoR2b">应用启动且审计存储就绪后自动启动服务。开机自启动开启时该项不可单独关闭。</td></tr>
           <tr><td data-i18n="doc.service.autoR3a">轻量模式</td><td data-i18n="doc.service.autoR3b">窗口关闭 5 分钟后释放界面资源以减少占用；服务与托管进程继续运行，重新打开窗口即可恢复。</td></tr>
           <tr><td data-i18n="doc.service.autoR4a">托盘状态</td><td data-i18n="doc.service.autoR4b">托盘图标与菜单同步服务状态，可直接启动或停止服务、切换轻量模式、退出应用。</td></tr>
         </tbody>
@@ -1080,7 +1080,7 @@
     <div class="shot-frame" style="--shot-ratio: 2584 / 1744">
       <div class="shot-placeholder" aria-hidden="true">
         <span class="shot-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg></span>
-        <span class="shot-label">截图占位 · 08</span>
+        <span class="shot-label">截图占位 · 13</span>
         <code class="shot-name">13-tools-grid.png</code>
         <span class="shot-desc">工具页全貌：三个分组、七张工具卡与开关，顶部显示已启用数量。</span>
         <span class="shot-size">建议 1600 × 1000 · PNG · 深色主题</span>
@@ -1332,7 +1332,7 @@
   </div>
 
   <h3 class="doc-h3" data-i18n="doc.tools.policyTitle">只读策略会拦下什么</h3>
-  <p data-i18n="doc.tools.policyP1">五个工具共享同一套策略引擎：先按方言解析成语法树，再逐条检查。判断依据是语句结构，不是字符串匹配，所以注释、字符串字面量里的关键词不会造成误判。</p>
+  <p data-i18n="doc.tools.policyP1">凡是让 Agent 自己写 SQL 的入口，都走同一套策略引擎：执行只读查询、解释 SQL，以及在执行前做静态预检。引擎先按方言把语句解析成语法树，再逐条检查，判断依据是语句结构而不是字符串匹配，所以注释或字符串字面量里出现的关键词不会造成误判。用结构化参数传表名的工具不经过这套解析，它们只拼出一条固定的 <code>SELECT</code>，并按标识符白名单校验表名。</p>
 
   <div class="doc-split">
     <div class="doc-panel doc-panel-good">
@@ -1408,7 +1408,7 @@
     <div class="shot-frame" style="--shot-ratio: 2584 / 1744">
       <div class="shot-placeholder" aria-hidden="true">
         <span class="shot-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg></span>
-        <span class="shot-label">截图占位 · 09</span>
+        <span class="shot-label">截图占位 · 15</span>
         <code class="shot-name">15-audit-list.png</code>
         <span class="shot-desc">审计列表：多行记录、状态徽标、时间/工具/连接列与「筛选」入口。</span>
         <span class="shot-size">建议 1600 × 1000 · PNG · 浅色主题</span>
@@ -1426,7 +1426,7 @@
     <div class="shot-frame" style="--shot-ratio: 2584 / 1744">
       <div class="shot-placeholder" aria-hidden="true">
         <span class="shot-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg></span>
-        <span class="shot-label">截图占位 · 09</span>
+        <span class="shot-label">截图占位 · 16</span>
         <code class="shot-name">16-audit-detail.png</code>
         <span class="shot-desc">日志详情弹窗：令牌、工具、连接、状态、耗时/行数、原因与 SQL。</span>
         <span class="shot-size">建议 1200 × 900 · PNG · 浅色主题</span>
@@ -1457,8 +1457,8 @@
           <tr><th data-i18n="doc.audit.thSource">来源</th><th data-i18n="doc.audit.thReason">原因特征</th><th data-i18n="doc.audit.thWhere">去哪里处理</th></tr>
         </thead>
         <tbody>
-          <tr><td data-i18n="doc.audit.sourcePolicy">只读策略</td><td data-i18n="doc.audit.sourcePolicyReason">DDL、DML、多语句、副作用函数、解析失败等策略文案。</td><td data-i18n="doc.audit.sourcePolicyWhere">改写 SQL；先到「设置 → 通用 → 策略检查台」预检。</td></tr>
-          <tr><td data-i18n="doc.audit.sourceToken">令牌权限</td><td data-i18n="doc.audit.sourceTokenReason">「未授权给该访问令牌」或「工具已关闭」。</td><td data-i18n="doc.audit.sourceTokenWhere">「访问控制」调整令牌权限，或到「工具」页打开开关。</td></tr>
+          <tr><td data-i18n="doc.audit.sourcePolicy">只读策略</td><td data-i18n="doc.audit.sourcePolicyReason">DDL、DML、多语句、副作用函数、解析失败等策略文案。</td><td data-i18n="doc.audit.sourcePolicyWhere">改写 SQL；先到「设置 → 安全 → 策略检查台」预检。</td></tr>
+          <tr><td data-i18n="doc.audit.sourceToken">工具开关与令牌权限</td><td data-i18n="doc.audit.sourceTokenReason">「工具已关闭」或「未授权给该访问令牌」。两者是不同的报错，看原因文案即可区分。</td><td data-i18n="doc.audit.sourceTokenWhere">「工具」页打开全局开关，或到「访问控制」调整该令牌的数据库与工具权限。</td></tr>
           <tr><td data-i18n="doc.audit.sourceBreaker">自动熔断</td><td data-i18n="doc.audit.sourceBreakerReason">令牌在统计窗口内拦截次数达到阈值，被自动停用。</td><td data-i18n="doc.audit.sourceBreakerWhere">「访问控制」重新启用令牌，或调整熔断窗口与阈值。</td></tr>
         </tbody>
       </table>
@@ -1523,7 +1523,7 @@
   </div>
 
   <ul>
-    <li data-i18n="doc.settings.general1"><strong>监听地址与端口：</strong>服务运行中修改会自动重新绑定监听；端口输入框接受 1–65535，越界的取值会被夹回范围。</li>
+    <li data-i18n="doc.settings.general1"><strong>监听地址与端口：</strong>端口输入框接受 1–65535，越界的取值会被夹回范围；监听地址只接受 127.0.0.1 或 localhost。</li>
     <li data-i18n="doc.settings.general2"><strong>启动与后台：</strong>勾选「登录时启动 DataNexa」后，「启动 DataNexa 时自动开启 MCP 服务」会自动打开并锁定，因为开机自启动后，服务会随登录一起常驻。</li>
     <li data-i18n="doc.settings.general3"><strong>轻量模式：</strong>开启后，窗口关闭 5 分钟会自动释放窗口界面资源，后台 MCP 服务与已建连接不受影响。</li>
     <li data-i18n="doc.settings.general4"><strong>审计日志：</strong>保留天数可选 3 / 7 / 15 / 30 天；「脱敏 SQL 字面量」默认关闭，关闭时 SQL 里的字符串与数字原样写入，打开后字面量统一替换为占位符；解析失败或方言未知时，整条 SQL 会被替换为对应的 REDACTED 标记，不会回退到明文。</li>
@@ -1534,13 +1534,18 @@
     <div class="callout-body"><span class="callout-title" data-i18n="doc.settings.generalWarnTitle">两处改动要先看清影响</span><span data-i18n="doc.settings.generalWarnText">关闭「要求 Bearer 密钥」前会弹确认框：服务端点将失去令牌保护，访问控制与自动熔断同时失效。监听地址只接受 127.0.0.1 或 localhost，填其他值保存会失败并回退。</span></div>
   </div>
 
+  <div class="callout callout-tip">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5.9 1.2.9 2.1h5.2c0-.9.3-1.6.9-2.1A6 6 0 0 0 12 3z"/></svg>
+    <div class="callout-body"><span class="callout-title" data-i18n="doc.settings.tipTitle">改服务策略不用重启应用</span><span data-i18n="doc.settings.tipText">监听地址或端口保存后会自动重新绑定；如果新端口已被占用，界面会报错并保留原来的监听，处理掉冲突后再改一次即可。</span></div>
+  </div>
+
   <figure class="doc-shot">
     <div class="shot-frame" style="--shot-ratio: 2584 / 1744">
       <div class="shot-placeholder" aria-hidden="true">
         <span class="shot-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg></span>
-        <span class="shot-label">截图占位 · 10</span>
+        <span class="shot-label">截图占位 · 17</span>
         <code class="shot-name">17-settings-general.png</code>
-        <span class="shot-desc">画面内容：设置 → 通用，可见 MCP 服务策略、显示、启动与后台、审计日志四个分组。</span>
+        <span class="shot-desc">画面内容：设置 → 通用，可见 MCP 服务策略、显示、启动与后台、审计日志、导入/导出五个分组。</span>
         <span class="shot-size">建议 1600 × 1000 · PNG · 浅色主题</span>
       </div>
       <img src="assets/help/17-settings-general.png" alt="设置通用标签页：MCP 服务策略的监听地址与端口、界面语言与主题、启动与后台开关、审计日志保留天数与脱敏开关" loading="lazy" decoding="async">
@@ -1561,7 +1566,7 @@
     <div class="shot-frame" style="--shot-ratio: 2584 / 1744">
       <div class="shot-placeholder" aria-hidden="true">
         <span class="shot-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg></span>
-        <span class="shot-label">截图占位 · 10</span>
+        <span class="shot-label">截图占位 · 18</span>
         <code class="shot-name">18-settings-security.png</code>
         <span class="shot-desc">画面内容：设置 → 安全，24 小时拦截统计、六层防护列表与熔断设置。</span>
         <span class="shot-size">建议 1600 × 1000 · PNG · 深色主题</span>
@@ -1599,11 +1604,6 @@
     <li data-i18n="doc.settings.about2"><strong>更新偏好：</strong>「每天自动检查更新」默认开启；「更新下载加速」由 GH-Proxy 提供，开启后检查更新、下载安装包与 Java 运行时都经该服务访问 GitHub，只转发公开的 Release 文件，安装包与运行时仍会校验签名与 SHA-256。</li>
     <li data-i18n="doc.settings.about3"><strong>调试日志：</strong>默认隐藏，连续点 5 次版本号才会出现。开启前会弹出确认框（仅用于排查问题、有轻微性能开销、内容已脱敏），开启后可按旁边的按钮直接打开日志文件夹。</li>
   </ul>
-
-  <div class="callout callout-tip">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5.9 1.2.9 2.1h5.2c0-.9.3-1.6.9-2.1A6 6 0 0 0 12 3z"/></svg>
-    <div class="callout-body"><span class="callout-title" data-i18n="doc.settings.tipTitle">改服务策略不用重启应用</span><span data-i18n="doc.settings.tipText">监听地址或端口保存后会自动重新绑定；如果新端口已被占用，界面会报错并保留原来的监听，处理掉冲突后再改一次即可。</span></div>
-  </div>
 </section>
 
         <!-- 11 安全模型 -->
@@ -1696,10 +1696,10 @@
         <tbody>
           <tr><td data-i18n="doc.security.credR1a">连接与策略配置</td><td data-i18n="doc.security.credR1b">应用配置目录的 config.toml</td><td data-i18n="doc.security.credR1c">只保存 Vault 引用，不含数据库密码。</td></tr>
           <tr><td data-i18n="doc.security.credR2a">数据库密码</td><td data-i18n="doc.security.credR2b">操作系统凭证库</td><td data-i18n="doc.security.credR2c">由系统钥匙串或凭据管理器保护。</td></tr>
-          <tr><td data-i18n="doc.security.credR3a">访问令牌</td><td data-i18n="doc.security.credR3b">应用配置目录的 access-control.db</td><td data-i18n="doc.security.credR3c">Unix 下文件权限 0600；Unix 下文件权限 0600；密钥以明文保存在库中用于比对，请把该目录当作凭据保护。</td></tr>
+          <tr><td data-i18n="doc.security.credR3a">访问令牌</td><td data-i18n="doc.security.credR3b">应用配置目录的 access-control.db</td><td data-i18n="doc.security.credR3c">Unix 下文件权限 0600；密钥以明文保存在库中用于比对，请把该目录当作凭据保护。</td></tr>
           <tr><td data-i18n="doc.security.credR4a">审计记录</td><td data-i18n="doc.security.credR4b">应用配置目录的 audit.db</td><td data-i18n="doc.security.credR4c">本地 SQLite；SQL 字面量可选脱敏。</td></tr>
           <tr><td data-i18n="doc.security.credR5a">调试日志</td><td data-i18n="doc.security.credR5b">数据目录的 logs 文件夹</td><td data-i18n="doc.security.credR5c">仅在你手动开启后写入，4 MiB 轮转保留 3 份。</td></tr>
-          <tr><td data-i18n="doc.security.credR6a">JDBC 驱动与运行时</td><td data-i18n="doc.security.credR6b">数据目录</td><td data-i18n="doc.security.credR6c">驱动为不可变 Bundle；运行时来自托管下载或你选择的外部路径。</td></tr>
+          <tr><td data-i18n="doc.security.credR6a">JDBC 驱动与运行时</td><td data-i18n="doc.security.credR6b">数据目录</td><td data-i18n="doc.security.credR6c">驱动 JAR 安装后不做修改，使用前按清单里的 SHA-256 校验；运行时来自托管下载或你选择的外部路径。</td></tr>
           <tr><td data-i18n="doc.security.credR7a">导出的连接文件</td><td data-i18n="doc.security.credR7b">你选择的位置</td><td data-i18n="doc.security.credR7c">默认用 Argon2id 加密；选明文导出时密码不再受凭证库保护。</td></tr>
         </tbody>
       </table>
@@ -1764,8 +1764,8 @@
   <p data-i18n="doc.faq.agentSymptom"><strong>症状：</strong>Agent 报连接被拒绝、请求超时，或返回 <code>401</code>、<code>403</code>。</p>
   <p data-i18n="doc.faq.agentCause"><strong>原因：</strong>服务没有运行；客户端填的端口与实际监听端口不一致；Bearer 鉴权开启但请求没带密钥，或密钥在「手动轮换」后已失效；访问令牌被停用或自动熔断；请求的 Host / Origin 不是本机地址。</p>
   <ol>
-    <li data-i18n="doc.faq.agentFix1">在概览页确认状态是「运行中」，端点形如 <code>http://127.0.0.1:17321/mcp</code>，用「复制端点」避免手抄出错。</li>
-    <li data-i18n="doc.faq.agentFix2"><code>401</code> 表示缺少或无效的 Bearer 密钥：在客户端配置 <code>Authorization: Bearer &lt;token&gt;</code>，密钥从概览页「访问密钥」复制；轮换后所有客户端都要同步更新。</li>
+    <li data-i18n="doc.faq.agentFix1">在概览页确认状态是「运行中」，端点形如 <code>http://127.0.0.1:17321/mcp</code>；需要核对时以「设置 → 通用 → MCP 服务策略」里的监听地址与端口为准。</li>
+    <li data-i18n="doc.faq.agentFix2"><code>401</code> 表示缺少或无效的 Bearer 密钥：在客户端配置 <code>Authorization: Bearer &lt;token&gt;</code>，密钥可到「访问控制」用该令牌的「复制 Agent Prompt」重新取回；轮换后所有客户端都要同步更新。</li>
     <li data-i18n="doc.faq.agentFix3"><code>403</code> 表示 Host 或 Origin 不被允许：请求必须使用 <code>127.0.0.1</code> / <code>localhost</code>，经反向代理或局域网地址访问会被拒绝。</li>
     <li data-i18n="doc.faq.agentFix4">客户端需要 POST JSON-RPC，<code>Content-Type: application/json</code>，<code>Accept</code> 同时包含 <code>application/json</code> 与 <code>text/event-stream</code>；GET 返回 <code>405</code> 属正常，说明该端点不提供流式 GET。</li>
   </ol>
@@ -1775,10 +1775,10 @@
   <p data-i18n="doc.faq.deniedCause"><strong>原因：</strong>语句不是单条只读查询；工具或数据库连接不在该令牌的权限内；工具在工具页被关闭；紧急断连正在生效。</p>
   <ol>
     <li data-i18n="doc.faq.deniedFix1">改成单条 <code>SELECT</code>、安全的 <code>WITH ... SELECT</code> 或 <code>EXPLAIN</code>；不要拼接多条语句，<code>SELECT INTO</code>、文件导入导出和明显有副作用的函数都会被拦。</li>
-    <li data-i18n="doc.faq.deniedFix2">先用「设置 → 通用 → 策略检查台」以相同方言预检，确认是策略问题还是权限问题。</li>
+    <li data-i18n="doc.faq.deniedFix2">先用「设置 → 安全 → 策略检查台」以相同方言预检，确认是策略问题还是权限问题。</li>
     <li data-i18n="doc.faq.deniedFix3">到「访问控制」核对该令牌的数据库与工具权限；提示会区分「工具未授权」与「连接未授权」。</li>
-    <li data-i18n="doc.faq.deniedFix4">到「MCP 工具」页确认工具开关；被关闭的工具不会出现在 Agent 的工具列表里。</li>
-    <li data-i18n="doc.faq.deniedFix5">若提示紧急断连生效，先在概览页退出紧急断连，再让 Agent 重试。</li>
+    <li data-i18n="doc.faq.deniedFix4">到「工具」页确认工具开关；被关闭的工具不会出现在 Agent 的工具列表里。</li>
+    <li data-i18n="doc.faq.deniedFix5">若提示紧急断连生效，先在「数据库连接」页顶部或概览页服务状态卡退出紧急断连，再让 Agent 重试。</li>
   </ol>
 
   <h3 class="doc-h3" data-i18n="doc.faq.timeoutTitle">查询超时，或结果被截断</h3>
@@ -1826,7 +1826,7 @@
   <ol>
     <li data-i18n="doc.faq.javaFix1">打开 <strong>设置 → JDBC 支持</strong>，点「下载 DataNexa Java 运行时」，完成后重试 JDBC 连接。</li>
     <li data-i18n="doc.faq.javaFix2">本机已有 JDK 时，用「选择外部 Java 运行时」指向它的主目录；更换后原连接不需要重建。</li>
-    <li data-i18n="doc.faq.javaFix3">下载慢或中断时，可开启「设置 → 通用 → 更新下载加速」重试；仍失败时手动安装 JDK 再选择外部运行时。</li>
+    <li data-i18n="doc.faq.javaFix3">下载慢或中断时，可开启「设置 → 关于 → 更新下载加速」重试；仍失败时手动安装 JDK 再选择外部运行时。</li>
     <li data-i18n="doc.faq.javaFix4">JDBC 会话运行期间不能卸载运行时，先停止相关会话再卸载。</li>
   </ol>
 
@@ -1961,8 +1961,8 @@ max_result_bytes = 1048576</code></pre>
           <tr><td><span data-i18n="doc.appendix.dPool">最大连接数</span></td><td><code>1</code></td><td data-i18n="doc.appendix.dPoolRange">1–3</td></tr>
           <tr><td><span data-i18n="doc.appendix.dBytes">结果大小上限</span></td><td><code>1 MiB</code></td><td data-i18n="doc.appendix.dBytesRange">64 KiB–8 MiB</td></tr>
           <tr><td><span data-i18n="doc.appendix.dAudit">审计保留天数</span></td><td data-i18n="doc.appendix.dAuditValue"><code>7</code> 天</td><td data-i18n="doc.appendix.dAuditRange">3 / 7 / 15 / 30 天</td></tr>
-          <tr><td><span data-i18n="doc.appendix.dBreaker">自动熔断窗口</span></td><td><code>10</code> <span data-i18n="doc.appendix.minutes">分钟</span></td><td data-i18n="doc.appendix.dBreakerRange">1–60 分钟</td></tr>
-          <tr><td><span data-i18n="doc.appendix.dThreshold">熔断拦截阈值</span></td><td><code>5</code> <span data-i18n="doc.appendix.times">次</span></td><td data-i18n="doc.appendix.dThresholdRange">1–50 次</td></tr>
+          <tr><td><span data-i18n="doc.appendix.dBreaker">自动熔断窗口</span></td><td><code>10</code> <span data-i18n="doc.appendix.minutes">分钟</span></td><td data-i18n="doc.appendix.dBreakerRange">1 / 5 / 10 / 30 / 60 分钟</td></tr>
+          <tr><td><span data-i18n="doc.appendix.dThreshold">熔断拦截阈值</span></td><td><code>5</code> <span data-i18n="doc.appendix.times">次</span></td><td data-i18n="doc.appendix.dThresholdRange">3 / 5 / 10 / 20 / 50 次</td></tr>
           <tr><td><span data-i18n="doc.appendix.dConcurrency">工具并发上限</span></td><td><code>8</code></td><td data-i18n="doc.appendix.dFixed">固定</td></tr>
           <tr><td><span data-i18n="doc.appendix.dRate">工具调用速率</span></td><td data-i18n="doc.appendix.dRateValue">约 2 次/秒，突发 20</td><td data-i18n="doc.appendix.dFixed2">固定</td></tr>
           <tr><td><span data-i18n="doc.appendix.dAuditList">审计列表上限</span></td><td><code>5000</code> <span data-i18n="doc.appendix.entries">条</span></td><td data-i18n="doc.appendix.dFixed3">固定</td></tr>
@@ -1987,7 +1987,7 @@ max_result_bytes = 1048576</code></pre>
           <tr><td><code>datanexa_sample_rows</code></td><td data-i18n="doc.appendix.gAccess">数据访问</td><td data-i18n="doc.appendix.t4">读取受限的样本行。</td></tr>
           <tr><td><code>datanexa_execute_readonly_sql</code></td><td data-i18n="doc.appendix.gAccess2">数据访问</td><td data-i18n="doc.appendix.t5">执行单条只读查询。</td></tr>
           <tr><td><code>datanexa_explain_sql</code></td><td data-i18n="doc.appendix.gAnalysis">分析与策略</td><td data-i18n="doc.appendix.t6">返回查询计划。</td></tr>
-          <tr><td><code>datanexa_policy_check</code></td><td data-i18n="doc.appendix.gAnalysis2">分析与策略</td><td data-i18n="doc.appendix.t7">静态策略检查，不连库、不写审计。</td></tr>
+          <tr><td><code>datanexa_policy_check</code></td><td data-i18n="doc.appendix.gAnalysis2">分析与策略</td><td data-i18n="doc.appendix.t7">静态策略检查，不连库，但会写审计。</td></tr>
         </tbody>
       </table>
     </div>
@@ -2081,6 +2081,25 @@ max_result_bytes = 1048576</code></pre>
   <button class="docs-top" type="button" aria-label="回到顶部">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
   </button>
+
+  <button class="docs-search-fab" id="docSearchFab" type="button" data-i18n-attr="aria-label:doc.search.fab;title:doc.search.fab" aria-label="搜索文档" title="搜索文档">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+  </button>
+
+  <!-- 阅读中的悬浮搜索：头图搜索框滚出视口后，快捷键唤起这一层 -->
+  <div class="docs-search-modal" id="docSearchModal" role="dialog" aria-modal="true" aria-label="搜索文档" hidden>
+    <div class="docs-search-modal-panel">
+      <div class="docs-search docs-search-floating" role="search">
+        <div class="docs-search-field">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+          <input type="search" id="docSearchFloat" data-i18n-attr="placeholder:doc.search.placeholder;aria-label:doc.search.placeholder" placeholder="搜索功能、设置或错误提示…" aria-label="搜索文档" autocomplete="off" spellcheck="false">
+          <kbd data-search-shortcut>Ctrl K</kbd>
+        </div>
+        <div class="docs-search-results" id="docSearchFloatResults" role="listbox" aria-label="搜索结果" hidden></div>
+      </div>
+      <p class="docs-search-modal-hint" data-i18n="doc.search.hint">↑↓ 选择 · Enter 跳转 · Esc 关闭</p>
+    </div>
+  </div>
 
   <script src="assets/main.js"></script>
   <script src="assets/help-en.js"></script>
