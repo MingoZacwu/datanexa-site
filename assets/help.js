@@ -194,6 +194,9 @@
       wrap: config.wrap || input.closest(".docs-search"),
       activeResult: -1,
       nodes: [],
+      /* 悬浮层由遮罩点击负责关闭；文档级的「点外部收起」只作用于头图搜索框，
+         否则点 FAB 时这次点击会冒泡上来，把刚打开的悬浮层立刻关掉 */
+      dismissOnOutsideClick: config.dismissOnOutsideClick !== false,
       onOpen: config.onOpen,
       onClose: config.onClose,
       onClear: config.onClear
@@ -385,6 +388,7 @@
     inputId: "docSearchFloat",
     resultsId: "docSearchFloatResults",
     wrap: searchModalPanel,
+    dismissOnOutsideClick: false,
     onOpen: function () { openSearchModal(); },
     onClose: function (wasOpen, opts) { closeSearchModal(opts); }
   });
@@ -470,6 +474,7 @@
 
   doc.addEventListener("click", function (e) {
     searchPanels.forEach(function (panel) {
+      if (!panel.dismissOnOutsideClick) return;
       if (!panel.results.hidden && panel.wrap && !panel.wrap.contains(e.target)) closePanel(panel);
     });
   });
