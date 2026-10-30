@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "generatedAt": "2026-10-17T06:44:05.963Z",
+  "generatedAt": "2026-10-30T05:45:26.325Z",
   "source": {
     "repository": "MingoZacwu/DataNexa",
     "releasesUrl": "https://github.com/MingoZacwu/DataNexa/releases",
@@ -11,9 +11,46 @@
       "sections": 1
     }
   },
-  "latest": "v0.8.2",
-  "latestStable": "v0.8.2",
+  "latest": "v0.8.3",
+  "latestStable": "v0.8.3",
   "releases": [
+    {
+      "tag": "v0.8.3",
+      "version": "0.8.3",
+      "name": "DataNexa v0.8.3",
+      "publishedAt": "2026-10-30T05:45:06Z",
+      "date": "2026-10-30",
+      "url": "https://github.com/MingoZacwu/DataNexa/releases/tag/v0.8.3",
+      "prerelease": false,
+      "assets": [
+        {
+          "name": "DataNexa_0.8.3_universal.dmg",
+          "platform": "macos",
+          "sizeBytes": 39876160,
+          "downloadUrl": "https://github.com/MingoZacwu/DataNexa/releases/download/v0.8.3/DataNexa_0.8.3_universal.dmg"
+        },
+        {
+          "name": "DataNexa_0.8.3_x64-setup.exe",
+          "platform": "windows",
+          "sizeBytes": 17025307,
+          "downloadUrl": "https://github.com/MingoZacwu/DataNexa/releases/download/v0.8.3/DataNexa_0.8.3_x64-setup.exe"
+        }
+      ],
+      "notesSource": "changelog",
+      "notes": {
+        "zh": {
+          "html": "<h2 id=\"v0.8.3--版本亮点\">版本亮点</h2>\n<ul>\n  <li>MCP 服务现在可在启动 DataNexa 时自动运行，并新增后台运行提示，方便了解关闭窗口后服务仍可继续运行。</li>\n  <li>新增可选的 GitHub 下载加速，帮助网络连接不稳定的用户检查更新、下载应用安装包和 Java 运行时。</li>\n  <li>新增“帮助与反馈”页面，可直接打开在线使用手册或前往 GitHub 提交问题与建议。</li>\n</ul>\n<h2 id=\"v0.8.3--新增功能\">新增功能</h2>\n<h3 id=\"v0.8.3--mcp-自动启动与后台运行\">MCP 自动启动与后台运行</h3>\n<ul>\n  <li>新增“启动 DataNexa 时自动开启 MCP 服务”设置。启用后，每次启动应用都会自动启动 MCP 服务；开启“登录时启动 DataNexa”后，MCP 服务也会始终随应用自动启动。</li>\n  <li>首次启动 MCP 服务后，概览页会提示 DataNexa 可以在关闭窗口后继续于后台运行，并提供开启开机自启动的快捷操作。提示只显示一次。</li>\n</ul>\n<h3 id=\"v0.8.3--github-下载加速\">GitHub 下载加速</h3>\n<ul>\n  <li>设置中新增可选的 GH-Proxy 加速开关，用于应用更新检查、安装包下载和托管 Java 运行时下载。</li>\n  <li>加速请求失败时会自动改用 GitHub 直连。下载的应用安装包和 Java 运行时仍会执行签名或 SHA-256 校验。</li>\n</ul>\n<h3 id=\"v0.8.3--帮助与反馈\">帮助与反馈</h3>\n<ul>\n  <li>侧边栏新增“帮助与反馈”页面，可打开在线使用手册或 GitHub 问题反馈入口。</li>\n  <li>macOS 菜单栏菜单现已本地化，并增加打开帮助文档的入口。</li>\n</ul>\n<h2 id=\"v0.8.3--调整与问题修复\">调整与问题修复</h2>\n<ul>\n  <li>修复更新设置中的开关会响应到其他开关状态的问题；现在每个开关只控制自身选项。</li>\n</ul>",
+          "url": "https://github.com/MingoZacwu/DataNexa/blob/HEAD/CHANGELOG.md",
+          "empty": false
+        },
+        "en": {
+          "html": "<h2 id=\"v0.8.3--highlights\">Highlights</h2>\n<ul>\n  <li>MCP can now start automatically with DataNexa, with a new background-running tip explaining that the service can continue after the window is closed.</li>\n  <li>Added optional GitHub download acceleration for users with unreliable connections when checking for updates or downloading the app and Java runtime.</li>\n  <li>Added a Help &amp; Feedback page with direct links to the online manual and GitHub issue reporting.</li>\n</ul>\n<h2 id=\"v0.8.3--added\">Added</h2>\n<h3 id=\"v0.8.3--automatic-mcp-startup-and-background-running\">Automatic MCP Startup and Background Running</h3>\n<ul>\n  <li>Added a setting to start the MCP server whenever DataNexa launches. When “Launch DataNexa at login” is enabled, the MCP server starts automatically as well.</li>\n  <li>After the MCP server starts for the first time, the Overview page shows a one-time tip explaining that DataNexa can keep running in the background after the window closes, with a shortcut to enable launch at login.</li>\n</ul>\n<h3 id=\"v0.8.3--github-download-acceleration\">GitHub Download Acceleration</h3>\n<ul>\n  <li>Added an optional GH-Proxy setting for app update checks, installer downloads, and managed Java runtime downloads.</li>\n  <li>If an accelerated request fails, DataNexa automatically retries directly with GitHub. App installers and Java runtimes remain subject to signature or SHA-256 verification.</li>\n</ul>\n<h3 id=\"v0.8.3--help-feedback\">Help &amp; Feedback</h3>\n<ul>\n  <li>Added a Help &amp; Feedback page in the sidebar, with links to the online manual and GitHub issue reporting.</li>\n  <li>Localized the macOS menu bar and added an entry to open the help documentation.</li>\n</ul>\n<h2 id=\"v0.8.3--changes-and-fixes\">Changes and Fixes</h2>\n<ul>\n  <li>Fixed update settings switches affecting the state of other switches. Each switch now controls only its own setting.</li>\n</ul>",
+          "url": "https://github.com/MingoZacwu/DataNexa/blob/HEAD/CHANGELOG.md",
+          "empty": false,
+          "fallbackFromZh": false
+        }
+      }
+    },
     {
       "tag": "v0.8.2",
       "version": "0.8.2",
@@ -36,7 +73,7 @@
           "downloadUrl": "https://github.com/MingoZacwu/DataNexa/releases/download/v0.8.2/DataNexa_0.8.2_x64-setup.exe"
         }
       ],
-      "notesSource": "changelog",
+      "notesSource": "archive",
       "notes": {
         "zh": {
           "html": "<h2 id=\"v0.8.2--版本亮点\">版本亮点</h2>\n<ul>\n  <li>概览页顶部新增语言切换入口，避免用户找不到语言设置入口，方便用户快速切换语言。</li>\n  <li>JDBC 驱动的原生能力检测结果显示在驱动列表中，可以直接看到驱动是否支持只读限制与查询超时。</li>\n  <li>新增快速复制连接名功能，可在连接列表 → 连接详情中点击连接名复制。</li>\n  <li>本次更新还包含诸多问题修复与细节改进。</li>\n</ul>\n<h2 id=\"v0.8.2--新增功能\">新增功能</h2>\n<h3 id=\"v0.8.2--语言切换入口\">语言切换入口</h3>\n<ul>\n  <li>概览页顶部新增语言按钮，各语言以其自身名称显示，选择后立即生效。“设置 → 常规”中的语言选项保持不变。</li>\n  <li>中文系统使用中文，其他语言默认使用英文。默认语言不再在首次启动时写入，只有主动选择后才会保存。</li>\n</ul>\n<h3 id=\"v0.8.2--连接名快速复制\">连接名快速复制</h3>\n<ul>\n  <li>连接列表 → 连接详情中的连接名可以直接点击复制。</li>\n</ul>\n<h3 id=\"v0.8.2--jdbc-驱动能力标识\">JDBC 驱动能力标识</h3>\n<ul>\n  <li>驱动列表显示每个驱动的原生支持情况，包括只读限制与查询超时。</li>\n  <li>对使用该驱动的连接执行一次“测试连接”，或通过 MCP 发起一次查询，检测结果会自动记录。</li>\n  <li>驱动本身不支持时，DataNexa 仍会为查询应用只读保护与超时限制。</li>\n</ul>\n<h2 id=\"v0.8.2--调整与改进\">调整与改进</h2>\n<ul>\n  <li>英文与数字改用内置的 Geist 字体，中文继续使用系统字体；字号与字重也已统一，中文粗体显示更清晰。</li>\n  <li>统一了弹层、提示与 Toast 的毛玻璃质感，以及资源列表图标与禁用状态的显示方式，并补充了启用/停用的过渡动画。</li>\n  <li>改进了与 MCP 客户端的兼容性，减少客户端误读查询结果字段的情况。</li>\n</ul>\n<h2 id=\"v0.8.2--问题修复\">问题修复</h2>\n<h3 id=\"v0.8.2--mysql-连接\">MySQL 连接</h3>\n<ul>\n  <li>修复 MySQL 时间类型字段无法读取的问题，时间值统一按 UTC 返回。</li>\n  <li>修复查询超时后连接长时间不可用的问题，超时的查询会及时释放连接，不再影响后续操作。</li>\n  <li>修复查询结果为空时不返回字段信息、部分字符串内容显示为 base64 编码的问题。</li>\n</ul>\n<h3 id=\"v0.8.2--jdbc-查询\">JDBC 查询</h3>\n<ul>\n  <li>无法解析的 JDBC 语句会被拒绝执行，避免绕过只读限制。</li>\n  <li>修复取消查询后数据库会话未正确终止的问题。</li>\n  <li>修复字符串内容被错误转换、单元格内容被截断却没有任何提示的问题。</li>\n  <li>审计记录与调试日志中的数据库错误信息统一脱敏。</li>\n</ul>\n<h3 id=\"v0.8.2--界面与资源监控\">界面与资源监控</h3>\n<ul>\n  <li>修复一次请求进行中时，界面上大量无关功能都会变为不可用的问题，现在只有相关功能会受影响。</li>\n  <li>修复设置页切换标签后滚动位置错乱的问题。</li>\n  <li>修复资源监控中 JDBC 驱动 CPU 占用显示超过 100% 的问题，统计方式现在与系统任务管理器一致。</li>\n</ul>\n<h3 id=\"v0.8.2--mcp-工具\">MCP 工具</h3>\n<ul>\n  <li>修复查询表字段时表不存在会返回空字段列表的问题，现在会明确返回“表不存在”，不再与真正无字段的结果混淆。</li>\n</ul>",
